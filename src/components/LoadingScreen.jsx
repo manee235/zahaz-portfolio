@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
-import { SahasWordmarkSvg } from './SahasWordmarkSvg';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 
 /**
  * LoadingScreen
- * Fullscreen white editorial preloader that fills the Zahas wordmark
- * with pure black color as assets load, then slides out smoothly.
+ * Obsidian Black editorial preloader featuring:
+ * 1. Big "ZAHAZ" in Bebas Neue with blur-fading typewriter animation.
+ * 2. On completion, transitions to "Let's work together" (crisp white, no gradient)
+ *    with interactive "ENTER WEBSITE" circular CTA button.
  */
 export function LoadingScreen({
   progress = 0,
@@ -14,38 +15,94 @@ export function LoadingScreen({
   totalCount = 12,
   onFinished = () => {},
 }) {
-  const [fillMode, setFillMode] = useState('vertical'); // 'vertical' (bottom-to-top) or 'horizontal' (left-to-right)
   const [shouldRender, setShouldRender] = useState(true);
   const [isExiting, setIsExiting] = useState(false);
+  const [showSuccessStage, setShowSuccessStage] = useState(false);
 
+  // Typewriter sequence for "ZAHAZ"
+  const wordChars = ['Z', 'A', 'H', 'A', 'Z'];
+  const [visibleCount, setVisibleCount] = useState(1);
+  const autoEnterTimerRef = useRef(null);
+
+  // Blur-fade typewriter typing progression
   useEffect(() => {
-    if (isReady) {
-      // Trigger exit transition
-      setIsExiting(true);
-      // Synchronize hero reveal with the lifting curtain
-      const revealTimer = setTimeout(() => {
-        onFinished();
-      }, 120);
-      const unmountTimer = setTimeout(() => {
-        setShouldRender(false);
-      }, 850);
-      return () => {
-        clearTimeout(revealTimer);
-        clearTimeout(unmountTimer);
-      };
+    if (showSuccessStage) return;
+
+    // As progress advances, calculate min visible characters
+    const progressChars = Math.max(1, Math.min(5, Math.ceil((progress / 100) * 5)));
+
+    // Continuous smooth blur typewriter cycling
+    const interval = setInterval(() => {
+      setVisibleCount((prev) => {
+        const next = prev >= wordChars.length ? progressChars : prev + 1;
+        return Math.max(next, progressChars);
+      });
+    }, 420);
+
+    return () => clearInterval(interval);
+  }, [progress, showSuccessStage, wordChars.length]);
+
+  // When loaded (100% / isReady), transition to "Let's work together" stage
+  useEffect(() => {
+    if (isReady || progress >= 100) {
+      // Reveal the success stage
+      const successTimer = setTimeout(() => {
+        setShowSuccessStage(true);
+      }, 250);
+
+      return () => clearTimeout(successTimer);
     }
-  }, [isReady, onFinished]);
+  }, [isReady, progress]);
+
+  // Enter Website action
+  const handleEnterWebsite = useCallback(() => {
+    if (isExiting) return;
+    setIsExiting(true);
+
+    const revealTimer = setTimeout(() => {
+      onFinished();
+    }, 150);
+
+    const unmountTimer = setTimeout(() => {
+      setShouldRender(false);
+    }, 900);
+
+    return () => {
+      clearTimeout(revealTimer);
+      clearTimeout(unmountTimer);
+    };
+  }, [isExiting, onFinished]);
+
+  // Keyboard shortcut (Enter / Space) to enter website when ready
+  useEffect(() => {
+    if (!showSuccessStage) return;
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleEnterWebsite();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [showSuccessStage, handleEnterWebsite]);
+
+  // Auto-enter fallback after 4.5 seconds if user hasn't clicked
+  useEffect(() => {
+    if (showSuccessStage && !isExiting) {
+      autoEnterTimerRef.current = setTimeout(() => {
+        handleEnterWebsite();
+      }, 4500);
+
+      return () => clearTimeout(autoEnterTimerRef.current);
+    }
+  }, [showSuccessStage, isExiting, handleEnterWebsite]);
 
   if (!shouldRender) return null;
 
   const boundedProgress = Math.min(100, Math.max(0, Math.round(progress)));
   const displayPct = boundedProgress < 10 ? `0${boundedProgress}` : `${boundedProgress}`;
-
-  // Clipping logic for filling the black SVG layer
-  const fillClipStyle =
-    fillMode === 'vertical'
-      ? { clipPath: `inset(calc(100% - ${boundedProgress}%) 0 0 0)` }
-      : { clipPath: `inset(0 calc(100% - ${boundedProgress}%) 0 0)` };
 
   return (
     <div
@@ -65,72 +122,77 @@ export function LoadingScreen({
         </div>
       </header>
 
-      {/* Main Center Stage: Wordmark Filling with Black */}
+      {/* Main Center Stage: Either ZAHAZ Typewriter Loading OR "Let's work together" */}
       <main className="loading-center-stage">
-        <div className="loading-wordmark-container">
-          {/* Layer 1: Ghost Silhouette in faint gray (#e5e5e5) */}
-          <div className="loading-wordmark-layer loading-wordmark-ghost" aria-hidden="true">
-            <SahasWordmarkSvg fill="#e5e5e5" />
+        {!showSuccessStage ? (
+          /* State 1: ZAHAZ in Bebas Neue with Blur-Fading Typewriter Animation */
+          <div className="loading-bebas-wrap" aria-label="Loading ZAHAZ">
+            <h1 className="loading-bebas-wordmark">
+              {wordChars.map((char, index) => {
+                const isCharVisible = index < visibleCount;
+                return (
+                  <span
+                    key={index}
+                    className={`loading-bebas-char ${isCharVisible ? 'is-visible' : 'is-hidden'}`}
+                  >
+                    {char}
+                  </span>
+                );
+              })}
+              <span className="loading-type-cursor" aria-hidden="true" />
+            </h1>
+            <p className="loading-subtitle-tag">VIRTUAL &amp; 3D SPATIAL ARCHITECTURE</p>
           </div>
+        ) : (
+          /* State 2: Loaded Successfully -> "Let's work together" + ENTER WEBSITE */
+          <div className="loading-success-stage">
+            <div className="loading-work-together-heading">
+              <span className="work-together-light">Let's work</span>
+              <span className="work-together-bold">together</span>
+            </div>
 
-          {/* Layer 2: Filling Active Layer in pure black (#000000) */}
-          <div
-            className="loading-wordmark-layer loading-wordmark-fill"
-            style={fillClipStyle}
-            aria-hidden="true"
-          >
-            <SahasWordmarkSvg fill="#000000" />
+            {/* Circular CTA Button with Arrow & "ENTER WEBSITE" */}
+            <button
+              type="button"
+              className="loading-enter-site-btn"
+              onClick={handleEnterWebsite}
+              aria-label="Enter Website"
+              title="Click or press Enter to explore"
+              autoFocus
+            >
+              <span className="enter-site-circle">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="22"
+                  height="22"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="7" y1="17" x2="17" y2="7" />
+                  <polyline points="7 7 17 7 17 17" />
+                </svg>
+              </span>
+              <span className="enter-site-label">ENTER WEBSITE</span>
+            </button>
           </div>
-
-          {/* Liquid Ink Level Waterline Accent */}
-          {fillMode === 'vertical' && boundedProgress > 0 && boundedProgress < 100 && (
-            <div
-              className="loading-ink-waterline-v"
-              style={{ bottom: `${boundedProgress}%` }}
-              aria-hidden="true"
-            />
-          )}
-          {fillMode === 'horizontal' && boundedProgress > 0 && boundedProgress < 100 && (
-            <div
-              className="loading-ink-waterline-h"
-              style={{ left: `${boundedProgress}%` }}
-              aria-hidden="true"
-            />
-          )}
-        </div>
-
-        {/* Fill Mode Direction Switcher */}
-        <div className="loading-direction-toggle">
-          <button
-            type="button"
-            className={`toggle-dir-btn ${fillMode === 'vertical' ? 'is-active' : ''}`}
-            onClick={() => setFillMode('vertical')}
-            title="Liquid ink level fill from bottom to top"
-          >
-            ↑ VERTICAL INK
-          </button>
-          <span className="toggle-sep">/</span>
-          <button
-            type="button"
-            className={`toggle-dir-btn ${fillMode === 'horizontal' ? 'is-active' : ''}`}
-            onClick={() => setFillMode('horizontal')}
-            title="Horizontal ink sweep from left to right"
-          >
-            → HORIZONTAL SWEEP
-          </button>
-        </div>
+        )}
       </main>
 
       {/* Bottom Footer: Progress, Count & Minimal Track */}
       <footer className="loading-bottom-bar">
         <div className="loading-meta-status">
-          <span className="loading-status-text">{status}</span>
+          <span className="loading-status-text">
+            {showSuccessStage ? 'SYSTEM READY · ARCHIVE DECRYPTED' : status}
+          </span>
           <span className="loading-counter-tag">
             [ {loadedCount} / {totalCount} ASSETS ]
           </span>
         </div>
 
-        {/* 1px Minimal Black Progress Track */}
+        {/* 2px Minimal White Progress Track */}
         <div className="loading-track-wrapper">
           <div
             className="loading-track-bar"
@@ -147,4 +209,3 @@ export function LoadingScreen({
 }
 
 export default LoadingScreen;
-

@@ -80,13 +80,11 @@ export function HeroNav({ isLoaded = true, onOpenHireMe }) {
     const node = itemRefs.current[tabId];
     const track = trackRef.current;
     if (node && track) {
-      const nodeRect = node.getBoundingClientRect();
-      const trackRect = track.getBoundingClientRect();
       setSliderStyle({
-        left: Math.round(nodeRect.left - trackRect.left),
-        top: Math.round(nodeRect.top - trackRect.top),
-        width: Math.round(nodeRect.width),
-        height: Math.round(nodeRect.height),
+        left: node.offsetLeft,
+        top: node.offsetTop,
+        width: node.offsetWidth,
+        height: node.offsetHeight,
         opacity: 1,
       });
     }
@@ -94,6 +92,14 @@ export function HeroNav({ isLoaded = true, onOpenHireMe }) {
 
   useEffect(() => {
     updateSlider(activeTab);
+    const rAf = requestAnimationFrame(() => updateSlider(activeTab));
+    const timer1 = setTimeout(() => updateSlider(activeTab), 50);
+    const timer2 = setTimeout(() => updateSlider(activeTab), 250);
+    return () => {
+      cancelAnimationFrame(rAf);
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
   }, [activeTab, updateSlider]);
 
   useEffect(() => {
