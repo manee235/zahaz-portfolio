@@ -2,11 +2,9 @@ import React from 'react';
 import GradientASCII from './GradientASCII';
 import { HeroTitle } from './HeroTitle';
 import { HeroFigure } from './HeroFigure';
-import { HeroStatsFrame } from './HeroStatsFrame';
-import { HeroRightColumn } from './HeroRightColumn';
 import { useMouseParallax } from '../hooks/useMouseParallax';
 
-export function HeroSection({ scrollY, isRecorder, isReducedMotion }) {
+export function HeroSection({ scrollY, isRecorder, isReducedMotion, onOpenHireMe }) {
   const mousePos = useMouseParallax(!isRecorder && !isReducedMotion);
 
   // Parallax offsets and scroll blur-push fade
@@ -18,24 +16,6 @@ export function HeroSection({ scrollY, isRecorder, isReducedMotion }) {
     : {
         transform: `translate3d(${mousePos.x * -8}px, ${mousePos.y * -6 - scrollY * 0.08}px, 0px)`,
         filter: scrollBlur > 0 ? `blur(${scrollBlur}px)` : 'none',
-        opacity: scrollFade,
-        transition: 'filter 0.15s ease-out, opacity 0.15s ease-out',
-      };
-
-  const statsParallax = isReducedMotion
-    ? {}
-    : {
-        transform: `translate3d(${mousePos.x * 10}px, ${mousePos.y * 10 + scrollY * 0.12}px, 0px)`,
-        filter: scrollBlur > 0 ? `blur(${scrollBlur * 0.7}px)` : 'none',
-        opacity: scrollFade,
-        transition: 'filter 0.15s ease-out, opacity 0.15s ease-out',
-      };
-
-  const rightColParallax = isReducedMotion
-    ? {}
-    : {
-        transform: `translate3d(${mousePos.x * 14}px, ${mousePos.y * 14 + scrollY * 0.1}px, 0px)`,
-        filter: scrollBlur > 0 ? `blur(${scrollBlur * 0.8}px)` : 'none',
         opacity: scrollFade,
         transition: 'filter 0.15s ease-out, opacity 0.15s ease-out',
       };
@@ -58,7 +38,7 @@ export function HeroSection({ scrollY, isRecorder, isReducedMotion }) {
 
       <div className="hero-stage" id="hero-stage">
         <div className="hero-title-wrapper" style={titleParallax}>
-          <HeroTitle />
+          <HeroTitle onOpenHireMe={onOpenHireMe} />
         </div>
         <HeroFigure
           scrollY={scrollY}
@@ -66,12 +46,6 @@ export function HeroSection({ scrollY, isRecorder, isReducedMotion }) {
           isRecorder={isRecorder}
           isReducedMotion={isReducedMotion}
         />
-        <div className="hero-stats-wrapper" style={statsParallax}>
-          <HeroStatsFrame />
-        </div>
-        <div className="hero-right-wrapper" style={rightColParallax}>
-          <HeroRightColumn />
-        </div>
       </div>
     </header>
   );

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export function ContactFooter() {
+export function ContactFooter({ onOpenHireMe }) {
   const [copiedEmail, setCopiedEmail] = useState(false);
   const [copiedPhone, setCopiedPhone] = useState(false);
 
@@ -37,18 +37,17 @@ export function ContactFooter() {
               Vision. With Us
             </h2>
 
-            {/* Primary CTA: Hire Me */}
+            {/* Primary CTA: Hire Me Stepper Modal Trigger */}
             <div className="contact-cta-wrap">
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
+              <button
+                type="button"
                 className="btn-hire-me"
                 id="book-call"
+                onClick={onOpenHireMe}
               >
                 <span>Hire Me</span>
                 <span className="cta-arrow" aria-hidden="true">→</span>
-              </a>
+              </button>
             </div>
 
             {/* Direct Connect Options: Email & WhatsApp */}
@@ -199,3 +198,4 @@ export function ContactFooter() {
 }
 
 export default ContactFooter;
+

@@ -4,8 +4,8 @@ import { HeroSection } from './components/HeroSection';
 import { BarSection } from './components/BarSection';
 import { ManifestoSection } from './components/ManifestoSection';
 import { ProjectsSection } from './components/ProjectsSection';
-import { TrustSection } from './components/TrustSection';
 import { ContactFooter } from './components/ContactFooter';
+import { HireMeModal } from './components/HireMeModal';
 import { LoadingScreen } from './components/LoadingScreen';
 import { useScrollProgress } from './hooks/useScrollProgress';
 import { useImagePreloader } from './hooks/useImagePreloader';
@@ -16,6 +16,7 @@ export function App() {
   const [isRecorder, setIsRecorder] = useState(false);
   const [isReducedMotion, setIsReducedMotion] = useState(false);
   const [hasFinishedLoading, setHasFinishedLoading] = useState(false);
+  const [isHireMeOpen, setIsHireMeOpen] = useState(false);
 
   // Critical editorial assets to preload before presentation
   const assetUrls = useMemo(
@@ -39,7 +40,14 @@ export function App() {
 
     const listener = (e) => setIsReducedMotion(e.matches);
     mediaQuery.addEventListener('change', listener);
-    return () => mediaQuery.removeEventListener('change', listener);
+
+    const handleOpenHire = () => setIsHireMeOpen(true);
+    window.addEventListener('open-hire-me', handleOpenHire);
+
+    return () => {
+      mediaQuery.removeEventListener('change', listener);
+      window.removeEventListener('open-hire-me', handleOpenHire);
+    };
   }, []);
 
   const handleScrollDown = () => {
@@ -62,7 +70,7 @@ export function App() {
       />
 
       {/* Floating Dock Navigation (Desktop: Top Middle, Mobile: Bottom) */}
-      <HeroNav isLoaded={hasFinishedLoading} />
+      <HeroNav isLoaded={hasFinishedLoading} onOpenHireMe={() => setIsHireMeOpen(true)} />
 
       {/* 1. Hero Section (1440 × 938u) with Mouse & Scroll Parallax */}
       <HeroSection
@@ -70,6 +78,7 @@ export function App() {
         isRecorder={isRecorder}
         isReducedMotion={isReducedMotion}
         isLoaded={hasFinishedLoading}
+        onOpenHireMe={() => setIsHireMeOpen(true)}
       />
 
       {/* 2. Black Bar (111u) */}
@@ -81,11 +90,11 @@ export function App() {
       {/* 4. Projects Section (3D Curved Cylindrical Carousel Hero) */}
       <ProjectsSection isReducedMotion={isReducedMotion} />
 
-      {/* 5. Trust Section (1302 × 429u panel) with Parallax Floating Tiles */}
-      <TrustSection scrollY={scrollY} isRecorder={isRecorder} isReducedMotion={isReducedMotion} />
+      {/* 5. Contact Us & Footer Section */}
+      <ContactFooter onOpenHireMe={() => setIsHireMeOpen(true)} />
 
-      {/* 6. Contact Us & Footer Section */}
-      <ContactFooter />
+      {/* 7. Interactive Multi-Step Hire Me Stepper Modal */}
+      <HireMeModal isOpen={isHireMeOpen} onClose={() => setIsHireMeOpen(false)} />
     </div>
   );
 }

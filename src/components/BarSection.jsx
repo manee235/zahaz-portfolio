@@ -23,13 +23,9 @@ export function BarSection({ onScrollDown }) {
 
   return (
     <div className="section-bar" ref={barRef}>
-      <div className="bar-inner">
-        <div className={`bar-left text-blur-reveal ${inView ? 'is-in-view' : ''} delay-100`}>
-          <span>EST</span>
-          <span className="year">2019</span>
-        </div>
+      <div className="bar-inner bar-inner-centered">
         <div
-          className={`bar-center text-blur-reveal ${inView ? 'is-in-view' : ''} delay-225`}
+          className={`bar-center text-blur-reveal ${inView ? 'is-in-view' : ''} delay-100`}
           role="button"
           tabIndex={0}
           aria-label="Scroll down"
@@ -40,9 +36,6 @@ export function BarSection({ onScrollDown }) {
         >
           <span>SCROLL DOWN</span>
           <span className="scroll-arrow-circle">↓</span>
-        </div>
-        <div className={`bar-right text-blur-reveal ${inView ? 'is-in-view' : ''} delay-375`}>
-          LIVE IN DETAILS
         </div>
       </div>
     </div>

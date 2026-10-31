@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { TiltedGridHero } from './ui/tilted-grid-hero';
 import { ProjectModal } from './ProjectModal';
-import { ArrowUpRight, Layers, Compass, Eye, MousePointerClick } from 'lucide-react';
+import { ArrowUpRight, Layers, Compass, Eye, MousePointerClick, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const PROJECT_IMAGES = [
   {
@@ -143,6 +143,7 @@ export function ProjectsSection({ isReducedMotion = false }) {
   const [selectedIdx, setSelectedIdx] = useState(null);
   const [inView, setInView] = useState(false);
   const sectionRef = useRef(null);
+  const carouselRef = useRef(null);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -189,12 +190,23 @@ export function ProjectsSection({ isReducedMotion = false }) {
     setSelectedIdx((prev) => (prev - 1 + PROJECT_IMAGES.length) % PROJECT_IMAGES.length);
   };
 
+  const handleScrollLeft = (e) => {
+    e?.stopPropagation?.();
+    carouselRef.current?.scrollPrev(340);
+  };
+
+  const handleScrollRight = (e) => {
+    e?.stopPropagation?.();
+    carouselRef.current?.scrollNext(340);
+  };
+
   const currentProject = selectedIdx !== null ? PROJECT_IMAGES[selectedIdx] : null;
 
   return (
     <section className="projects-fullscreen-section" id="works" ref={sectionRef}>
-      {/* 3D Angled Line Carousel: Pushed back in Z, streaming from back in the distance to front */}
+      {/* 3D Angled Line Carousel: Scrollable, draggable, with touch swipe & wheel scrub */}
       <TiltedGridHero
+        ref={carouselRef}
         images={filteredProjects}
         speed={32}
         pushBack={-220}
@@ -241,15 +253,16 @@ export function ProjectsSection({ isReducedMotion = false }) {
 
           {/* Bottom Floating Bar */}
           <footer className={`projects-overlay-bottom text-blur-reveal ${inView ? 'is-in-view' : ''} delay-375`}>
+            {/* Desktop Specs Strip */}
             <div className="projects-specs-strip">
               <div className="spec-item">
                 <Compass className="size-3.5 text-neutral-400" />
-                <span className="spec-label">24° Angled 3D Vector</span>
+                <span className="spec-label">24° 3D Vector</span>
               </div>
               <div className="spec-separator" />
               <div className="spec-item">
                 <Layers className="size-3.5 text-neutral-400" />
-                <span className="spec-label">Pushed Backward (-220px)</span>
+                <span className="spec-label">Pushed Backward</span>
               </div>
               <div className="spec-separator" />
               <div className="spec-item">
@@ -263,11 +276,35 @@ export function ProjectsSection({ isReducedMotion = false }) {
               </div>
             </div>
 
+            {/* Interactive Scroll & Drag Hint */}
             <div className="projects-click-hint">
               <MousePointerClick className="size-3.5 text-neutral-400" />
-              <span>CLICK TILE TO INSPECT CASE STUDY</span>
+              <span>SWIPE / SCROLL TO EXPLORE · CLICK TO VIEW</span>
             </div>
 
+            {/* Tactile Prev / Next Carousel Arrow Steppers */}
+            <div className="projects-scroll-steppers">
+              <button
+                type="button"
+                className="projects-step-arrow-btn"
+                onClick={handleScrollLeft}
+                aria-label="Scroll projects backward"
+                title="Previous (←)"
+              >
+                <ChevronLeft className="size-4" />
+              </button>
+              <button
+                type="button"
+                className="projects-step-arrow-btn"
+                onClick={handleScrollRight}
+                aria-label="Scroll projects forward"
+                title="Next (→)"
+              >
+                <ChevronRight className="size-4" />
+              </button>
+            </div>
+
+            {/* Request Full Portfolio CTA */}
             <a
               href="#contact"
               className="projects-cta-btn"

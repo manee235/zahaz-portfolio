@@ -18,12 +18,6 @@ export function HeroFigure({ scrollY, mousePos = { x: 0, y: 0 }, isRecorder, isR
         transform: `translateX(-50%) translate3d(${mousePos.x * -8}px, ${mousePos.y * -6 - scrollY * 0.06}px, 0px)`,
       };
 
-  const wordmarksTilt = isReducedMotion
-    ? { transform: 'translateX(-50%)' }
-    : {
-        transform: `translateX(-50%) translate3d(${mousePos.x * 8}px, ${mousePos.y * 8}px, 0px)`,
-      };
-
   return (
     <div className="hero-figure-container">
       {/* Big Typographic Backdrop Name directly behind avatar in Non-Glowing Glass Style */}
@@ -39,11 +33,6 @@ export function HeroFigure({ scrollY, mousePos = { x: 0, y: 0 }, isRecorder, isR
           driftY={driftY}
           tiltStyle={figureTilt}
         />
-      </div>
-
-      {/* Logos across jacket */}
-      <div className="jacket-wordmarks" style={wordmarksTilt}>
-        Lumon &nbsp;·&nbsp; Paperfold &nbsp;·&nbsp; Northwind
       </div>
     </div>
   );
