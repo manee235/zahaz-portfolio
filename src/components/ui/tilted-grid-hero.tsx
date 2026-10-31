@@ -134,10 +134,10 @@ export type TiltedGridHeroProps = {
 export function TiltedGridHero({
   images,
   speed = 4,
-  tileHeight = 32,
-  aspectRatio = 16 / 9,
-  gap = 6,
-  axis = 52,
+  tileHeight = 36,
+  aspectRatio = 1,
+  gap = 7,
+  axis = 50,
   curve = 76,
   fade = 10,
   children,
@@ -289,9 +289,9 @@ export function TiltedGridHero({
                 <div
                   key={k}
                   className={cn(
-                    "absolute top-0 overflow-hidden bg-neutral-900",
-                    k === 0 && "rounded-l-lg",
-                    k === SLICES - 1 && "rounded-r-lg",
+                    "absolute top-0 overflow-hidden bg-neutral-900 shadow-2xl",
+                    k === 0 && "rounded-l-2xl",
+                    k === SLICES - 1 && "rounded-r-2xl",
                   )}
                   style={{
                     left: u((aspectRatio - share) / 2),
