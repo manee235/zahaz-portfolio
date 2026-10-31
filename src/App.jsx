@@ -1,14 +1,32 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { HeroSection } from './components/HeroSection';
 import { BarSection } from './components/BarSection';
 import { ManifestoSection } from './components/ManifestoSection';
 import { TrustSection } from './components/TrustSection';
+import { LoadingScreen } from './components/LoadingScreen';
 import { useScrollProgress } from './hooks/useScrollProgress';
+import { useImagePreloader } from './hooks/useImagePreloader';
+import { MEDIA } from './constants/media';
 
 export function App() {
   const scrollY = useScrollProgress();
   const [isRecorder, setIsRecorder] = useState(false);
   const [isReducedMotion, setIsReducedMotion] = useState(false);
+  const [hasFinishedLoading, setHasFinishedLoading] = useState(false);
+
+  // Critical editorial assets to preload before presentation
+  const assetUrls = useMemo(
+    () => [
+      MEDIA.heroPhoto,
+      MEDIA.heroPhotoRed,
+      MEDIA.card230Photo,
+      MEDIA.qIndustrial,
+      ...(MEDIA.avatars || []),
+    ],
+    []
+  );
+
+  const { progress, isReady, loadedCount, totalCount, status } = useImagePreloader(assetUrls);
 
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -31,8 +49,23 @@ export function App() {
 
   return (
     <div className="zahas-app">
+      {/* 0. Editorial White Loading Screen with Filling Wordmark */}
+      <LoadingScreen
+        progress={progress}
+        isReady={isReady}
+        status={status}
+        loadedCount={loadedCount}
+        totalCount={totalCount}
+        onFinished={() => setHasFinishedLoading(true)}
+      />
+
       {/* 1. Hero Section (1440 × 938u) with Mouse & Scroll Parallax */}
-      <HeroSection scrollY={scrollY} isRecorder={isRecorder} isReducedMotion={isReducedMotion} />
+      <HeroSection
+        scrollY={scrollY}
+        isRecorder={isRecorder}
+        isReducedMotion={isReducedMotion}
+        isLoaded={hasFinishedLoading}
+      />
 
       {/* 2. Black Bar (111u) */}
       <BarSection onScrollDown={handleScrollDown} />
