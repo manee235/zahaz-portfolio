@@ -19,9 +19,20 @@ export function HeroNav({ isLoaded = true, onOpenHireMe }) {
       label: 'Home',
       href: '#home',
       icon: (
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M12 3.5L4 10v9a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-9l-8-6.5z" />
           <path d="M9.5 14.5c.8 1 2.2 1 3 0" />
+        </svg>
+      ),
+    },
+    {
+      id: 'about',
+      label: 'About',
+      href: '#about',
+      icon: (
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
         </svg>
       ),
     },
@@ -30,7 +41,7 @@ export function HeroNav({ isLoaded = true, onOpenHireMe }) {
       label: 'Studio',
       href: '#studio',
       icon: (
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
           <rect x="4" y="4" width="16" height="16" rx="4.5" />
           <circle cx="8" cy="8.5" r="0.8" fill="currentColor" />
           <line x1="11.5" y1="8.5" x2="16" y2="8.5" />
@@ -46,7 +57,7 @@ export function HeroNav({ isLoaded = true, onOpenHireMe }) {
       label: 'Works',
       href: '#works',
       icon: (
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
           <circle cx="10.5" cy="10.5" r="6" />
           <line x1="15" y1="15" x2="20" y2="20" />
         </svg>
@@ -57,7 +68,7 @@ export function HeroNav({ isLoaded = true, onOpenHireMe }) {
       label: 'Contact',
       href: '#contact',
       icon: (
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+        <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
           <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
         </svg>
       ),
@@ -103,6 +114,7 @@ export function HeroNav({ isLoaded = true, onOpenHireMe }) {
         { id: 'contact', el: document.getElementById('contact') },
         { id: 'works', el: document.getElementById('works') || document.querySelector('.projects-fullscreen-section') },
         { id: 'studio', el: document.getElementById('studio') || document.querySelector('.section-manifesto') },
+        { id: 'about', el: document.getElementById('about') || document.querySelector('.section-about') },
         { id: 'home', el: document.getElementById('home') || document.querySelector('.hero-wrapper') },
       ];
 
@@ -128,6 +140,7 @@ export function HeroNav({ isLoaded = true, onOpenHireMe }) {
 
     let target = null;
     if (item.id === 'home') target = document.getElementById('home') || document.querySelector('.hero-wrapper');
+    else if (item.id === 'about') target = document.getElementById('about') || document.querySelector('.section-about');
     else if (item.id === 'studio') target = document.getElementById('studio') || document.querySelector('.section-manifesto');
     else if (item.id === 'works') target = document.getElementById('works') || document.querySelector('.projects-fullscreen-section');
     else if (item.id === 'contact') target = document.getElementById('contact');

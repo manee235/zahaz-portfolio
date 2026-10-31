@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { HeroNav } from './components/HeroNav';
 import { HeroSection } from './components/HeroSection';
 import { BarSection } from './components/BarSection';
+import { AboutSection } from './components/AboutSection';
 import { ManifestoSection } from './components/ManifestoSection';
 import { ProjectsSection } from './components/ProjectsSection';
 import { ContactFooter } from './components/ContactFooter';
@@ -51,7 +52,7 @@ export function App() {
   }, []);
 
   const handleScrollDown = () => {
-    const el = document.getElementById('studio') || document.getElementById('section-manifesto');
+    const el = document.getElementById('about') || document.getElementById('studio') || document.getElementById('section-manifesto');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }
@@ -81,16 +82,19 @@ export function App() {
         onOpenHireMe={() => setIsHireMeOpen(true)}
       />
 
-      {/* 2. Black Bar (111u) */}
+      {/* 2. Black Bar with Fading Container */}
       <BarSection onScrollDown={handleScrollDown} />
 
-      {/* 3. Manifesto Section (grey to white fill) */}
+      {/* 3. About Section (Sahasra Deshan · Virtual & Product Designer) */}
+      <AboutSection onOpenHireMe={() => setIsHireMeOpen(true)} />
+
+      {/* 4. Manifesto Section (grey to white fill) */}
       <ManifestoSection isRecorder={isRecorder} isReducedMotion={isReducedMotion} />
 
-      {/* 4. Projects Section (3D Curved Cylindrical Carousel Hero) */}
+      {/* 5. Projects Section (3D Curved Cylindrical Carousel Hero) */}
       <ProjectsSection isReducedMotion={isReducedMotion} />
 
-      {/* 5. Contact Us & Footer Section */}
+      {/* 6. Contact Us & Footer Section */}
       <ContactFooter onOpenHireMe={() => setIsHireMeOpen(true)} />
 
       {/* 7. Interactive Multi-Step Hire Me Stepper Modal */}

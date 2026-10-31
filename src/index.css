@@ -3950,3 +3950,446 @@ body,
   opacity: 0 !important;
   transition: opacity 0.25s cubic-bezier(0.16, 1, 0.3, 1) !important;
 }
+
+/* -------------------------------------------------------------
+   SECTION: ABOUT THE DESIGNER (SAHASRA DESHAN)
+   Bento Grid Layout: Bio, Behance Navigation, Disciplines, Location
+------------------------------------------------------------- */
+.section-about {
+  background: #000000;
+  color: #ffffff;
+  padding: 120px 48px 130px;
+  position: relative;
+  z-index: 10;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  background-image: radial-gradient(
+    circle at 50% 15%,
+    rgba(14, 28, 77, 0.22) 0%,
+    rgba(0, 0, 0, 0) 70%
+  );
+}
+
+.about-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.about-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.about-meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  padding: 5px 14px;
+  border-radius: 9999px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  margin-bottom: 18px;
+}
+
+.about-pulse-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #38bdf8;
+  box-shadow: 0 0 10px #38bdf8;
+  animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+.about-meta-text {
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.about-display-name {
+  font-family: var(--font-display);
+  font-size: clamp(38px, 6vw, 76px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 0.95;
+  color: #ffffff;
+  margin: 0 0 16px;
+  text-transform: uppercase;
+}
+
+.about-sub-roles {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: clamp(16px, 1.8vw, 22px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.about-role-highlight {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.about-role-separator {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Bento Grid */
+.about-bento-grid {
+  display: grid;
+  grid-template-columns: 1.35fr 1fr;
+  gap: 24px;
+  margin-top: 56px;
+}
+
+.about-bento-card {
+  background: rgba(14, 15, 22, 0.65);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 36px 36px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 
+    0 16px 40px rgba(0, 0, 0, 0.6),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.about-bento-card:hover {
+  border-color: rgba(255, 255, 255, 0.28);
+  transform: translateY(-3px);
+  box-shadow: 
+    0 24px 60px rgba(0, 0, 0, 0.8),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+}
+
+.card-badge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.card-tag {
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #818cf8;
+}
+
+.card-year-tag {
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+/* Card 1: Narrative */
+.narrative-lead {
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: clamp(18px, 1.8vw, 23px);
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.92);
+  margin: 0 0 16px;
+  letter-spacing: -0.015em;
+}
+
+.narrative-body {
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 15px;
+  line-height: 1.68;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0 0 28px;
+}
+
+.about-stats-strip {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.stat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 9999px;
+}
+
+.stat-pill-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.stat-desc {
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.02em;
+}
+
+/* Card 2: Behance Showcase */
+.card-behance {
+  background: linear-gradient(
+    145deg,
+    rgba(14, 15, 22, 0.85) 0%,
+    rgba(6, 21, 56, 0.35) 100%
+  );
+}
+
+.behance-live-badge {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 3px 10px;
+  border-radius: 9999px;
+}
+
+.behance-hero-block {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+  margin-bottom: 28px;
+}
+
+.behance-icon-frame {
+  width: 58px;
+  height: 58px;
+  border-radius: 16px;
+  background: #0057ff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+  box-shadow: 0 8px 24px rgba(0, 87, 255, 0.4);
+  transition: transform 0.3s ease;
+}
+
+.card-behance:hover .behance-icon-frame {
+  transform: scale(1.06) rotate(-3deg);
+}
+
+.behance-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.behance-title {
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.behance-sub {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.65);
+  margin: 0;
+}
+
+.btn-behance-navigate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 48px;
+  border-radius: 9999px;
+  background: #ffffff;
+  color: #07070a;
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.14);
+}
+
+.btn-behance-navigate:hover {
+  background: #e2e8f0;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0, 87, 255, 0.35);
+}
+
+/* Card 3: Disciplines */
+.disciplines-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.discipline-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.discipline-icon-box {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.discipline-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.discipline-name {
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 14.5px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+}
+
+.discipline-desc {
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: rgba(255, 255, 255, 0.55);
+  margin: 0;
+}
+
+/* Card 4: Location & Quick CTA */
+.location-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: #34d399;
+  background: rgba(52, 211, 153, 0.1);
+  border: 1px solid rgba(52, 211, 153, 0.28);
+  padding: 3px 10px;
+  border-radius: 9999px;
+}
+
+.status-ping {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #34d399;
+  box-shadow: 0 0 8px #34d399;
+}
+
+.location-display-block {
+  margin-bottom: 24px;
+}
+
+.location-city-spec {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.city-title {
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.location-desc {
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.6);
+  margin: 0;
+}
+
+.btn-about-hire {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 48px;
+  border-radius: 9999px;
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-about-hire:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 860px) {
+  .section-about {
+    padding: 80px 20px 90px;
+  }
+
+  .about-bento-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 36px;
+  }
+
+  .about-bento-card {
+    padding: 26px 22px;
+  }
+
+  .about-stats-strip {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .stat-pill {
+    width: 100%;
+  }
+}
