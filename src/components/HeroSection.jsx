@@ -5,7 +5,7 @@ import { HeroFigure } from './HeroFigure';
 import { HeroStatsCluster } from './HeroStatsCluster';
 import { useMouseParallax } from '../hooks/useMouseParallax';
 
-export function HeroSection({ scrollY, isRecorder, isReducedMotion, onOpenHireMe }) {
+export function HeroSection({ scrollY, isRecorder, isReducedMotion, isLoaded = false, onOpenHireMe }) {
   const mousePos = useMouseParallax(!isRecorder && !isReducedMotion);
 
   // Parallax offsets and scroll blur-push fade
@@ -31,7 +31,7 @@ export function HeroSection({ scrollY, isRecorder, isReducedMotion, onOpenHireMe
       };
 
   return (
-    <header className="hero-wrapper" id="home">
+    <header className={`hero-wrapper ${isLoaded ? 'is-loaded' : 'is-loading'}`} id="home">
       {/* Dynamic ASCII Gradient Horizon Background (Dark Moody Horizon) */}
       <div className="hero-ascii-bg" aria-hidden="true">
         <GradientASCII
@@ -49,7 +49,7 @@ export function HeroSection({ scrollY, isRecorder, isReducedMotion, onOpenHireMe
       <div className="hero-stage" id="hero-stage">
         {/* Left Column: Stacked Creative Virtual Product Designer Typography + Hire Me */}
         <div className="hero-title-wrapper" style={titleParallax}>
-          <HeroTitle onOpenHireMe={onOpenHireMe} />
+          <HeroTitle onOpenHireMe={onOpenHireMe} isLoaded={isLoaded} />
         </div>
 
         {/* Center: Avatar Portrait + ZAHAZ Backdrop */}
@@ -58,11 +58,12 @@ export function HeroSection({ scrollY, isRecorder, isReducedMotion, onOpenHireMe
           mousePos={mousePos}
           isRecorder={isRecorder}
           isReducedMotion={isReducedMotion}
+          isLoaded={isLoaded}
         />
 
         {/* Right Column: Glassblur Styled 4-Card Stat Cluster */}
         <div className="hero-right-wrapper" style={rightParallax}>
-          <HeroStatsCluster />
+          <HeroStatsCluster isLoaded={isLoaded} />
         </div>
       </div>
     </header>

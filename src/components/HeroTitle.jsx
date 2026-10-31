@@ -1,8 +1,8 @@
 import React from 'react';
 
-export function HeroTitle({ onOpenHireMe }) {
+export function HeroTitle({ onOpenHireMe, isLoaded = false }) {
   return (
-    <div className="hero-title-area">
+    <div className={`hero-title-area ${isLoaded ? 'is-loaded' : 'is-loading'}`}>
       <h1 className="hero-stacked-title" aria-label="Creative Virtual Product Designer">
         <span className="hero-title-mask">
           <span className="hero-title-word word-creative">CREATIVE</span>

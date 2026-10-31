@@ -1,7 +1,7 @@
 import React from 'react';
 import { MagicAvatar } from './MagicAvatar';
 
-export function HeroFigure({ scrollY, mousePos = { x: 0, y: 0 }, isRecorder, isReducedMotion }) {
+export function HeroFigure({ scrollY, mousePos = { x: 0, y: 0 }, isRecorder, isReducedMotion, isLoaded = false }) {
   // Parallax offsets
   const driftY = isRecorder ? 0 : scrollY * 0.16;
 

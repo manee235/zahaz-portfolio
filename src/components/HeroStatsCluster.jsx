@@ -1,7 +1,7 @@
 import React from 'react';
 import { Star } from 'lucide-react';
 
-export function HeroStatsCluster() {
+export function HeroStatsCluster({ isLoaded = false }) {
   return (
     <div className="hero-stats-cluster" aria-label="Key Performance Metrics">
       {/* Card 1: Satisfaction 99% (Tall Card) */}

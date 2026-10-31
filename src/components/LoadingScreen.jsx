@@ -22,11 +22,17 @@ export function LoadingScreen({
     if (isReady) {
       // Trigger exit transition
       setIsExiting(true);
-      const timer = setTimeout(() => {
-        setShouldRender(false);
+      // Synchronize hero reveal with the lifting curtain
+      const revealTimer = setTimeout(() => {
         onFinished();
+      }, 120);
+      const unmountTimer = setTimeout(() => {
+        setShouldRender(false);
       }, 850);
-      return () => clearTimeout(timer);
+      return () => {
+        clearTimeout(revealTimer);
+        clearTimeout(unmountTimer);
+      };
     }
   }, [isReady, onFinished]);
 
