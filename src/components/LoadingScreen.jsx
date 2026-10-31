@@ -141,7 +141,6 @@ export function LoadingScreen({
               })}
               <span className="loading-type-cursor" aria-hidden="true" />
             </h1>
-            <p className="loading-subtitle-tag">VIRTUAL &amp; 3D SPATIAL ARCHITECTURE</p>
           </div>
         ) : (
           /* State 2: Loaded Successfully -> "Let's work together" + ENTER WEBSITE */
