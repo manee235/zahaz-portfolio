@@ -1,11 +1,11 @@
-import React, { useState, useEffect, useRef, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 /**
  * LoadingScreen
  * Obsidian Black editorial preloader featuring:
- * 1. Big "ZAHAZ" in Bebas Neue with blur-fading typewriter animation.
- * 2. On completion, transitions to "Let's work together" (crisp white, no gradient)
- *    with interactive "ENTER WEBSITE" circular CTA button.
+ * 1. "ZAHAZ" in Bebas Neue with tight typewriter blur-fade animation (no phantom letter gap).
+ * 2. On completion, transitions to "Let's work together" (reduced size, regular weight, no bold).
+ * 3. Waits indefinitely until the user explicitly clicks "ENTER WEBSITE" (no auto-enter).
  */
 export function LoadingScreen({
   progress = 0,
@@ -22,39 +22,39 @@ export function LoadingScreen({
   // Typewriter sequence for "ZAHAZ"
   const wordChars = ['Z', 'A', 'H', 'A', 'Z'];
   const [visibleCount, setVisibleCount] = useState(1);
-  const autoEnterTimerRef = useRef(null);
 
-  // Blur-fade typewriter typing progression
+  // Blur-fade typewriter progression - cursor stays flush next to current letter
   useEffect(() => {
     if (showSuccessStage) return;
 
-    // As progress advances, calculate min visible characters
+    // Minimum chars based on progress (at least 1, up to 5 at 100%)
     const progressChars = Math.max(1, Math.min(5, Math.ceil((progress / 100) * 5)));
 
-    // Continuous smooth blur typewriter cycling
     const interval = setInterval(() => {
       setVisibleCount((prev) => {
-        const next = prev >= wordChars.length ? progressChars : prev + 1;
-        return Math.max(next, progressChars);
+        if (prev < wordChars.length) {
+          return prev + 1;
+        }
+        return Math.max(1, progressChars);
       });
-    }, 420);
+    }, 450);
 
     return () => clearInterval(interval);
   }, [progress, showSuccessStage, wordChars.length]);
 
-  // When loaded (100% / isReady), transition to "Let's work together" stage
+  // When loaded (100% / isReady), lock all 5 letters then reveal success stage
   useEffect(() => {
     if (isReady || progress >= 100) {
-      // Reveal the success stage
+      setVisibleCount(5);
       const successTimer = setTimeout(() => {
         setShowSuccessStage(true);
-      }, 250);
+      }, 550);
 
       return () => clearTimeout(successTimer);
     }
   }, [isReady, progress]);
 
-  // Enter Website action
+  // Enter Website action (triggered ONLY when the user clicks or presses Enter)
   const handleEnterWebsite = useCallback(() => {
     if (isExiting) return;
     setIsExiting(true);
@@ -88,17 +88,6 @@ export function LoadingScreen({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [showSuccessStage, handleEnterWebsite]);
 
-  // Auto-enter fallback after 4.5 seconds if user hasn't clicked
-  useEffect(() => {
-    if (showSuccessStage && !isExiting) {
-      autoEnterTimerRef.current = setTimeout(() => {
-        handleEnterWebsite();
-      }, 4500);
-
-      return () => clearTimeout(autoEnterTimerRef.current);
-    }
-  }, [showSuccessStage, isExiting, handleEnterWebsite]);
-
   if (!shouldRender) return null;
 
   const boundedProgress = Math.min(100, Math.max(0, Math.round(progress)));
@@ -125,29 +114,26 @@ export function LoadingScreen({
       {/* Main Center Stage: Either ZAHAZ Typewriter Loading OR "Let's work together" */}
       <main className="loading-center-stage">
         {!showSuccessStage ? (
-          /* State 1: ZAHAZ in Bebas Neue with Blur-Fading Typewriter Animation */
+          /* State 1: ZAHAZ in Bebas Neue with Blur-Fading Typewriter (Cursor flush to current letter) */
           <div className="loading-bebas-wrap" aria-label="Loading ZAHAZ">
             <h1 className="loading-bebas-wordmark">
-              {wordChars.map((char, index) => {
-                const isCharVisible = index < visibleCount;
-                return (
-                  <span
-                    key={index}
-                    className={`loading-bebas-char ${isCharVisible ? 'is-visible' : 'is-hidden'}`}
-                  >
-                    {char}
-                  </span>
-                );
-              })}
+              {wordChars.slice(0, visibleCount).map((char, index) => (
+                <span
+                  key={`${char}-${index}`}
+                  className="loading-bebas-char"
+                >
+                  {char}
+                </span>
+              ))}
               <span className="loading-type-cursor" aria-hidden="true" />
             </h1>
           </div>
         ) : (
-          /* State 2: Loaded Successfully -> "Let's work together" + ENTER WEBSITE */
+          /* State 2: Loaded Successfully -> "Let's work together" (Regular Size, Not Bold) + ENTER WEBSITE */
           <div className="loading-success-stage">
             <div className="loading-work-together-heading">
               <span className="work-together-light">Let's work</span>
-              <span className="work-together-bold">together</span>
+              <span className="work-together-regular">together</span>
             </div>
 
             {/* Circular CTA Button with Arrow & "ENTER WEBSITE" */}
@@ -156,17 +142,16 @@ export function LoadingScreen({
               className="loading-enter-site-btn"
               onClick={handleEnterWebsite}
               aria-label="Enter Website"
-              title="Click or press Enter to explore"
-              autoFocus
+              title="Click to enter website"
             >
               <span className="enter-site-circle">
                 <svg
                   viewBox="0 0 24 24"
-                  width="22"
-                  height="22"
+                  width="20"
+                  height="20"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="2.5"
+                  strokeWidth="2.4"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 >
