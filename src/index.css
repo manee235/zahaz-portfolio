@@ -3227,6 +3227,7 @@ img {
 
 .contact-icons-grid {
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   gap: 12px;
   max-width: 520px;
@@ -3235,10 +3236,13 @@ img {
 .contact-icon-pill {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
-  height: 44px;
-  padding: 0 18px;
-  border-radius: 9999px;
+  justify-content: center;
+  width: 48px;
+  height: 48px;
+  min-width: 48px;
+  min-height: 48px;
+  padding: 0;
+  border-radius: 50%;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(255, 255, 255, 0.12);
   color: rgba(255, 255, 255, 0.88);
@@ -3252,12 +3256,13 @@ img {
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   user-select: none;
+  flex-shrink: 0;
 }
 
 .contact-icon-pill:hover {
-  background: rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.1);
   color: #ffffff;
-  transform: translateY(-2px);
+  transform: translateY(-3px) scale(1.06);
 }
 
 .contact-icon-symbol {
@@ -3268,7 +3273,37 @@ img {
 }
 
 .contact-icon-pill:hover .contact-icon-symbol {
-  transform: scale(1.1);
+  transform: scale(1.08);
+}
+
+.contact-icon-pill .copy-badge {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  font-weight: 600;
+  color: #38bdf8;
+  background: rgba(10, 15, 25, 0.95);
+  border: 1px solid rgba(56, 189, 248, 0.4);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  padding: 3px 8px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: copyBadgeFade 0.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  z-index: 20;
+}
+
+.contact-icon-pill .copy-badge::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 4px;
+  border-style: solid;
+  border-color: rgba(56, 189, 248, 0.4) transparent transparent transparent;
 }
 
 /* Individual Channel Hover Accents */
@@ -3541,9 +3576,12 @@ img {
   }
 
   .contact-icon-pill {
-    padding: 0 15px;
-    height: 42px;
-    font-size: 13px;
+    width: 44px;
+    height: 44px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 0;
+    border-radius: 50%;
   }
 }
 
