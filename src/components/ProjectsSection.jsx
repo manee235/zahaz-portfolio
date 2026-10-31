@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { TiltedGridHero } from './ui/tilted-grid-hero';
 import { ProjectModal } from './ProjectModal';
-import { ArrowUpRight, Sparkles, Layers, Compass, Eye, MousePointerClick } from 'lucide-react';
+import { ArrowUpRight, Layers, Compass, Eye, MousePointerClick } from 'lucide-react';
 
 const PROJECT_IMAGES = [
   {
@@ -220,29 +220,6 @@ export function ProjectsSection({ isReducedMotion = false }) {
             </div>
           </header>
 
-          {/* Central Hero Statement */}
-          <div className="projects-overlay-center">
-            <div className="projects-badge-pill">
-              <Sparkles className="size-3 text-neutral-200 animate-pulse" />
-              <span>3D ANGLED PERSPECTIVE REEL</span>
-            </div>
-            
-            <h3 className="projects-center-headline">
-              Every frame,
-              <br />
-              <span className="projects-center-italic">brought into focus.</span>
-            </h3>
-
-            <p className="projects-center-subtext">
-              Projects stream along an angled 3D depth vector—emerging from the distant background and advancing forward in sharp focus.
-            </p>
-
-            <div className="projects-click-hint">
-              <MousePointerClick className="size-3.5 text-neutral-400" />
-              <span>CLICK ANY 1:1 SQUARE TILE TO INSPECT CASE STUDY</span>
-            </div>
-          </div>
-
           {/* Bottom Floating Bar */}
           <footer className="projects-overlay-bottom">
             <div className="projects-specs-strip">
@@ -265,6 +242,11 @@ export function ProjectsSection({ isReducedMotion = false }) {
                 <span className="font-semibold text-white">10</span>
                 <span className="spec-label">Curated Studies</span>
               </div>
+            </div>
+
+            <div className="projects-click-hint">
+              <MousePointerClick className="size-3.5 text-neutral-400" />
+              <span>CLICK TILE TO INSPECT CASE STUDY</span>
             </div>
 
             <a
