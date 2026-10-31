@@ -2,6 +2,7 @@ import React from 'react';
 import GradientASCII from './GradientASCII';
 import { HeroTitle } from './HeroTitle';
 import { HeroFigure } from './HeroFigure';
+import { HeroStatsCluster } from './HeroStatsCluster';
 import { useMouseParallax } from '../hooks/useMouseParallax';
 
 export function HeroSection({ scrollY, isRecorder, isReducedMotion, onOpenHireMe }) {
@@ -15,6 +16,15 @@ export function HeroSection({ scrollY, isRecorder, isReducedMotion, onOpenHireMe
     ? {}
     : {
         transform: `translate3d(${mousePos.x * -8}px, ${mousePos.y * -6 - scrollY * 0.08}px, 0px)`,
+        filter: scrollBlur > 0 ? `blur(${scrollBlur}px)` : 'none',
+        opacity: scrollFade,
+        transition: 'filter 0.15s ease-out, opacity 0.15s ease-out',
+      };
+
+  const rightParallax = isReducedMotion
+    ? {}
+    : {
+        transform: `translate3d(${mousePos.x * 8}px, ${mousePos.y * 6 - scrollY * 0.08}px, 0px)`,
         filter: scrollBlur > 0 ? `blur(${scrollBlur}px)` : 'none',
         opacity: scrollFade,
         transition: 'filter 0.15s ease-out, opacity 0.15s ease-out',
@@ -37,16 +47,26 @@ export function HeroSection({ scrollY, isRecorder, isReducedMotion, onOpenHireMe
       </div>
 
       <div className="hero-stage" id="hero-stage">
+        {/* Left Column: Stacked Creative Virtual Product Designer Typography + Hire Me */}
         <div className="hero-title-wrapper" style={titleParallax}>
           <HeroTitle onOpenHireMe={onOpenHireMe} />
         </div>
+
+        {/* Center: Avatar Portrait + ZAHAZ Backdrop */}
         <HeroFigure
           scrollY={scrollY}
           mousePos={mousePos}
           isRecorder={isRecorder}
           isReducedMotion={isReducedMotion}
         />
+
+        {/* Right Column: Glassblur Styled 4-Card Stat Cluster */}
+        <div className="hero-right-wrapper" style={rightParallax}>
+          <HeroStatsCluster />
+        </div>
       </div>
     </header>
   );
 }
+
+export default HeroSection;
