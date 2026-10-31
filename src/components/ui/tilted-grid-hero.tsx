@@ -63,19 +63,24 @@ function measure(
   gap: number,
   bend: number,
 ) {
+  const winW = typeof window !== "undefined" ? window.innerWidth : 1440;
+  const winH = typeof window !== "undefined" ? window.innerHeight : 800;
+  const effectiveWidth = width > 0 ? width : winW;
+  const effectiveHeight = height > 0 ? height : winH;
+
   const h = Math.min(
-    (tile / 100) * height,
-    ((MAX_WIDTH / 100) * width) / aspect,
+    (tile / 100) * effectiveHeight,
+    ((MAX_WIDTH / 100) * effectiveWidth) / aspect,
   );
-  const radius = width * arc(bend);
+  const radius = effectiveWidth * arc(bend);
   if (!(h > 0) || !(radius > 0))
-    return { columns: 2, sweep: 0, unit: 0, limit: 0 };
+    return { columns: 6, sweep: 90, unit: 15, limit: 75 };
   const deg = (rad: number) => (rad * 180) / Math.PI;
   const unit = deg(h / radius);
   const pitch = (aspect + gap / 100) * unit;
   const limit = deg(bend) + (aspect * unit) / 2;
   // Capped so a hero squeezed to a sliver can't mount thousands of tiles.
-  const columns = Math.min(60, Math.max(2, Math.ceil((2 * limit) / pitch)));
+  const columns = Math.min(60, Math.max(4, Math.ceil((2 * limit) / pitch)));
   const round = (n: number) => +n.toFixed(4);
   const sweep = round((columns * pitch) / 2);
   return {
@@ -105,21 +110,21 @@ export type TiltedGridHeroProps = {
    * @default 4
    */
   speed?: number;
-  /** Tile height, as a percentage of the hero's height. @default 26 */
+  /** Tile height, as a percentage of the hero's height. @default 32 */
   tileHeight?: number;
   /** Tile width divided by tile height. @default 16 / 9 */
   aspectRatio?: number;
   /** Space between tiles, as a percentage of a tile's height. @default 6 */
   gap?: number;
-  /** Vertical centre of the row, as a percentage of the hero's height. @default 56 */
+  /** Vertical centre of the row, as a percentage of the hero's height. @default 52 */
   axis?: number;
   /**
    * How far the row has bent round by the frame's edge, in degrees. Higher
    * curls the ends harder toward the viewer. Clamped to 5–85.
-   * @default 80
+   * @default 76
    */
   curve?: number;
-  /** Width of the fade at each end, as a percentage of the hero's width. @default 12 */
+  /** Width of the fade at each end, as a percentage of the hero's width. @default 10 */
   fade?: number;
   /** Content rendered above the band. */
   children?: React.ReactNode;
@@ -129,14 +134,15 @@ export type TiltedGridHeroProps = {
 export function TiltedGridHero({
   images,
   speed = 4,
-  tileHeight = 26,
+  tileHeight = 32,
   aspectRatio = 16 / 9,
   gap = 6,
-  axis = 56,
-  curve = 80,
-  fade = 12,
+  axis = 52,
+  curve = 76,
+  fade = 10,
   children,
   className,
+  style,
   ...props
 }: React.ComponentProps<"div"> & TiltedGridHeroProps) {
   const ref = React.useRef<HTMLDivElement>(null);
@@ -145,22 +151,28 @@ export function TiltedGridHero({
   const tile = `tgh-t-${id}`;
   const bend = (Math.min(85, Math.max(5, curve)) * Math.PI) / 180;
 
-  // Null until the observer has measured the hero. The band stays hidden
-  // until then, so a first paint laid out for the wrong size never shows.
-  const [layout, setLayout] = React.useState<ReturnType<typeof measure> | null>(
-    null,
+  // Initial layout measurement fallback
+  const [layout, setLayout] = React.useState<ReturnType<typeof measure>>(() =>
+    measure(
+      typeof window !== "undefined" ? window.innerWidth : 1440,
+      typeof window !== "undefined" ? window.innerHeight : 800,
+      tileHeight,
+      aspectRatio,
+      gap,
+      bend,
+    ),
   );
 
-  // The image each tile shows, as a position in the run of images. It
-  // only changes when the tile wraps, which is out of sight, so a resize
-  // never swaps an image on screen either.
   const [shown, setShown] = React.useState<Record<number, number>>({});
 
   React.useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const ro = new ResizeObserver(([entry]) => {
-      const { width, height } = entry.contentRect;
+
+    const measureEl = () => {
+      const width = el.clientWidth || window.innerWidth;
+      const height = el.clientHeight || window.innerHeight;
+      if (width <= 0 || height <= 0) return;
       const next = measure(width, height, tileHeight, aspectRatio, gap, bend);
       setLayout((prev) =>
         prev?.columns === next.columns &&
@@ -169,22 +181,43 @@ export function TiltedGridHero({
           ? prev
           : next,
       );
+    };
+
+    measureEl();
+
+    const ro = new ResizeObserver(([entry]) => {
+      const { width, height } = entry.contentRect;
+      const effectiveW = width || el.clientWidth || window.innerWidth;
+      const effectiveH = height || el.clientHeight || window.innerHeight;
+      if (effectiveW <= 0 || effectiveH <= 0) return;
+      const next = measure(effectiveW, effectiveH, tileHeight, aspectRatio, gap, bend);
+      setLayout((prev) =>
+        prev?.columns === next.columns &&
+        prev.sweep === next.sweep &&
+        prev.unit === next.unit
+          ? prev
+          : next,
+      );
     });
+
     ro.observe(el);
-    return () => ro.disconnect();
+    window.addEventListener("resize", measureEl);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", measureEl);
+    };
   }, [tileHeight, aspectRatio, gap, bend]);
 
-  // Fetch every image up front. A tile picks up its next one just before
-  // it comes back into view, too late to start loading it then.
+  // Fetch every image up front
   React.useEffect(() => {
-    for (const { src } of images) new Image().src = src;
+    for (const { src } of images) {
+      if (src) new Image().src = src;
+    }
   }, [images]);
 
-  const { columns, sweep, unit, limit } =
-    layout ?? measure(1200, 560, tileHeight, aspectRatio, gap, bend);
+  const { columns, sweep, unit, limit } = layout;
 
-  // Every length is a multiple of the tile's height, which follows the
-  // hero's height until MAX_WIDTH caps it on narrow screens.
+  // Every length is a multiple of the tile's height
   const u = (n: number) =>
     `calc(${+n.toFixed(4)} * min(${tileHeight}cqh, ${+(
       MAX_WIDTH / aspectRatio
@@ -192,23 +225,15 @@ export function TiltedGridHero({
 
   const r = 100 * arc(bend);
   const radius = `${+r.toFixed(3)}cqw`;
-  // Out to the axis, round it, back in: a box sits on the cylinder at the
-  // angle rotateY gives it.
   const turn = (deg: number) =>
     `translateZ(${radius}) rotateY(${+deg.toFixed(4)}deg) translateZ(-${radius})`;
 
-  // Beyond `limit` a tile is wholly off-screen, so it is hidden there. The
-  // loop's ends, where it wraps, fall inside that stretch, and so do tiles
-  // swinging round behind the camera.
   const hide = +(((sweep - limit) / (2 * sweep || 1)) * 100).toFixed(4);
   const css =
     `@keyframes ${orbit}{` +
     `from{transform:${turn(-sweep)}}to{transform:${turn(sweep)}}` +
     `0%,${hide}%,${100 - hide}%,100%{visibility:hidden}` +
     `${hide + 0.001}%,${100 - hide - 0.001}%{visibility:visible}}` +
-    // Pausing rather than removing the motion keeps the band whole: every
-    // tile is already placed by its negative delay, so it freezes as a
-    // finished still.
     `@media(prefers-reduced-motion:reduce){.${tile}{animation-play-state:paused}}`;
 
   const share = aspectRatio / SLICES;
@@ -220,19 +245,17 @@ export function TiltedGridHero({
   return (
     <div
       ref={ref}
-      className={cn("relative overflow-hidden", className)}
+      className={cn("relative overflow-hidden w-full h-full", className)}
       {...props}
-      style={{ containerType: "size", ...props.style }}
+      style={{ containerType: "size", width: "100%", height: "100%", ...style }}
     >
       <style>{css}</style>
 
       <div
         aria-hidden
-        className="pointer-events-none absolute inset-0 transition-opacity duration-500"
+        className="pointer-events-none absolute inset-0 transition-opacity duration-700"
         style={{
-          opacity: layout ? 1 : 0,
-          // A shared vanishing point on the row's centre line, so the ends
-          // grow evenly above and below it as they come toward the viewer.
+          opacity: 1,
           perspective: `${+(r * CAMERA).toFixed(3)}cqw`,
           perspectiveOrigin: `50% ${axis}%`,
           maskImage: mask,
@@ -240,8 +263,6 @@ export function TiltedGridHero({
         }}
       >
         {Array.from({ length: columns }, (_, t) => {
-          // Tile `columns - 1` starts nearest the exit and tile 0 furthest
-          // back, so this numbers tiles in the order they come on.
           const first = columns - 1 - t;
           const img = images[(shown[t] ?? first) % Math.max(images.length, 1)];
           return (
@@ -254,11 +275,9 @@ export function TiltedGridHero({
                 width: u(aspectRatio),
                 height: u(1),
                 transformStyle: "preserve-3d",
-                // Tile t starts t tiles along the loop.
                 animation: `${orbit} ${duration}s linear ${-t * speed}s infinite`,
               }}
               onAnimationIteration={(e) => {
-                // elapsedTime counts whole loops, missed events included.
                 const lap = Math.round(e.elapsedTime / duration);
                 setShown((prev) => {
                   const next = lap * columns + first;
@@ -270,17 +289,12 @@ export function TiltedGridHero({
                 <div
                   key={k}
                   className={cn(
-                    "absolute top-0 overflow-hidden bg-muted",
+                    "absolute top-0 overflow-hidden bg-neutral-900",
                     k === 0 && "rounded-l-lg",
                     k === SLICES - 1 && "rounded-r-lg",
                   )}
                   style={{
-                    // Every strip starts at the tile's centre and is turned
-                    // round the axis to its own place on the arc.
                     left: u((aspectRatio - share) / 2),
-                    // A pixel wider than its share, so neighbouring facets
-                    // overlap and no hairline opens between them. The last
-                    // has no neighbour to cover.
                     width:
                       k === SLICES - 1 ? u(share) : `calc(${u(share)} + 1px)`,
                     height: u(1),
@@ -294,11 +308,13 @@ export function TiltedGridHero({
                       src={img.src}
                       alt={k === 0 ? (img.alt ?? "") : ""}
                       draggable={false}
-                      className="absolute top-0 max-w-none object-cover"
+                      className="absolute top-0 object-cover"
                       style={{
                         left: u(-k * share),
                         width: u(aspectRatio),
                         height: u(1),
+                        maxWidth: "none",
+                        minWidth: u(aspectRatio),
                       }}
                     />
                   ) : null}
