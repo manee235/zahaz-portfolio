@@ -3476,9 +3476,10 @@ img {
   padding-top: 32px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: 20px;
   flex-wrap: wrap;
+  text-align: center;
 }
 
 .footer-copyright-group {
@@ -3567,8 +3568,9 @@ img {
   .contact-footer-bottom {
     margin-top: 48px;
     flex-direction: column;
-    align-items: flex-start;
-    gap: 24px;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
   }
 
   .contact-icons-grid {
