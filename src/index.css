@@ -4041,25 +4041,33 @@ body,
 
 /* -------------------------------------------------------------
    SECTION: ABOUT THE DESIGNER (SAHASRA DESHAN)
-   - Left Column: Stacked Big Editorial Typography ('Bebas Neue') + Sub-Bio + Behance
-   - Right Column: 4-Card Glassblur Stat Cluster (Satisfaction, Projects, Experience, Reviews)
+   Centered Editorial Typography & Direct Portfolio Actions
 ------------------------------------------------------------- */
 .section-about {
   background: #000000;
   color: #ffffff;
-  padding: 120px 48px 130px;
+  padding: 130px 32px 140px;
   position: relative;
   z-index: 10;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   background-image: 
-    radial-gradient(circle at 80% 30%, rgba(56, 189, 248, 0.06) 0%, rgba(0, 0, 0, 0) 55%),
-    radial-gradient(circle at 20% 70%, rgba(52, 211, 153, 0.05) 0%, rgba(0, 0, 0, 0) 55%);
+    radial-gradient(circle at 50% 25%, rgba(56, 189, 248, 0.09) 0%, rgba(0, 0, 0, 0) 65%),
+    radial-gradient(circle at 50% 80%, rgba(52, 211, 153, 0.05) 0%, rgba(0, 0, 0, 0) 60%);
 }
 
 .about-container {
-  max-width: 1240px;
+  max-width: 1100px;
   margin: 0 auto;
   width: 100%;
+}
+
+.about-centered-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 920px;
+  margin: 0 auto;
 }
 
 /* Meta Pill */
@@ -4069,11 +4077,11 @@ body,
   gap: 8px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  padding: 5px 14px;
+  padding: 6px 16px;
   border-radius: 9999px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  margin-bottom: 28px;
+  margin-bottom: 32px;
 }
 
 .about-pulse-dot {
@@ -4087,114 +4095,78 @@ body,
 
 .about-meta-text {
   font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 11px;
+  font-size: 11.5px;
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
-}
-
-/* Main 2-Column Split Row */
-.about-split-row {
-  display: grid;
-  grid-template-columns: 1fr 1.15fr;
-  gap: 56px;
-  align-items: center;
-}
-
-/* -------------------------------------------------------------
-   LEFT COLUMN: BIG STACKED DISPLAY TYPOGRAPHY
-------------------------------------------------------------- */
-.about-typography-col {
-  display: flex;
-  flex-direction: column;
-}
-
-.big-stacked-typography {
-  display: flex;
-  flex-direction: column;
-  font-family: 'Bebas Neue', var(--font-display), sans-serif;
-  font-size: clamp(54px, 6.2vw, 98px);
-  line-height: 0.86;
-  letter-spacing: 0.015em;
-  text-transform: uppercase;
-  color: #ffffff;
-  user-select: none;
-  margin-bottom: 30px;
-}
-
-.stacked-word {
-  display: block;
-  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), color 0.28s ease;
-}
-
-.stacked-word:hover {
-  transform: translateX(8px);
-  color: #38bdf8;
-}
-
-/* Sub-Bio & Profile Details */
-.about-profile-bio {
-  display: flex;
-  flex-direction: column;
-}
-
-.profile-name-tag {
-  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: clamp(17px, 1.8vw, 21px);
-  font-weight: 700;
-  letter-spacing: -0.015em;
-  color: #ffffff;
-  margin: 0 0 10px;
-}
-
-.profile-role-dot {
-  color: rgba(255, 255, 255, 0.3);
-  margin: 0 6px;
-}
-
-.profile-bio-text {
-  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 14.5px;
-  line-height: 1.68;
   color: rgba(255, 255, 255, 0.72);
-  margin: 0 0 24px;
-  max-width: 500px;
 }
 
-.profile-bio-text strong {
+/* Big Centered Headline: Name & Location */
+.about-centered-name {
+  font-family: var(--font-display, 'Archivo', sans-serif);
+  font-size: clamp(34px, 4.5vw, 62px);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  color: #ffffff;
+  margin: 0 0 28px;
+  text-align: center;
+}
+
+.about-role-dot {
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0 8px;
+}
+
+/* Big Centered Bio Narrative */
+.about-centered-bio {
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: clamp(20px, 2.3vw, 32px);
+  line-height: 1.48;
+  letter-spacing: -0.015em;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 880px;
+  margin: 0 0 44px;
+  text-align: center;
+  font-weight: 400;
+}
+
+.about-centered-bio strong {
   color: #ffffff;
   font-weight: 600;
 }
 
-/* Action Buttons Row */
-.about-actions-row {
+/* Centered Actions Row */
+.about-centered-actions {
   display: flex;
   align-items: center;
-  gap: 14px;
+  justify-content: center;
+  gap: 16px;
   flex-wrap: wrap;
 }
 
 .btn-behance-pill {
   display: inline-flex;
   align-items: center;
-  gap: 9px;
+  gap: 10px;
   background: #0057ff;
   color: #ffffff;
-  padding: 10px 22px;
+  height: 50px;
+  padding: 0 28px;
   border-radius: 9999px;
   font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 13.5px;
+  font-size: 14.5px;
   font-weight: 600;
   text-decoration: none;
-  box-shadow: 0 4px 18px rgba(0, 87, 255, 0.38);
+  box-shadow: 0 4px 20px rgba(0, 87, 255, 0.38);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .btn-behance-pill:hover {
   background: #0047d4;
   transform: translateY(-2px);
-  box-shadow: 0 8px 26px rgba(0, 87, 255, 0.55);
+  box-shadow: 0 8px 30px rgba(0, 87, 255, 0.55);
 }
 
 .behance-icon-wrap {
@@ -4206,14 +4178,15 @@ body,
 .btn-about-hire-cta {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 9px;
   background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   color: #ffffff;
-  padding: 10px 22px;
+  height: 50px;
+  padding: 0 28px;
   border-radius: 9999px;
   font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 13.5px;
+  font-size: 14.5px;
   font-weight: 600;
   cursor: pointer;
   backdrop-filter: blur(12px);
@@ -4223,343 +4196,29 @@ body,
 
 .btn-about-hire-cta:hover {
   background: rgba(255, 255, 255, 0.16);
-  border-color: rgba(255, 255, 255, 0.45);
+  border-color: rgba(255, 255, 255, 0.5);
   transform: translateY(-2px);
 }
 
-/* -------------------------------------------------------------
-   RIGHT COLUMN: 4-CARD FROSTED GLASSBLUR STAT CLUSTER
-------------------------------------------------------------- */
-.about-stats-cluster {
-  display: grid;
-  grid-template-columns: 1.15fr 1fr 1fr;
-  grid-template-rows: auto auto;
-  gap: 16px;
-  align-items: stretch;
-}
-
-.glassblur-stat-card {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 250, 252, 0.94) 100%);
-  backdrop-filter: blur(28px);
-  -webkit-backdrop-filter: blur(28px);
-  border: 1px solid rgba(255, 255, 255, 0.85);
-  border-radius: 28px;
-  box-shadow: 
-    0 20px 48px -12px rgba(0, 0, 0, 0.45),
-    0 2px 8px rgba(0, 0, 0, 0.06),
-    inset 0 1px 2px #ffffff;
-  color: #090a0f;
-  position: relative;
-  overflow: hidden;
-  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
-}
-
-.glassblur-stat-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 
-    0 28px 60px -12px rgba(0, 0, 0, 0.58),
-    0 4px 12px rgba(0, 0, 0, 0.1),
-    inset 0 1px 2px #ffffff;
-}
-
-/* Card 1: Satisfaction (Tall Card - Spans 2 Rows) */
-.card-satisfaction {
-  grid-column: 1;
-  grid-row: 1 / span 2;
-  padding: 32px 28px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.card-ambient-aura {
-  position: absolute;
-  top: -30px;
-  left: -30px;
-  width: 135px;
-  height: 135px;
-  background: radial-gradient(circle, rgba(52, 211, 153, 0.45) 0%, rgba(56, 189, 248, 0.22) 45%, rgba(255, 255, 255, 0) 75%);
-  border-radius: 50%;
-  pointer-events: none;
-  filter: blur(14px);
-  z-index: 1;
-}
-
-.card-top-tag {
-  position: relative;
-  z-index: 2;
-}
-
-.pill-tag-label {
-  display: inline-flex;
-  align-items: center;
-  padding: 5px 13px;
-  border-radius: 9999px;
-  background: rgba(15, 23, 42, 0.05);
-  border: 1px solid rgba(15, 23, 42, 0.09);
-  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: #475569;
-  text-transform: uppercase;
-}
-
-.card-stat-hero {
-  position: relative;
-  z-index: 2;
-  margin: 28px 0 20px;
-}
-
-.stat-number-hero {
-  font-family: var(--font-display, 'Bebas Neue', sans-serif);
-  font-size: clamp(52px, 4.4vw, 70px);
-  font-weight: 900;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
-  color: #090a0f;
-}
-
-.card-description {
-  position: relative;
-  z-index: 2;
-  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 13.5px;
-  line-height: 1.55;
-  color: #475569;
-  font-weight: 500;
-  margin: 0;
-}
-
-/* Card 2: Projects (Wide Card - Spans Columns 2 & 3) */
-.card-projects {
-  grid-column: 2 / span 2;
-  grid-row: 1;
-  padding: 24px 28px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.card-projects-content {
-  display: flex;
-  flex-direction: column;
-}
-
-.pill-tag-plain {
-  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  color: #475569;
-  text-transform: uppercase;
-}
-
-.stat-number-mid {
-  font-family: var(--font-display, 'Bebas Neue', sans-serif);
-  font-size: clamp(38px, 3.4vw, 48px);
-  font-weight: 900;
-  line-height: 1;
-  color: #090a0f;
-  margin-top: 6px;
-  letter-spacing: -0.02em;
-}
-
-/* Rising Bars Graphic (Equalizer / Staircase) */
-.rising-bars-graphic {
-  display: flex;
-  align-items: flex-end;
-  gap: 4.5px;
-  height: 44px;
-}
-
-.bar-col {
-  width: 5px;
-  background: #090a0f;
-  border-radius: 9999px;
-  transition: transform 0.25s ease, background-color 0.25s ease;
-}
-
-.bar-1 { height: 10px; }
-.bar-2 { height: 14px; }
-.bar-3 { height: 18px; }
-.bar-4 { height: 22px; }
-.bar-5 { height: 26px; }
-.bar-6 { height: 30px; }
-.bar-7 { height: 34px; }
-.bar-8 { height: 38px; }
-.bar-9 { height: 42px; }
-
-.card-projects:hover .bar-col {
-  transform: scaleY(1.08);
-}
-
-.card-projects:hover .bar-9 {
-  background: #0057ff;
-}
-
-/* Card 3: Experience (Square Card - Column 2, Row 2) */
-.card-experience {
-  grid-column: 2;
-  grid-row: 2;
-  padding: 24px 24px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.stat-number-large {
-  font-family: var(--font-display, 'Bebas Neue', sans-serif);
-  font-size: clamp(40px, 3.6vw, 50px);
-  font-weight: 900;
-  line-height: 1;
-  color: #090a0f;
-  letter-spacing: -0.02em;
-}
-
-.card-stat-label {
-  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  color: #475569;
-  text-transform: uppercase;
-  margin-top: 6px;
-}
-
-/* Card 4: Reviews (Square Card - Column 3, Row 2) */
-.card-reviews {
-  grid-column: 3;
-  grid-row: 2;
-  padding: 24px 22px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.reviews-star-badge {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  background: #090a0f;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
-}
-
-.reviews-content-wrap {
-  display: flex;
-  flex-direction: column;
-}
-
-.reviews-score {
-  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 18.5px;
-  font-weight: 800;
-  color: #090a0f;
-  letter-spacing: -0.02em;
-  line-height: 1.15;
-}
-
-.reviews-label {
-  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 11.5px;
-  font-weight: 600;
-  color: #64748b;
-  margin-top: 3px;
-}
-
-/* -------------------------------------------------------------
-   RESPONSIVE QUERIES
-------------------------------------------------------------- */
-@media (max-width: 980px) {
+@media (max-width: 760px) {
   .section-about {
-    padding: 90px 24px 100px;
+    padding: 85px 20px 95px;
   }
 
-  .about-split-row {
-    grid-template-columns: 1fr;
-    gap: 48px;
+  .about-centered-name {
+    font-size: clamp(26px, 7vw, 36px);
+    margin-bottom: 20px;
   }
 
-  .big-stacked-typography {
-    font-size: clamp(48px, 10vw, 84px);
-    margin-bottom: 24px;
+  .about-centered-bio {
+    font-size: clamp(17px, 4.6vw, 22px);
+    line-height: 1.5;
+    margin-bottom: 32px;
   }
 
-  .about-stats-cluster {
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto auto;
-    gap: 16px;
-  }
-
-  .card-satisfaction {
-    grid-column: 1 / span 2;
-    grid-row: 1;
-  }
-
-  .card-projects {
-    grid-column: 1 / span 2;
-    grid-row: 2;
-  }
-
-  .card-experience {
-    grid-column: 1;
-    grid-row: 3;
-  }
-
-  .card-reviews {
-    grid-column: 2;
-    grid-row: 3;
-  }
-}
-
-@media (max-width: 580px) {
-  .section-about {
-    padding: 70px 18px 80px;
-  }
-
-  .about-stats-cluster {
-    grid-template-columns: 1fr;
-    grid-template-rows: auto;
-    gap: 14px;
-  }
-
-  .card-satisfaction {
-    grid-column: 1;
-    grid-row: auto;
-    padding: 26px 20px;
-  }
-
-  .card-projects {
-    grid-column: 1;
-    grid-row: auto;
-    padding: 22px 20px;
-  }
-
-  .card-experience {
-    grid-column: 1;
-    grid-row: auto;
-    padding: 22px 20px;
-  }
-
-  .card-reviews {
-    grid-column: 1;
-    grid-row: auto;
-    padding: 22px 20px;
-  }
-
-  .stat-number-hero {
-    font-size: 46px;
-  }
-
-  .stat-number-mid {
-    font-size: 34px;
-  }
-
-  .stat-number-large {
-    font-size: 36px;
+  .btn-behance-pill,
+  .btn-about-hire-cta {
+    width: 100%;
+    justify-content: center;
   }
 }
