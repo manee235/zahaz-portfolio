@@ -13,7 +13,7 @@ export function AboutSection({ onOpenHireMe }) {
           
           {/* Big Centered Headline: HELLO I'M DESHAN GANEGODA */}
           <h2 className="about-centered-name">
-            HELLO I'M DESHAN GANEGODA <span className="about-role-dot">·</span> <span className="text-[#38bdf8]">KURUNEGALA, SRI LANKA</span>
+            HELLO I'M DESHAN GANEGODA
           </h2>
 
           {/* Big Centered Bio Narrative in Bebas Neue font */}
