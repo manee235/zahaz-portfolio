@@ -302,39 +302,62 @@
       will-change: transform, opacity, filter, mask-image;
     }
 
-    /* Layer 1: Base Portrait */
-    .magic-avatar-base {
+    /* Layer 1: High-Contrast Film Noir Base Portrait */
+    .noir-base-portrait {
       z-index: 1;
-      filter: contrast(1.04) brightness(0.98);
-      transition: filter 0.4s ease;
+      filter: grayscale(100%) contrast(1.46) brightness(0.92) drop-shadow(0 15px 35px rgba(0, 0, 0, 0.45));
+      transition: filter 0.45s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
-    .magic-avatar-container.is-hovered .magic-avatar-base {
-      filter: contrast(1.1) brightness(0.92);
+    .magic-avatar-container.is-hovered .noir-base-portrait {
+      filter: grayscale(100%) contrast(1.58) brightness(0.85);
     }
 
-    /* Layer 2: Red Reveal Portrait with Dynamic Spotlight Mask */
-    .magic-avatar-red {
+    /* Layer 2: Noir Vignette Overlay */
+    .noir-vignette-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
       z-index: 2;
+      background: radial-gradient(circle at 50% 36%, transparent 40%, rgba(0, 0, 0, 0.42) 78%, rgba(0, 0, 0, 0.72) 100%);
+      mix-blend-mode: multiply;
+      transition: opacity 0.4s ease;
+    }
+
+    /* Layer 3: Tactile 35mm Film Grain Texture */
+    .noir-grain-overlay {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 2;
+      opacity: 0.18;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
+
+    /* Layer 4: Electric Red Magic Reveal Portrait with Dynamic Spotlight Mask */
+    .magic-avatar-red {
+      z-index: 3;
       opacity: 0;
       -webkit-mask-image: radial-gradient(circle var(--reveal-radius) at var(--reveal-x) var(--reveal-y), black 0%, black 55%, transparent 100%);
       mask-image: radial-gradient(circle var(--reveal-radius) at var(--reveal-x) var(--reveal-y), black 0%, black 55%, transparent 100%);
       transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      filter: contrast(1.18) brightness(1.06) saturate(1.22);
+      filter: contrast(1.22) brightness(1.08) saturate(1.25);
     }
 
     .magic-avatar-container.is-hovered .magic-avatar-red {
       opacity: 1;
     }
 
-    /* Layer 3: Magic Flare / Cursor Aura */
+    /* Layer 5: Magic Flare / Cursor Aura */
     .magic-reveal-flare {
       position: absolute;
       inset: 0;
-      z-index: 3;
+      z-index: 4;
       pointer-events: none;
       opacity: 0;
-      background: radial-gradient(circle calc(var(--reveal-radius) + 40px) at var(--reveal-x) var(--reveal-y), rgba(255, 30, 65, 0.42) 0%, rgba(255, 10, 40, 0.14) 48%, transparent 76%);
+      background: radial-gradient(circle calc(var(--reveal-radius) + 40px) at var(--reveal-x) var(--reveal-y), rgba(255, 30, 65, 0.45) 0%, rgba(255, 10, 40, 0.15) 48%, transparent 76%);
       mix-blend-mode: screen;
       transition: opacity 0.35s ease;
     }
@@ -343,17 +366,17 @@
       opacity: 1;
     }
 
-    /* Magic Reveal Badge */
+    /* Layer 6: Film Noir Badge */
     .magic-reveal-badge {
       position: absolute;
       bottom: calc(24 * var(--u));
       left: 50%;
       transform: translateX(-50%) translateY(8px);
-      background: rgba(14, 14, 14, 0.82);
+      background: rgba(10, 10, 10, 0.88);
       backdrop-filter: blur(14px);
       -webkit-backdrop-filter: blur(14px);
       border: 1px solid rgba(255, 30, 65, 0.45);
-      box-shadow: 0 6px 20px rgba(255, 20, 50, 0.28);
+      box-shadow: 0 6px 22px rgba(255, 20, 50, 0.3);
       border-radius: 9999px;
       padding: calc(5 * var(--u)) calc(14 * var(--u));
       display: inline-flex;
