@@ -5,6 +5,7 @@ import { BarSection } from './components/BarSection';
 import { ManifestoSection } from './components/ManifestoSection';
 import { ProjectsSection } from './components/ProjectsSection';
 import { TrustSection } from './components/TrustSection';
+import { ContactFooter } from './components/ContactFooter';
 import { LoadingScreen } from './components/LoadingScreen';
 import { useScrollProgress } from './hooks/useScrollProgress';
 import { useImagePreloader } from './hooks/useImagePreloader';
@@ -82,6 +83,9 @@ export function App() {
 
       {/* 5. Trust Section (1302 × 429u panel) with Parallax Floating Tiles */}
       <TrustSection scrollY={scrollY} isRecorder={isRecorder} isReducedMotion={isReducedMotion} />
+
+      {/* 6. Contact Us & Footer Section */}
+      <ContactFooter />
     </div>
   );
 }

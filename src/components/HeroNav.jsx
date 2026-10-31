@@ -57,8 +57,8 @@ export function HeroNav({ isLoaded = true }) {
     },
     {
       id: 'action',
-      label: 'Book Call',
-      href: '#book-call',
+      label: 'Hire Me',
+      href: '#contact',
       icon: (
         <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
           <rect x="4" y="4" width="16" height="16" rx="4.5" />

@@ -3,8 +3,8 @@ import React from 'react';
 export function HeroTitle() {
   return (
     <>
-      <a href="#book-call" className="btn-book-call">
-        <span>Book A Call</span>
+      <a href="#contact" className="btn-book-call">
+        <span>Hire Me</span>
         <span>↗</span>
       </a>
     </>
