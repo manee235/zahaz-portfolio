@@ -3953,7 +3953,8 @@ body,
 
 /* -------------------------------------------------------------
    SECTION: ABOUT THE DESIGNER (SAHASRA DESHAN)
-   Bento Grid Layout: Bio, Behance Navigation, Disciplines, Location
+   - Left Column: Stacked Big Editorial Typography ('Bebas Neue') + Sub-Bio + Behance
+   - Right Column: 4-Card Glassblur Stat Cluster (Satisfaction, Projects, Experience, Reviews)
 ------------------------------------------------------------- */
 .section-about {
   background: #000000;
@@ -3962,11 +3963,9 @@ body,
   position: relative;
   z-index: 10;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background-image: radial-gradient(
-    circle at 50% 15%,
-    rgba(14, 28, 77, 0.22) 0%,
-    rgba(0, 0, 0, 0) 70%
-  );
+  background-image: 
+    radial-gradient(circle at 80% 30%, rgba(56, 189, 248, 0.06) 0%, rgba(0, 0, 0, 0) 55%),
+    radial-gradient(circle at 20% 70%, rgba(52, 211, 153, 0.05) 0%, rgba(0, 0, 0, 0) 55%);
 }
 
 .about-container {
@@ -3975,12 +3974,7 @@ body,
   width: 100%;
 }
 
-.about-header {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
+/* Meta Pill */
 .about-meta-tag {
   display: inline-flex;
   align-items: center;
@@ -3991,7 +3985,7 @@ body,
   border-radius: 9999px;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  margin-bottom: 18px;
+  margin-bottom: 28px;
 }
 
 .about-pulse-dot {
@@ -4003,11 +3997,6 @@ body,
   animation: pulseDot 2s infinite;
 }
 
-@keyframes pulseDot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.85); }
-}
-
 .about-meta-text {
   font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
   font-size: 11px;
@@ -4017,379 +4006,472 @@ body,
   color: rgba(255, 255, 255, 0.7);
 }
 
-.about-display-name {
-  font-family: var(--font-display);
-  font-size: clamp(38px, 6vw, 76px);
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 0.95;
-  color: #ffffff;
-  margin: 0 0 16px;
-  text-transform: uppercase;
-}
-
-.about-sub-roles {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: clamp(16px, 1.8vw, 22px);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: rgba(255, 255, 255, 0.85);
-}
-
-.about-role-highlight {
-  color: #ffffff;
-  font-weight: 600;
-}
-
-.about-role-separator {
-  color: rgba(255, 255, 255, 0.3);
-}
-
-/* Bento Grid */
-.about-bento-grid {
+/* Main 2-Column Split Row */
+.about-split-row {
   display: grid;
-  grid-template-columns: 1.35fr 1fr;
-  gap: 24px;
-  margin-top: 56px;
+  grid-template-columns: 1fr 1.15fr;
+  gap: 56px;
+  align-items: center;
 }
 
-.about-bento-card {
-  background: rgba(14, 15, 22, 0.65);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  border-radius: 24px;
-  padding: 36px 36px 32px;
+/* -------------------------------------------------------------
+   LEFT COLUMN: BIG STACKED DISPLAY TYPOGRAPHY
+------------------------------------------------------------- */
+.about-typography-col {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  box-shadow: 
-    0 16px 40px rgba(0, 0, 0, 0.6),
-    inset 0 1px 1px rgba(255, 255, 255, 0.15);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-  position: relative;
-  overflow: hidden;
 }
 
-.about-bento-card:hover {
-  border-color: rgba(255, 255, 255, 0.28);
-  transform: translateY(-3px);
-  box-shadow: 
-    0 24px 60px rgba(0, 0, 0, 0.8),
-    inset 0 1px 1px rgba(255, 255, 255, 0.25);
-}
-
-.card-badge-row {
+.big-stacked-typography {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
-}
-
-.card-tag {
-  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.16em;
+  flex-direction: column;
+  font-family: 'Bebas Neue', var(--font-display), sans-serif;
+  font-size: clamp(54px, 6.2vw, 98px);
+  line-height: 0.86;
+  letter-spacing: 0.015em;
   text-transform: uppercase;
-  color: #818cf8;
-}
-
-.card-year-tag {
-  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 11px;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.4);
-}
-
-/* Card 1: Narrative */
-.narrative-lead {
-  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: clamp(18px, 1.8vw, 23px);
-  line-height: 1.45;
-  color: rgba(255, 255, 255, 0.92);
-  margin: 0 0 16px;
-  letter-spacing: -0.015em;
-}
-
-.narrative-body {
-  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 15px;
-  line-height: 1.68;
-  color: rgba(255, 255, 255, 0.65);
-  margin: 0 0 28px;
-}
-
-.about-stats-strip {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding-top: 18px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-.stat-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 8px 16px;
-  border-radius: 9999px;
-}
-
-.stat-pill-content {
-  display: flex;
-  flex-direction: column;
-}
-
-.stat-value {
-  font-size: 12.5px;
-  font-weight: 600;
   color: #ffffff;
+  user-select: none;
+  margin-bottom: 30px;
 }
 
-.stat-desc {
-  font-size: 10px;
-  color: rgba(255, 255, 255, 0.45);
-  letter-spacing: 0.02em;
+.stacked-word {
+  display: block;
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), color 0.28s ease;
 }
 
-/* Card 2: Behance Showcase */
-.card-behance {
-  background: linear-gradient(
-    145deg,
-    rgba(14, 15, 22, 0.85) 0%,
-    rgba(6, 21, 56, 0.35) 100%
-  );
-}
-
-.behance-live-badge {
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
+.stacked-word:hover {
+  transform: translateX(8px);
   color: #38bdf8;
-  background: rgba(56, 189, 248, 0.12);
-  border: 1px solid rgba(56, 189, 248, 0.3);
-  padding: 3px 10px;
-  border-radius: 9999px;
 }
 
-.behance-hero-block {
-  display: flex;
-  align-items: flex-start;
-  gap: 18px;
-  margin-bottom: 28px;
-}
-
-.behance-icon-frame {
-  width: 58px;
-  height: 58px;
-  border-radius: 16px;
-  background: #0057ff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffffff;
-  flex-shrink: 0;
-  box-shadow: 0 8px 24px rgba(0, 87, 255, 0.4);
-  transition: transform 0.3s ease;
-}
-
-.card-behance:hover .behance-icon-frame {
-  transform: scale(1.06) rotate(-3deg);
-}
-
-.behance-info {
+/* Sub-Bio & Profile Details */
+.about-profile-bio {
   display: flex;
   flex-direction: column;
-  gap: 6px;
 }
 
-.behance-title {
+.profile-name-tag {
   font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 18px;
-  font-weight: 600;
+  font-size: clamp(17px, 1.8vw, 21px);
+  font-weight: 700;
+  letter-spacing: -0.015em;
   color: #ffffff;
-  margin: 0;
+  margin: 0 0 10px;
 }
 
-.behance-sub {
-  font-size: 13.5px;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.65);
-  margin: 0;
+.profile-role-dot {
+  color: rgba(255, 255, 255, 0.3);
+  margin: 0 6px;
 }
 
-.btn-behance-navigate {
+.profile-bio-text {
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 14.5px;
+  line-height: 1.68;
+  color: rgba(255, 255, 255, 0.72);
+  margin: 0 0 24px;
+  max-width: 500px;
+}
+
+.profile-bio-text strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+/* Action Buttons Row */
+.about-actions-row {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.btn-behance-pill {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  height: 48px;
+  gap: 9px;
+  background: #0057ff;
+  color: #ffffff;
+  padding: 10px 22px;
   border-radius: 9999px;
-  background: #ffffff;
-  color: #07070a;
   font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   text-decoration: none;
+  box-shadow: 0 4px 18px rgba(0, 87, 255, 0.38);
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.14);
 }
 
-.btn-behance-navigate:hover {
-  background: #e2e8f0;
+.btn-behance-pill:hover {
+  background: #0047d4;
   transform: translateY(-2px);
-  box-shadow: 0 8px 28px rgba(0, 87, 255, 0.35);
+  box-shadow: 0 8px 26px rgba(0, 87, 255, 0.55);
 }
 
-/* Card 3: Disciplines */
-.disciplines-grid {
+.behance-icon-wrap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-about-hire-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 10px 22px;
+  border-radius: 9999px;
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.btn-about-hire-cta:hover {
+  background: rgba(255, 255, 255, 0.16);
+  border-color: rgba(255, 255, 255, 0.45);
+  transform: translateY(-2px);
+}
+
+/* -------------------------------------------------------------
+   RIGHT COLUMN: 4-CARD FROSTED GLASSBLUR STAT CLUSTER
+------------------------------------------------------------- */
+.about-stats-cluster {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.glassblur-stat-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 250, 252, 0.94) 100%);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 28px;
+  box-shadow: 
+    0 20px 48px -12px rgba(0, 0, 0, 0.45),
+    0 2px 8px rgba(0, 0, 0, 0.06),
+    inset 0 1px 2px #ffffff;
+  color: #090a0f;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease;
+}
+
+.glassblur-stat-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 28px 60px -12px rgba(0, 0, 0, 0.58),
+    0 4px 12px rgba(0, 0, 0, 0.1),
+    inset 0 1px 2px #ffffff;
+}
+
+/* Card 1: Satisfaction (Tall Card - Spans 2 Rows) */
+.card-satisfaction {
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  padding: 32px 28px;
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  justify-content: space-between;
 }
 
-.discipline-item {
+.card-ambient-aura {
+  position: absolute;
+  top: -30px;
+  left: -30px;
+  width: 135px;
+  height: 135px;
+  background: radial-gradient(circle, rgba(52, 211, 153, 0.45) 0%, rgba(56, 189, 248, 0.22) 45%, rgba(255, 255, 255, 0) 75%);
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(14px);
+  z-index: 1;
+}
+
+.card-top-tag {
+  position: relative;
+  z-index: 2;
+}
+
+.pill-tag-label {
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 13px;
+  border-radius: 9999px;
+  background: rgba(15, 23, 42, 0.05);
+  border: 1px solid rgba(15, 23, 42, 0.09);
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #475569;
+  text-transform: uppercase;
+}
+
+.card-stat-hero {
+  position: relative;
+  z-index: 2;
+  margin: 28px 0 20px;
+}
+
+.stat-number-hero {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: clamp(52px, 4.4vw, 70px);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: #090a0f;
+}
+
+.card-description {
+  position: relative;
+  z-index: 2;
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 13.5px;
+  line-height: 1.55;
+  color: #475569;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Card 2: Projects (Wide Card - Spans Columns 2 & 3) */
+.card-projects {
+  grid-column: 2 / span 2;
+  grid-row: 1;
+  padding: 24px 28px;
   display: flex;
-  align-items: flex-start;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-projects-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.pill-tag-plain {
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: #475569;
+  text-transform: uppercase;
+}
+
+.stat-number-mid {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: clamp(38px, 3.4vw, 48px);
+  font-weight: 900;
+  line-height: 1;
+  color: #090a0f;
+  margin-top: 6px;
+  letter-spacing: -0.02em;
+}
+
+/* Rising Bars Graphic (Equalizer / Staircase) */
+.rising-bars-graphic {
+  display: flex;
+  align-items: flex-end;
+  gap: 4.5px;
+  height: 44px;
+}
+
+.bar-col {
+  width: 5px;
+  background: #090a0f;
+  border-radius: 9999px;
+  transition: transform 0.25s ease, background-color 0.25s ease;
+}
+
+.bar-1 { height: 10px; }
+.bar-2 { height: 14px; }
+.bar-3 { height: 18px; }
+.bar-4 { height: 22px; }
+.bar-5 { height: 26px; }
+.bar-6 { height: 30px; }
+.bar-7 { height: 34px; }
+.bar-8 { height: 38px; }
+.bar-9 { height: 42px; }
+
+.card-projects:hover .bar-col {
+  transform: scaleY(1.08);
+}
+
+.card-projects:hover .bar-9 {
+  background: #0057ff;
+}
+
+/* Card 3: Experience (Square Card - Column 2, Row 2) */
+.card-experience {
+  grid-column: 2;
+  grid-row: 2;
+  padding: 24px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.stat-number-large {
+  font-family: var(--font-display, 'Bebas Neue', sans-serif);
+  font-size: clamp(40px, 3.6vw, 50px);
+  font-weight: 900;
+  line-height: 1;
+  color: #090a0f;
+  letter-spacing: -0.02em;
+}
+
+.card-stat-label {
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: #475569;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* Card 4: Reviews (Square Card - Column 3, Row 2) */
+.card-reviews {
+  grid-column: 3;
+  grid-row: 2;
+  padding: 24px 22px;
+  display: flex;
+  align-items: center;
   gap: 14px;
 }
 
-.discipline-icon-box {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+.reviews-star-badge {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: #090a0f;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
 }
 
-.discipline-content {
+.reviews-content-wrap {
   display: flex;
   flex-direction: column;
-  gap: 3px;
 }
 
-.discipline-name {
+.reviews-score {
   font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 14.5px;
-  font-weight: 600;
-  color: #ffffff;
-  margin: 0;
+  font-size: 18.5px;
+  font-weight: 800;
+  color: #090a0f;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
 }
 
-.discipline-desc {
-  font-size: 12.5px;
-  line-height: 1.45;
-  color: rgba(255, 255, 255, 0.55);
-  margin: 0;
-}
-
-/* Card 4: Location & Quick CTA */
-.location-status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  font-size: 10.5px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  color: #34d399;
-  background: rgba(52, 211, 153, 0.1);
-  border: 1px solid rgba(52, 211, 153, 0.28);
-  padding: 3px 10px;
-  border-radius: 9999px;
-}
-
-.status-ping {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #34d399;
-  box-shadow: 0 0 8px #34d399;
-}
-
-.location-display-block {
-  margin-bottom: 24px;
-}
-
-.location-city-spec {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 8px;
-}
-
-.city-title {
+.reviews-label {
   font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 18px;
+  font-size: 11.5px;
   font-weight: 600;
-  color: #ffffff;
+  color: #64748b;
+  margin-top: 3px;
 }
 
-.location-desc {
-  font-size: 13.5px;
-  line-height: 1.5;
-  color: rgba(255, 255, 255, 0.6);
-  margin: 0;
-}
-
-.btn-about-hire {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  height: 48px;
-  border-radius: 9999px;
-  background: transparent;
-  color: #ffffff;
-  border: 1px solid rgba(255, 255, 255, 0.24);
-  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.btn-about-hire:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.5);
-  transform: translateY(-2px);
-}
-
-/* Mobile Responsiveness */
-@media (max-width: 860px) {
+/* -------------------------------------------------------------
+   RESPONSIVE QUERIES
+------------------------------------------------------------- */
+@media (max-width: 980px) {
   .section-about {
-    padding: 80px 20px 90px;
+    padding: 90px 24px 100px;
   }
 
-  .about-bento-grid {
+  .about-split-row {
     grid-template-columns: 1fr;
-    gap: 20px;
-    margin-top: 36px;
+    gap: 48px;
   }
 
-  .about-bento-card {
-    padding: 26px 22px;
+  .big-stacked-typography {
+    font-size: clamp(48px, 10vw, 84px);
+    margin-bottom: 24px;
   }
 
-  .about-stats-strip {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
+  .about-stats-cluster {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto auto;
+    gap: 16px;
   }
 
-  .stat-pill {
-    width: 100%;
+  .card-satisfaction {
+    grid-column: 1 / span 2;
+    grid-row: 1;
+  }
+
+  .card-projects {
+    grid-column: 1 / span 2;
+    grid-row: 2;
+  }
+
+  .card-experience {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .card-reviews {
+    grid-column: 2;
+    grid-row: 3;
+  }
+}
+
+@media (max-width: 580px) {
+  .section-about {
+    padding: 70px 18px 80px;
+  }
+
+  .about-stats-cluster {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    gap: 14px;
+  }
+
+  .card-satisfaction {
+    grid-column: 1;
+    grid-row: auto;
+    padding: 26px 20px;
+  }
+
+  .card-projects {
+    grid-column: 1;
+    grid-row: auto;
+    padding: 22px 20px;
+  }
+
+  .card-experience {
+    grid-column: 1;
+    grid-row: auto;
+    padding: 22px 20px;
+  }
+
+  .card-reviews {
+    grid-column: 1;
+    grid-row: auto;
+    padding: 22px 20px;
+  }
+
+  .stat-number-hero {
+    font-size: 46px;
+  }
+
+  .stat-number-mid {
+    font-size: 34px;
+  }
+
+  .stat-number-large {
+    font-size: 36px;
   }
 }
