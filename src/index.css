@@ -128,7 +128,7 @@ img {
 }
 
 /* -------------------------------------------------------------
-   FLOATING DOCK NAVIGATION
+   FLOATING DOCK NAVIGATION (Frosted Glassmorphism)
    Desktop: Top Middle
    Mobile: Bottom
 ------------------------------------------------------------- */
@@ -138,14 +138,14 @@ img {
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
-  background: rgba(14, 14, 18, 0.88);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(18, 18, 24, 0.55);
+  backdrop-filter: blur(28px) saturate(190%);
+  -webkit-backdrop-filter: blur(28px) saturate(190%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
   box-shadow: 
-    0 14px 40px rgba(0, 0, 0, 0.65),
-    0 0 0 1px rgba(255, 255, 255, 0.05),
-    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+    0 20px 50px rgba(0, 0, 0, 0.65),
+    inset 0 1px 1px rgba(255, 255, 255, 0.35),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.3);
   border-radius: 9999px;
   padding: 5px 8px;
   display: flex;
@@ -180,7 +180,7 @@ img {
   gap: 8px;
   padding: 8px 16px;
   border-radius: 9999px;
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.76);
   text-decoration: none;
   font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
   font-size: 13px;
@@ -189,20 +189,26 @@ img {
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   cursor: pointer;
-  border: none;
+  border: 1px solid transparent;
   background: transparent;
 }
 
 .dock-btn:hover {
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.09);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  border-color: rgba(255, 255, 255, 0.12);
 }
 
 .dock-btn.active {
-  background: #ffffff;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(16px);
   color: #08080c;
   font-weight: 600;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 
+    0 4px 18px rgba(0, 0, 0, 0.35),
+    inset 0 1px 1px #ffffff;
 }
 
 .dock-icon {
@@ -319,11 +325,6 @@ img {
   }
 }
 
-.backdrop-glass-wrap {
-  position: relative;
-  display: inline-block;
-}
-
 .backdrop-text-zahaz {
   display: block;
   font-family: var(--font-display);
@@ -334,36 +335,20 @@ img {
   text-transform: uppercase;
   user-select: none;
   white-space: nowrap;
-}
-
-/* Frosted glass blur dispersion underlayer */
-.backdrop-text-blur {
-  position: absolute;
-  inset: 0;
-  color: rgba(255, 255, 255, 0.42);
-  -webkit-text-stroke: calc(2 * var(--u)) rgba(255, 255, 255, 0.45);
-  filter: blur(14px);
-  opacity: 0.9;
-  transform: scale(1.015);
-  pointer-events: none;
-}
-
-/* Foreground glass surface: specular bevels & translucent frosted reflection (no color gradient) */
-.backdrop-text-glass {
-  position: relative;
+  /* Frosted smoked glass body without glow */
   background: linear-gradient(
-    175deg,
-    rgba(255, 255, 255, 0.76) 0%,
-    rgba(255, 255, 255, 0.12) 48%,
-    rgba(255, 255, 255, 0.04) 52%,
-    rgba(255, 255, 255, 0.36) 100%
+    170deg,
+    rgba(255, 255, 255, 0.38) 0%,
+    rgba(255, 255, 255, 0.06) 42%,
+    rgba(255, 255, 255, 0.02) 60%,
+    rgba(255, 255, 255, 0.16) 100%
   );
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  -webkit-text-stroke: calc(1.5 * var(--u)) rgba(255, 255, 255, 0.58);
-  filter: 
-    drop-shadow(0 20px 45px rgba(0, 0, 0, 0.85))
-    drop-shadow(0 0 25px rgba(255, 255, 255, 0.22));
+  /* Razor-thin crisp specular glass bevel rim */
+  -webkit-text-stroke: calc(1.2 * var(--u)) rgba(255, 255, 255, 0.36);
+  /* Pure depth shadow - NO white glow */
+  filter: drop-shadow(0 20px 48px rgba(0, 0, 0, 0.88));
 }
 
 .hero-photo-wrap {
@@ -1464,11 +1449,14 @@ img {
     left: 50%;
     transform: translateX(-50%);
     padding: 6px 10px;
-    background: #111116;
-    border: 1px solid rgba(255, 255, 255, 0.14);
+    background: rgba(18, 18, 24, 0.62);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    border: 1px solid rgba(255, 255, 255, 0.18);
     box-shadow: 
-      0 16px 45px rgba(0, 0, 0, 0.85),
-      0 0 0 1px rgba(255, 255, 255, 0.08);
+      0 20px 50px rgba(0, 0, 0, 0.8),
+      inset 0 1px 1px rgba(255, 255, 255, 0.35),
+      inset 0 -1px 1px rgba(0, 0, 0, 0.4);
     animation: dockFloatInBottom 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     max-width: calc(100vw - 32px);
     width: auto;
@@ -1500,15 +1488,25 @@ img {
     padding: 0;
     border-radius: 50%;
     color: rgba(255, 255, 255, 0.78);
+    background: transparent;
+    border: 1px solid transparent;
+  }
+
+  .dock-btn:hover {
+    background: rgba(255, 255, 255, 0.08);
   }
 
   .dock-btn.active {
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(16px);
     color: #08080c;
-    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    box-shadow: 
+      0 6px 22px rgba(0, 0, 0, 0.4),
+      inset 0 1px 1px #ffffff;
   }
 
   .hero-date {
@@ -1603,16 +1601,8 @@ img {
   .backdrop-text-zahaz {
     font-size: calc(96 * var(--u));
     letter-spacing: -0.04em;
-  }
-
-  .backdrop-text-blur {
-    filter: blur(8px);
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
-  }
-
-  .backdrop-text-glass {
-    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.55);
-    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.7));
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.32);
+    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.85));
   }
 
   .hero-photo-wrap {

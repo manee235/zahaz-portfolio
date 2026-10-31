@@ -26,12 +26,9 @@ export function HeroFigure({ scrollY, mousePos = { x: 0, y: 0 }, isRecorder, isR
 
   return (
     <div className="hero-figure-container">
-      {/* Big Typographic Backdrop Name directly behind avatar in Glass Blur Style */}
+      {/* Big Typographic Backdrop Name directly behind avatar in Non-Glowing Glass Style */}
       <div className="hero-backdrop-name" aria-hidden="true" style={nameParallax}>
-        <div className="backdrop-glass-wrap">
-          <span className="backdrop-text-zahaz backdrop-text-blur">ZAHAZ</span>
-          <span className="backdrop-text-zahaz backdrop-text-glass">ZAHAZ</span>
-        </div>
+        <span className="backdrop-text-zahaz">ZAHAZ</span>
       </div>
 
       {/* Avatar */}

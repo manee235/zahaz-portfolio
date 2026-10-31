@@ -42,14 +42,17 @@ export function HeroSection({ scrollY, isRecorder, isReducedMotion }) {
 
   return (
     <header className="hero-wrapper" id="home">
-      {/* Dynamic ASCII Gradient Horizon Background */}
+      {/* Dynamic ASCII Gradient Horizon Background (Dark Moody Horizon) */}
       <div className="hero-ascii-bg" aria-hidden="true">
         <GradientASCII
-          colors={['#1e3fd8', '#f6f8ff', '#a5d8ff', '#38bdf8']}
+          colors={['#02040a', '#050c24', '#0c1844', '#15296b', '#1e40af']}
           shape="horizon"
           characters=" =+xX0S8#@"
           cellSize={18}
-          density={0.8}
+          density={0.75}
+          gradientOpacity={0.45}
+          glyphOpacity={0.7}
+          glow={0.08}
         />
       </div>
 
