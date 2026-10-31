@@ -1,0 +1,2188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zahas — Pure Design &amp; Strategic Branding Portfolio</title>
+  
+  <!-- Typography: Inter Tight (100-900) & Archivo (wdth 62-125, wght 100-900) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@100..900&family=Archivo:wdth,wght@62..125,100..900&display=swap" rel="stylesheet">
+  
+  <style>
+    /* -------------------------------------------------------------
+       1. ARTBOARD UNITS & THEME VARIABLES
+       Artboard: 1440px
+       Desktop: u = min(100vw / 1440, 1.3333px)
+       Phone (<= 760px): u = 100vw / 390
+    ------------------------------------------------------------- */
+    :root {
+      --u: min(calc(100vw / 1440), 1.3333px);
+      --paper: #dadada;
+      --ink: #111111;
+      --pure-black: #000000;
+      --panel-dark: #0a0a0a;
+      --card-awards: #262626;
+      --card-avatar-bg: #d6d6d6;
+      --stats-frame-bg: #cdcdcd;
+      --text-white: #f4f4f4;
+      --text-grey: #6f6f6f;
+      --hairline-14: rgba(255, 255, 255, 0.14);
+      --hairline-28: rgba(255, 255, 255, 0.28);
+      --font-display: 'Archivo', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-ui: 'Inter Tight', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    @media (max-width: 760px) {
+      :root {
+        --u: calc(100vw / 390);
+      }
+    }
+
+    /* CSS Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      background-color: var(--pure-black);
+      color: var(--ink);
+      font-family: var(--font-ui);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      text-rendering: optimizeLegibility;
+      overflow-x: hidden;
+    }
+
+    body {
+      background-color: var(--pure-black);
+      overflow-x: hidden;
+      width: 100%;
+      min-height: 100vh;
+      position: relative;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+
+    img {
+      display: block;
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* -------------------------------------------------------------
+       2. SECTION 1: HERO SECTION (1440 × 938u)
+    ------------------------------------------------------------- */
+    .hero-wrapper {
+      width: 100%;
+      background-color: var(--paper);
+      display: flex;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-stage {
+      width: 100%;
+      max-width: calc(1440 * 1.3333px);
+      height: calc(938 * var(--u));
+      position: relative;
+      overflow: hidden;
+      background-color: var(--paper);
+    }
+
+    /* Header Row / Container: display: contents on desktop, flex row on phone */
+    .hero-top-row {
+      display: contents;
+    }
+
+    /* Nav Pill: at (57, 61), 48u tall */
+    .hero-nav {
+      position: absolute;
+      left: calc(57 * var(--u));
+      top: calc(61 * var(--u));
+      height: calc(48 * var(--u));
+      background: #ffffff;
+      border-radius: 9999px;
+      padding: calc(4 * var(--u));
+      display: inline-flex;
+      align-items: center;
+      z-index: 30;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      opacity: 0;
+      transform: translateY(-20px);
+      will-change: transform, opacity;
+    }
+
+    .nav-slider {
+      position: absolute;
+      top: calc(4 * var(--u));
+      bottom: calc(4 * var(--u));
+      left: 0;
+      background: var(--ink);
+      border-radius: 9999px;
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), width 0.32s cubic-bezier(0.16, 1, 0.3, 1);
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .nav-link {
+      position: relative;
+      z-index: 2;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 calc(20 * var(--u));
+      font-size: calc(14 * var(--u));
+      font-weight: 500;
+      color: #333333;
+      transition: color 0.25s ease;
+      white-space: nowrap;
+    }
+
+    .nav-link.active,
+    .nav-link.hovered {
+      color: #ffffff;
+    }
+
+    /* Top Right Date: at (1038, 70) */
+    .hero-date {
+      position: absolute;
+      left: calc(1038 * var(--u));
+      top: calc(70 * var(--u));
+      font-family: var(--font-ui);
+      font-size: calc(13.5 * var(--u));
+      font-weight: 500;
+      color: var(--ink);
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      z-index: 25;
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
+    /* Top Right Contact Us Button: 144 × 46u at (1237, 63) */
+    .btn-contact {
+      position: absolute;
+      left: calc(1237 * var(--u));
+      top: calc(63 * var(--u));
+      width: calc(144 * var(--u));
+      height: calc(46 * var(--u));
+      border-radius: 9999px;
+      background: var(--ink);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: calc(6 * var(--u));
+      font-family: var(--font-ui);
+      font-size: calc(14 * var(--u));
+      font-weight: 500;
+      z-index: 25;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s;
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
+    .btn-contact:hover {
+      transform: translateY(-1px);
+      background: #252525;
+    }
+
+    .btn-contact-arrow {
+      font-size: calc(14 * var(--u));
+      display: inline-block;
+      transition: transform 0.2s ease;
+    }
+
+    .btn-contact:hover .btn-contact-arrow {
+      transform: translate(1px, -1px);
+    }
+
+    /* Hero Figure Container: contains Photo, Brand Plate & Wordmarks */
+    .hero-figure-container {
+      position: absolute;
+      left: calc(338 * var(--u));
+      top: calc(-86 * var(--u));
+      width: calc(764 * var(--u));
+      height: calc(1024 * var(--u));
+      z-index: 2;
+    }
+
+    .hero-photo-wrap {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+      mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+      opacity: 0;
+      filter: blur(10px);
+      transform: translateY(40px);
+      will-change: transform, opacity, filter;
+    }
+
+    .hero-photo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      will-change: transform;
+    }
+
+    /* Brand Plate: Dark glass plate over man's back at (532, 444), 364 × 73u */
+    /* Relative to figure container: left: 532 - 338 = 194u, top: 444 - (-86) = 530u */
+    .brand-glass-plate {
+      position: absolute;
+      left: calc(194 * var(--u));
+      top: calc(530 * var(--u));
+      width: calc(364 * var(--u));
+      height: calc(73 * var(--u));
+      background: rgba(18, 18, 18, 0.76);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: calc(14 * var(--u));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 calc(24 * var(--u));
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
+      z-index: 10;
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
+    .brand-mark-triangle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-mark-triangle svg {
+      width: calc(24 * var(--u));
+      height: calc(24 * var(--u));
+    }
+
+    .brand-plate-name {
+      font-family: var(--font-display);
+      font-variation-settings: 'wdth' 120, 'wght' 700;
+      font-size: calc(25 * var(--u));
+      letter-spacing: 0.12em;
+      color: #ffffff;
+      text-transform: uppercase;
+      user-select: none;
+    }
+
+    .brand-plate-menu {
+      display: flex;
+      flex-direction: column;
+      gap: calc(5 * var(--u));
+      cursor: pointer;
+    }
+
+    .brand-plate-menu span {
+      display: block;
+      width: calc(20 * var(--u));
+      height: 2px;
+      background: #ffffff;
+      border-radius: 1px;
+    }
+
+    /* Wordmarks across jacket: y = 864 in stage -> 864 - (-86) = 950u in container */
+    .jacket-wordmarks {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      top: calc(950 * var(--u));
+      font-family: var(--font-display);
+      font-variation-settings: 'wdth' 105, 'wght' 500;
+      font-size: calc(13 * var(--u));
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.85);
+      white-space: nowrap;
+      z-index: 10;
+      opacity: 0;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
+      pointer-events: none;
+    }
+
+    /* Title: "PURE / DESIGN" at (57, 246) and "('25)" at (339, 272) */
+    .hero-title-area {
+      position: absolute;
+      left: calc(57 * var(--u));
+      top: calc(246 * var(--u));
+      z-index: 20;
+    }
+
+    .title-line-mask {
+      overflow: hidden;
+      display: block;
+    }
+
+    .title-line {
+      display: block;
+      font-family: var(--font-display);
+      font-variation-settings: 'wdth' 104, 'wght' 640;
+      font-size: calc(90 * var(--u));
+      line-height: 0.86;
+      letter-spacing: -0.06em;
+      color: var(--ink);
+      text-transform: uppercase;
+      transform: translateY(105%);
+      will-change: transform;
+    }
+
+    .title-year-tag {
+      position: absolute;
+      left: calc(339 * var(--u));
+      top: calc(272 * var(--u));
+      font-family: var(--font-display);
+      font-variation-settings: 'wdth' 95, 'wght' 500;
+      font-size: calc(44 * var(--u));
+      line-height: 0.86;
+      letter-spacing: -0.04em;
+      color: #666666;
+      z-index: 20;
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
+    /* About: ● (ABOUT) at y 458 */
+    .hero-about-area {
+      position: absolute;
+      left: calc(57 * var(--u));
+      top: calc(458 * var(--u));
+      max-width: calc(260 * var(--u));
+      z-index: 20;
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
+    .about-label {
+      font-size: calc(12 * var(--u));
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--ink);
+      display: flex;
+      align-items: center;
+      gap: calc(6 * var(--u));
+    }
+
+    .about-label-dot {
+      display: inline-block;
+      width: calc(6 * var(--u));
+      height: calc(6 * var(--u));
+      border-radius: 50%;
+      background: var(--ink);
+    }
+
+    .about-copy {
+      font-size: calc(14 * var(--u));
+      line-height: 1.42;
+      color: #2a2a2a;
+      font-weight: 500;
+      margin-top: calc(14 * var(--u));
+    }
+
+    /* Book A Call button: at y 584 */
+    .btn-book-call {
+      position: absolute;
+      left: calc(57 * var(--u));
+      top: calc(584 * var(--u));
+      height: calc(44 * var(--u));
+      padding: 0 calc(24 * var(--u));
+      border-radius: 9999px;
+      background: var(--ink);
+      color: #ffffff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: calc(6 * var(--u));
+      font-family: var(--font-ui);
+      font-size: calc(14 * var(--u));
+      font-weight: 500;
+      z-index: 20;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s;
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
+    .btn-book-call:hover {
+      transform: translateY(-1px);
+      background: #252525;
+    }
+
+    /* Stats Frame: at (57, 693), 341 × 208u, light grey #cdcdcd */
+    .hero-stats-frame {
+      position: absolute;
+      left: calc(57 * var(--u));
+      top: calc(693 * var(--u));
+      width: calc(341 * var(--u));
+      height: calc(208 * var(--u));
+      background-color: var(--stats-frame-bg);
+      border-radius: calc(14 * var(--u));
+      padding: calc(8 * var(--u));
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: calc(8 * var(--u));
+      z-index: 20;
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
+    /* Subcard A: Dark Card (400+ / Trusted Partner, 6 marks, white book bar) */
+    .stats-subcard-dark {
+      background: #141414;
+      border-radius: calc(9 * var(--u));
+      padding: calc(12 * var(--u)) calc(10 * var(--u));
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      color: #ffffff;
+    }
+
+    .subcard-count-row {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .subcard-number {
+      font-family: var(--font-display);
+      font-variation-settings: 'wdth' 100, 'wght' 700;
+      font-size: calc(24 * var(--u));
+      line-height: 1;
+      color: #ffffff;
+    }
+
+    .subcard-subtitle {
+      font-size: calc(11 * var(--u));
+      color: #999999;
+      font-weight: 500;
+      margin-top: calc(3 * var(--u));
+    }
+
+    /* 6 Tiny Fictional Partner Marks */
+    .partner-marks-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: calc(5 * var(--u)) calc(4 * var(--u));
+      margin: calc(6 * var(--u)) 0;
+    }
+
+    .partner-mark {
+      display: flex;
+      align-items: center;
+      gap: calc(3 * var(--u));
+      opacity: 0.85;
+    }
+
+    .partner-mark svg {
+      width: calc(9.5 * var(--u));
+      height: calc(9.5 * var(--u));
+      flex-shrink: 0;
+      fill: #ffffff;
+    }
+
+    .partner-mark span {
+      font-size: calc(8.5 * var(--u));
+      font-weight: 500;
+      color: #dddddd;
+      letter-spacing: -0.01em;
+    }
+
+    .btn-partner-book {
+      width: 100%;
+      height: calc(25 * var(--u));
+      border-radius: calc(6 * var(--u));
+      background: #ffffff;
+      color: var(--ink);
+      font-size: calc(10.5 * var(--u));
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: calc(4 * var(--u));
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .btn-partner-book:hover {
+      background: #f0f0f0;
+      transform: translateY(-1px);
+    }
+
+    /* Subcard B: Photo Card (Young man in black cap) */
+    .stats-subcard-photo {
+      position: relative;
+      border-radius: calc(9 * var(--u));
+      overflow: hidden;
+      background: #111111;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: calc(10 * var(--u));
+      color: #ffffff;
+    }
+
+    .subcard-photo-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      z-index: 1;
+    }
+
+    .subcard-photo-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.1) 40%, rgba(0,0,0,0.88) 100%);
+      z-index: 2;
+    }
+
+    .subcard-photo-header {
+      position: relative;
+      z-index: 3;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+      padding-bottom: calc(5 * var(--u));
+      font-size: calc(9.5 * var(--u));
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: #e5e5e5;
+    }
+
+    .subcard-photo-footer {
+      position: relative;
+      z-index: 3;
+      text-align: right;
+    }
+
+    .photo-footer-num {
+      font-family: var(--font-display);
+      font-variation-settings: 'wdth' 100, 'wght' 700;
+      font-size: calc(21 * var(--u));
+      line-height: 1;
+      color: #ffffff;
+    }
+
+    .photo-footer-label {
+      font-size: calc(8.5 * var(--u));
+      line-height: 1.25;
+      color: #cccccc;
+      margin-top: calc(3 * var(--u));
+    }
+
+    /* Right Column: Frosted "True Growth" pill with black check disc at (1216, 258) */
+    .pill-true-growth {
+      position: absolute;
+      left: calc(1216 * var(--u));
+      top: calc(258 * var(--u));
+      height: calc(38 * var(--u));
+      padding: 0 calc(14 * var(--u)) 0 calc(6 * var(--u));
+      background: rgba(255, 255, 255, 0.45);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: 9999px;
+      display: inline-flex;
+      align-items: center;
+      gap: calc(8 * var(--u));
+      z-index: 20;
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
+    .growth-check-disc {
+      width: calc(26 * var(--u));
+      height: calc(26 * var(--u));
+      border-radius: 50%;
+      background: var(--ink);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: calc(12 * var(--u));
+    }
+
+    .growth-label {
+      font-size: calc(13 * var(--u));
+      font-weight: 600;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    /* Right Column: "We’re available / ● for you", right-aligned at y 442 */
+    .hero-available-tag {
+      position: absolute;
+      right: calc(57 * var(--u));
+      top: calc(442 * var(--u));
+      text-align: right;
+      font-size: calc(14 * var(--u));
+      font-weight: 500;
+      line-height: 1.35;
+      color: var(--ink);
+      z-index: 20;
+      opacity: 0;
+      transform: translateY(14px);
+    }
+
+    .available-dot {
+      display: inline-block;
+      width: calc(7 * var(--u));
+      height: calc(7 * var(--u));
+      border-radius: 50%;
+      background: #111111;
+      margin-right: calc(4 * var(--u));
+      vertical-align: middle;
+    }
+
+    /* Right Column: "Out Now / Q Industrial / [2025]" with 196u-tall image card */
+    .card-out-now {
+      position: absolute;
+      right: calc(57 * var(--u));
+      top: calc(490 * var(--u));
+      width: calc(220 * var(--u));
+      z-index: 20;
+      opacity: 0;
+      transform: translateY(14px);
+      cursor: pointer;
+    }
+
+    .out-now-meta {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: calc(8 * var(--u));
+      font-size: calc(11.5 * var(--u));
+      font-weight: 600;
+      color: #333333;
+    }
+
+    .out-now-title {
+      font-family: var(--font-display);
+      font-variation-settings: 'wdth' 110, 'wght' 700;
+      font-size: calc(13.5 * var(--u));
+      color: var(--ink);
+    }
+
+    .out-now-year {
+      color: #777777;
+      font-size: calc(11 * var(--u));
+    }
+
+    .out-now-media {
+      position: relative;
+      height: calc(196 * var(--u));
+      border-radius: calc(12 * var(--u));
+      overflow: hidden;
+      background: #000000;
+    }
+
+    .out-now-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform-origin: 62% 45%;
+      transform: scale(1.55);
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .card-out-now:hover .out-now-img {
+      transform: scale(1.72);
+    }
+
+    .out-now-arrow-btn {
+      position: absolute;
+      right: calc(12 * var(--u));
+      bottom: calc(12 * var(--u));
+      width: calc(36 * var(--u));
+      height: calc(36 * var(--u));
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.32);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.45);
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background 0.25s;
+      z-index: 3;
+    }
+
+    .card-out-now:hover .out-now-arrow-btn {
+      transform: rotate(45deg);
+      background: rgba(255, 255, 255, 0.55);
+    }
+
+    .out-now-progress-track {
+      width: 100%;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.35);
+      margin-top: calc(8 * var(--u));
+      border-radius: 1px;
+      overflow: hidden;
+    }
+
+    .out-now-progress-bar {
+      width: 0%;
+      height: 100%;
+      background: #ffffff;
+      transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* -------------------------------------------------------------
+       3. SECTION 2: BLACK BAR & MANIFESTO STATEMENT
+    ------------------------------------------------------------- */
+    .section-bar {
+      width: 100%;
+      background: var(--pure-black);
+      display: flex;
+      justify-content: center;
+      border-bottom: 1px solid var(--hairline-14);
+      position: relative;
+      z-index: 20;
+    }
+
+    .bar-inner {
+      width: 100%;
+      max-width: calc(1440 * 1.3333px);
+      height: calc(111 * var(--u));
+      padding: 0 calc(57 * var(--u));
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: var(--text-white);
+      font-family: var(--font-display);
+      font-variation-settings: 'wdth' 120, 'wght' 500;
+      font-size: calc(14 * var(--u));
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .bar-left {
+      display: flex;
+      align-items: center;
+      gap: calc(6 * var(--u));
+    }
+
+    .bar-left .year {
+      color: var(--text-grey);
+    }
+
+    .bar-center {
+      display: flex;
+      align-items: center;
+      gap: calc(12 * var(--u));
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .bar-center:hover {
+      opacity: 0.8;
+    }
+
+    .scroll-arrow-circle {
+      width: calc(28 * var(--u));
+      height: calc(28 * var(--u));
+      border-radius: 50%;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: calc(12 * var(--u));
+      transition: transform 0.3s ease;
+    }
+
+    .bar-center:hover .scroll-arrow-circle {
+      transform: translateY(2px);
+    }
+
+    .bar-right {
+      color: var(--text-grey);
+    }
+
+    /* Manifesto Section: 170u top, 230u bottom padding */
+    .section-manifesto {
+      width: 100%;
+      background: var(--pure-black);
+      padding: calc(170 * var(--u)) calc(57 * var(--u)) calc(230 * var(--u));
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .manifesto-container {
+      width: 100%;
+      max-width: calc(830 * var(--u));
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .manifesto-text {
+      font-family: var(--font-ui);
+      font-size: calc(52 * var(--u));
+      line-height: 1.33;
+      letter-spacing: -0.028em;
+      font-weight: 500;
+      color: var(--text-grey);
+    }
+
+    .manifesto-word {
+      display: inline;
+      color: var(--text-grey);
+      transition: color 0.12s ease-out;
+      white-space: pre;
+    }
+
+    .manifesto-desktop-br {
+      display: inline;
+    }
+
+    /* Sub-line: 150u below statement, 23u font size */
+    .manifesto-subline {
+      margin-top: calc(150 * var(--u));
+      max-width: calc(780 * var(--u));
+      text-align: center;
+      font-family: var(--font-ui);
+      font-size: calc(23 * var(--u));
+      line-height: 1.45;
+      font-weight: 450;
+      color: var(--text-white);
+      letter-spacing: -0.015em;
+    }
+
+    .manifesto-subline .subline-italic {
+      color: var(--text-grey);
+      font-style: italic;
+    }
+
+    /* -------------------------------------------------------------
+       4. SECTION 3: TRUST PANEL & STAT CARDS (1302 × 429u)
+       150u bottom padding
+    ------------------------------------------------------------- */
+    .section-trust {
+      width: 100%;
+      background: var(--pure-black);
+      padding: 0 calc(57 * var(--u)) calc(150 * var(--u));
+      display: flex;
+      justify-content: center;
+    }
+
+    .trust-panel {
+      width: 100%;
+      max-width: calc(1302 * var(--u));
+      height: calc(429 * var(--u));
+      border: 1px solid var(--hairline-28);
+      border-radius: calc(14 * var(--u));
+      background: var(--panel-dark);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: calc(48 * var(--u)) calc(48 * var(--u));
+    }
+
+    /* Left Column: Heading, Paragraph & Overlapping Glass Tiles */
+    .trust-left-col {
+      position: relative;
+      max-width: calc(450 * var(--u));
+      z-index: 10;
+    }
+
+    .trust-heading {
+      font-family: var(--font-ui);
+      font-size: calc(55 * var(--u));
+      font-weight: 500;
+      line-height: 1.04;
+      letter-spacing: -0.03em;
+      color: var(--text-white);
+      position: relative;
+    }
+
+    .trust-subtext {
+      font-size: calc(14.5 * var(--u));
+      line-height: 1.5;
+      color: #8e8e8e;
+      font-weight: 400;
+      margin-top: calc(26 * var(--u));
+      max-width: calc(370 * var(--u));
+    }
+
+    /* Two Frosted Glass Icon Tiles (88u, 12u radius) */
+    .glass-tile {
+      position: absolute;
+      width: calc(88 * var(--u));
+      height: calc(88 * var(--u));
+      border-radius: calc(12 * var(--u));
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 12;
+      pointer-events: none;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+    }
+
+    /* Tile 1: Asterisk tile top right of line 1 */
+    .glass-tile-asterisk {
+      left: calc(295 * var(--u));
+      top: calc(-14 * var(--u));
+    }
+
+    .glass-tile-asterisk svg {
+      width: calc(36 * var(--u));
+      height: calc(36 * var(--u));
+      fill: #ffffff;
+    }
+
+    /* Tile 2: Four-dot tile over "Businesses" */
+    .glass-tile-dots {
+      left: calc(205 * var(--u));
+      top: calc(146 * var(--u));
+    }
+
+    .four-dots-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: calc(8 * var(--u));
+    }
+
+    .four-dots-grid span {
+      display: block;
+      width: calc(10 * var(--u));
+      height: calc(10 * var(--u));
+      border-radius: 50%;
+      background: #ffffff;
+    }
+
+    /* Right Side: Stat Cards (326u tall, 8u radius) */
+    .trust-cards-row {
+      display: flex;
+      align-items: center;
+      gap: calc(18 * var(--u));
+      height: calc(326 * var(--u));
+      position: relative;
+      z-index: 5;
+    }
+
+    .trust-card {
+      height: calc(326 * var(--u));
+      border-radius: calc(8 * var(--u));
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+      cursor: default;
+    }
+
+    .trust-card:hover {
+      transform: translateY(calc(-6 * var(--u)));
+      box-shadow: 0 16px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Avatar card: light grey #d6d6d6, 293u */
+    .card-avatar-stat {
+      width: calc(293 * var(--u));
+      background-color: var(--card-avatar-bg);
+      color: var(--ink);
+      padding: calc(28 * var(--u)) calc(24 * var(--u));
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .avatars-grid-4x2 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: calc(12 * var(--u)) calc(10 * var(--u));
+      margin-top: calc(4 * var(--u));
+    }
+
+    .avatar-item {
+      width: calc(48 * var(--u));
+      height: calc(48 * var(--u));
+      border-radius: 50%;
+      overflow: hidden;
+      border: 2px solid #d6d6d6;
+      background: #bcbcbc;
+      transform: scale(0.4);
+      opacity: 0;
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease;
+    }
+
+    .avatar-item.popped {
+      transform: scale(1);
+      opacity: 1;
+    }
+
+    .avatar-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar-stat-info {
+      margin-top: calc(18 * var(--u));
+    }
+
+    .avatar-stat-number {
+      font-family: var(--font-display);
+      font-variation-settings: 'wdth' 100, 'wght' 700;
+      font-size: calc(43 * var(--u));
+      line-height: 1;
+      color: var(--ink);
+      letter-spacing: -0.02em;
+    }
+
+    .avatar-stat-label {
+      font-size: calc(13 * var(--u));
+      font-weight: 500;
+      color: #444444;
+      margin-top: calc(5 * var(--u));
+    }
+
+    /* Awards card: #262626, 298u */
+    .card-awards-stat {
+      width: calc(298 * var(--u));
+      background-color: var(--card-awards);
+      color: var(--text-white);
+      padding: calc(28 * var(--u)) calc(24 * var(--u));
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .awards-top-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .awards-stat-number {
+      font-family: var(--font-display);
+      font-variation-settings: 'wdth' 100, 'wght' 700;
+      font-size: calc(43 * var(--u));
+      line-height: 1;
+      color: var(--text-white);
+      letter-spacing: -0.02em;
+    }
+
+    .awards-stat-label {
+      font-size: calc(13 * var(--u));
+      font-weight: 500;
+      color: #999999;
+      margin-top: calc(5 * var(--u));
+    }
+
+    /* Laurel Badge: BEST GROWTH PARTNER 2026 */
+    .laurel-badge-wrap {
+      display: flex;
+      align-items: center;
+      gap: calc(14 * var(--u));
+      margin: calc(14 * var(--u)) 0;
+      padding: calc(10 * var(--u)) 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .laurel-svg {
+      width: calc(42 * var(--u));
+      height: calc(42 * var(--u));
+      flex-shrink: 0;
+    }
+
+    .laurel-badge-text {
+      font-family: var(--font-display);
+      font-variation-settings: 'wdth' 108, 'wght' 600;
+      font-size: calc(10.5 * var(--u));
+      line-height: 1.35;
+      letter-spacing: 0.08em;
+      color: #f0f0f0;
+      text-transform: uppercase;
+    }
+
+    .awards-card-note {
+      font-size: calc(12.5 * var(--u));
+      line-height: 1.45;
+      color: #888888;
+    }
+
+    /* Portrait card: 200u, cut off by panel's right edge */
+    .card-portrait-stat {
+      width: calc(200 * var(--u));
+      background: #111111;
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .card-portrait-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      filter: grayscale(100%);
+      transition: filter 0.4s ease, transform 0.4s ease;
+    }
+
+    .card-portrait-stat:hover .card-portrait-img {
+      filter: grayscale(40%);
+      transform: scale(1.05);
+    }
+
+    /* -------------------------------------------------------------
+       5. PHONE RESPONSIVE (<= 760px)
+       u = 100vw / 390
+    ------------------------------------------------------------- */
+    @media (max-width: 760px) {
+      .hero-wrapper {
+        height: auto;
+      }
+
+      .hero-stage {
+        height: auto;
+        min-height: auto;
+        display: flex;
+        flex-direction: column;
+        padding: calc(24 * var(--u)) calc(20 * var(--u)) calc(48 * var(--u));
+        position: relative;
+      }
+
+      /* Header Row: Nav on left, 40u square Contact Us on right */
+      .hero-top-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        position: relative;
+        z-index: 30;
+        order: 1;
+      }
+
+      .hero-nav {
+        position: static;
+        height: calc(44 * var(--u));
+        padding: calc(3 * var(--u));
+        opacity: 1;
+        transform: none;
+      }
+
+      .nav-link {
+        padding: 0 calc(12 * var(--u));
+        font-size: calc(13 * var(--u));
+      }
+
+      .hero-date {
+        display: none;
+      }
+
+      .btn-contact {
+        position: static;
+        width: calc(40 * var(--u));
+        height: calc(40 * var(--u));
+        border-radius: calc(8 * var(--u));
+        padding: 0;
+        font-size: calc(17 * var(--u));
+        opacity: 1;
+        transform: none;
+      }
+
+      .btn-contact-text {
+        display: none;
+      }
+
+      /* Title: next in order */
+      .hero-title-area {
+        position: static;
+        margin-top: calc(36 * var(--u));
+        order: 2;
+      }
+
+      .title-line {
+        font-size: calc(56 * var(--u));
+        line-height: 0.9;
+        transform: none;
+      }
+
+      .title-year-tag {
+        position: static;
+        font-size: calc(28 * var(--u));
+        margin-left: calc(10 * var(--u));
+        vertical-align: middle;
+        opacity: 1;
+        transform: none;
+      }
+
+      /* (ABOUT) copy */
+      .hero-about-area {
+        position: static;
+        margin-top: calc(24 * var(--u));
+        max-width: 100%;
+        opacity: 1;
+        transform: none;
+        order: 3;
+      }
+
+      /* Book A Call */
+      .btn-book-call {
+        position: static;
+        margin-top: calc(20 * var(--u));
+        align-self: flex-start;
+        opacity: 1;
+        transform: none;
+        order: 4;
+      }
+
+      /* Full-width photo (470u) with brand plate and logos over it */
+      .hero-figure-container {
+        position: relative;
+        left: auto;
+        top: auto;
+        width: 100%;
+        height: calc(470 * var(--u));
+        margin-top: calc(32 * var(--u));
+        border-radius: calc(16 * var(--u));
+        overflow: hidden;
+        order: 5;
+      }
+
+      .hero-photo-wrap {
+        mask-image: none;
+        -webkit-mask-image: none;
+        border-radius: calc(16 * var(--u));
+        overflow: hidden;
+        opacity: 1;
+        filter: none;
+        transform: none;
+      }
+
+      .brand-glass-plate {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%) !important;
+        width: calc(290 * var(--u));
+        height: calc(64 * var(--u));
+        opacity: 1;
+        z-index: 15;
+      }
+
+      .brand-plate-name {
+        font-size: calc(20 * var(--u));
+      }
+
+      .jacket-wordmarks {
+        top: auto;
+        bottom: calc(22 * var(--u));
+        font-size: calc(11 * var(--u));
+        letter-spacing: 0.12em;
+        opacity: 1;
+      }
+
+      /* True Growth pill */
+      .pill-true-growth {
+        position: static;
+        margin-top: calc(32 * var(--u));
+        align-self: flex-start;
+        opacity: 1;
+        transform: none;
+        order: 6;
+      }
+
+      /* We're available */
+      .hero-available-tag {
+        position: static;
+        text-align: left;
+        margin-top: calc(16 * var(--u));
+        opacity: 1;
+        transform: none;
+        order: 7;
+      }
+
+      /* Stats frame (two columns) */
+      .hero-stats-frame {
+        position: static;
+        width: 100%;
+        height: auto;
+        grid-template-columns: 1fr 1fr;
+        margin-top: calc(24 * var(--u));
+        opacity: 1;
+        transform: none;
+        order: 8;
+      }
+
+      /* Out Now card */
+      .card-out-now {
+        position: static;
+        width: 100%;
+        margin-top: calc(28 * var(--u));
+        opacity: 1;
+        transform: none;
+        order: 9;
+      }
+
+      .out-now-media {
+        height: calc(240 * var(--u));
+      }
+
+      /* Bar Section Phone */
+      .bar-inner {
+        height: calc(72 * var(--u));
+        padding: 0 calc(20 * var(--u));
+        font-size: calc(11 * var(--u));
+      }
+
+      /* Statement Section Phone: 28u */
+      .section-manifesto {
+        padding: calc(80 * var(--u)) calc(20 * var(--u)) calc(100 * var(--u));
+      }
+
+      .manifesto-text {
+        font-size: calc(28 * var(--u));
+        line-height: 1.36;
+      }
+
+      .manifesto-desktop-br {
+        display: none;
+      }
+
+      .manifesto-subline {
+        margin-top: calc(60 * var(--u));
+        font-size: calc(16 * var(--u));
+      }
+
+      /* Trust Section Phone: Stacks heading, paragraph, cards; second tile hidden */
+      .section-trust {
+        padding: 0 calc(20 * var(--u)) calc(80 * var(--u));
+      }
+
+      .trust-panel {
+        height: auto;
+        flex-direction: column;
+        padding: calc(36 * var(--u)) calc(20 * var(--u));
+        gap: calc(32 * var(--u));
+      }
+
+      .trust-left-col {
+        max-width: 100%;
+      }
+
+      .trust-heading {
+        font-size: calc(34 * var(--u));
+        line-height: 1.1;
+      }
+
+      .glass-tile-asterisk {
+        width: calc(60 * var(--u));
+        height: calc(60 * var(--u));
+        left: calc(220 * var(--u));
+        top: calc(-10 * var(--u));
+      }
+
+      .glass-tile-asterisk svg {
+        width: calc(24 * var(--u));
+        height: calc(24 * var(--u));
+      }
+
+      .glass-tile-dots {
+        display: none; /* prompt requirement: second glass tile hidden on phone */
+      }
+
+      .trust-cards-row {
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        gap: calc(20 * var(--u));
+      }
+
+      .trust-card {
+        width: 100% !important;
+        height: auto;
+        min-height: calc(280 * var(--u));
+      }
+
+      .card-portrait-stat {
+        height: calc(320 * var(--u));
+      }
+    }
+
+    /* -------------------------------------------------------------
+       6. REDUCED MOTION PREFERENCE
+    ------------------------------------------------------------- */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+      }
+
+      .hero-photo-wrap,
+      .hero-nav,
+      .hero-date,
+      .btn-contact,
+      .title-year-tag,
+      .hero-about-area,
+      .btn-book-call,
+      .hero-stats-frame,
+      .pill-true-growth,
+      .hero-available-tag,
+      .card-out-now,
+      .brand-glass-plate,
+      .jacket-wordmarks {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+      }
+
+      .title-line {
+        transform: none !important;
+      }
+
+      .out-now-progress-bar {
+        width: 100% !important;
+      }
+
+      .manifesto-word {
+        color: var(--text-white) !important;
+      }
+
+      .avatar-item {
+        transform: scale(1) !important;
+        opacity: 1 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =============================================================
+       SECTION 1: HERO (1440 × 938u)
+  ============================================================== -->
+  <header class="hero-wrapper">
+    <div class="hero-stage" id="hero-stage">
+
+      <!-- Header Row (Nav, Date, Contact Us) -->
+      <div class="hero-top-row">
+        <!-- Nav: at (57, 61), 48u tall -->
+        <nav class="hero-nav" id="hero-nav" aria-label="Main navigation">
+          <div class="nav-slider" id="nav-slider"></div>
+          <a href="#home" class="nav-link active" data-nav="home">Home</a>
+          <a href="#studio" class="nav-link" data-nav="studio">Studio</a>
+          <a href="#works" class="nav-link" data-nav="works">Works</a>
+          <a href="#blog" class="nav-link" data-nav="blog">Blog</a>
+        </nav>
+
+        <!-- Date: at (1038, 70) -->
+        <div class="hero-date" id="hero-date">Sunday / 17.06 – 27 June 2026</div>
+
+        <!-- Contact Us: 144 × 46u at (1237, 63) (becomes 40u square on mobile) -->
+        <a href="#contact" class="btn-contact" id="btn-contact" aria-label="Contact Us">
+          <span class="btn-contact-text">Contact Us</span>
+          <span class="btn-contact-arrow">↗</span>
+        </a>
+      </div>
+
+      <!-- Title: "PURE / DESIGN" at (57, 246), with "('25)" at (339, 272) -->
+      <div class="hero-title-area" id="hero-title-area">
+        <div class="title-line-mask">
+          <h1 class="title-line" id="title-pure">
+            PURE
+          </h1>
+        </div>
+        <div class="title-line-mask">
+          <div class="title-line" id="title-design">
+            DESIGN
+          </div>
+        </div>
+      </div>
+      <div class="title-year-tag" id="title-year-tag">(’25)</div>
+
+      <!-- About: "● (ABOUT)" at y 458, two lines copy, "Book A Call ↗" at y 584 -->
+      <div class="hero-about-area" id="hero-about-area">
+        <div class="about-label">
+          <span class="about-label-dot"></span>
+          <span>(ABOUT)</span>
+        </div>
+        <p class="about-copy">
+          Building stunning website that every brand deserves to be seen.
+        </p>
+      </div>
+
+      <a href="#book-call" class="btn-book-call" id="btn-book-call">
+        <span>Book A Call</span>
+        <span>↗</span>
+      </a>
+
+      <!-- Central Hero Figure: Photo, Zahas Brand Plate & Jacket Wordmarks -->
+      <div class="hero-figure-container" id="hero-figure-container">
+        <!-- Photo: 764 × 1024u, masked transparent over 6% on left and right -->
+        <div class="hero-photo-wrap" id="hero-photo-wrap">
+          <img
+            class="hero-photo-img"
+            id="hero-photo"
+            src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/7dc8b8f3-4ccb-4599-8ce4-7f7c7881bad9.webp"
+            alt="East Asian man in dark technical jacket seen from behind"
+            loading="eager"
+          >
+        </div>
+
+        <!-- Brand Plate: dark glass plate over man's back at (532, 444), 364 × 73u -->
+        <div class="brand-glass-plate" id="brand-glass-plate">
+          <div class="brand-mark-triangle">
+            <!-- Two-part geometric triangular mark -->
+            <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M14 2L26 22H17L14 16L11 22H2L14 2Z" fill="#FFFFFF"/>
+              <path d="M14 10.5L18.2 18H9.8L14 10.5Z" fill="#141414"/>
+            </svg>
+          </div>
+          <div class="brand-plate-name">ZAHAS</div>
+          <div class="brand-plate-menu" aria-label="Menu trigger">
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+
+        <!-- Logos across jacket: fictional white wordmarks at y 864 -->
+        <div class="jacket-wordmarks" id="jacket-wordmarks">
+          Lumon &nbsp;·&nbsp; Paperfold &nbsp;·&nbsp; Northwind
+        </div>
+      </div>
+
+      <!-- Stats frame: at (57, 693), 341 × 208u, light grey #cdcdcd -->
+      <div class="hero-stats-frame" id="hero-stats-frame">
+        <!-- Subcard A: Dark Card -->
+        <div class="stats-subcard-dark">
+          <div class="subcard-count-row">
+            <div class="subcard-number" id="count-hero-400">0+</div>
+            <div class="subcard-subtitle">Trusted Partner</div>
+          </div>
+          <!-- 6 Fictional Partner Marks (Halcyon, Ostra, Fenwick, Monolo, Kitefly, Arbor) -->
+          <div class="partner-marks-grid">
+            <div class="partner-mark">
+              <svg viewBox="0 0 10 10"><path d="M5 0 L10 5 L5 10 L0 5 Z"/></svg>
+              <span>Halcyon</span>
+            </div>
+            <div class="partner-mark">
+              <svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="none" stroke="#fff" stroke-width="1.3"/><circle cx="5" cy="5" r="1.5"/></svg>
+              <span>Ostra</span>
+            </div>
+            <div class="partner-mark">
+              <svg viewBox="0 0 10 10"><path d="M2 1 H8 V3 H4 V5 H7 V7 H4 V9 H2 Z"/></svg>
+              <span>Fenwick</span>
+            </div>
+            <div class="partner-mark">
+              <svg viewBox="0 0 10 10"><circle cx="3" cy="5" r="2.4"/><circle cx="7" cy="5" r="2.4"/></svg>
+              <span>Monolo</span>
+            </div>
+            <div class="partner-mark">
+              <svg viewBox="0 0 10 10"><polygon points="5,1 9,4.5 5,9 1,4.5"/></svg>
+              <span>Kitefly</span>
+            </div>
+            <div class="partner-mark">
+              <svg viewBox="0 0 10 10"><path d="M5 1 C2 4.5 2 7.5 5 9 C8 7.5 8 4.5 5 1 Z"/></svg>
+              <span>Arbor</span>
+            </div>
+          </div>
+          <button class="btn-partner-book" aria-label="Book a call with trusted partner">
+            <span>Book a call</span>
+            <span>↗</span>
+          </button>
+        </div>
+
+        <!-- Subcard B: Photo Card (Young man in black cap) -->
+        <div class="stats-subcard-photo">
+          <img
+            class="subcard-photo-img"
+            src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/a9d3641f-d629-46e5-8d2d-5f75386b803d.webp"
+            alt="Studio feed photo - young man in black cap"
+            loading="lazy"
+          >
+          <div class="subcard-photo-overlay"></div>
+          <div class="subcard-photo-header">
+            Studio Feed · 05/06
+          </div>
+          <div class="subcard-photo-footer">
+            <div class="photo-footer-num" id="count-hero-230">0+</div>
+            <div class="photo-footer-label">Projects successfully launched worldwide</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column: Frosted "True Growth" pill with black check disc at (1216, 258) -->
+      <div class="pill-true-growth" id="pill-true-growth">
+        <span class="growth-check-disc">✓</span>
+        <span class="growth-label">True Growth</span>
+      </div>
+
+      <!-- Right Column: "We’re available / ● for you", right-aligned at y 442 -->
+      <div class="hero-available-tag" id="hero-available-tag">
+        <div>We’re available</div>
+        <div><span class="available-dot"></span>for you</div>
+      </div>
+
+      <!-- Right Column: "Out Now / Q Industrial / [2025]" with 196u-tall image card -->
+      <div class="card-out-now" id="card-out-now">
+        <div class="out-now-meta">
+          <span>Out Now</span>
+          <span class="out-now-title">Q Industrial</span>
+          <span class="out-now-year">[2025]</span>
+        </div>
+        <div class="out-now-media">
+          <img
+            class="out-now-img"
+            src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/9340eb08-877d-4d08-91fb-b70754541d98.webp"
+            alt="Q Industrial monochrome fashion shot"
+            loading="lazy"
+          >
+          <div class="out-now-arrow-btn">↗</div>
+        </div>
+        <div class="out-now-progress-track">
+          <div class="out-now-progress-bar" id="out-now-progress-bar"></div>
+        </div>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- =============================================================
+       SECTION 2: BLACK BAR & MANIFESTO SECTION
+  ============================================================== -->
+  <!-- Black bar: 111u -->
+  <div class="section-bar">
+    <div class="bar-inner">
+      <div class="bar-left">
+        <span>EST</span>
+        <span class="year">2019</span>
+      </div>
+      <div class="bar-center" id="btn-scroll-down" role="button" tabindex="0" aria-label="Scroll down">
+        <span>SCROLL DOWN</span>
+        <span class="scroll-arrow-circle">↓</span>
+      </div>
+      <div class="bar-right">
+        LIVE IN DETAILS
+      </div>
+    </div>
+  </div>
+
+  <!-- Manifesto Statement: 5 lines, 830u wide, 52u font, grey to white fill -->
+  <section class="section-manifesto" id="section-manifesto">
+    <div class="manifesto-container">
+      <p class="manifesto-text" id="manifesto-text" aria-label="Agency manifesto">
+        <!-- Five structured lines with word spans and soft-edge scroll color fill -->
+      </p>
+    </div>
+
+    <!-- Sub-line: 150u below statement, 23u font size -->
+    <div class="manifesto-subline">
+      Performance-driven marketing, from strategy to execution.
+      <span class="subline-italic">Built for growing brands.</span>
+    </div>
+  </section>
+
+  <!-- =============================================================
+       SECTION 3: TRUST PANEL & STAT CARDS (1302 × 429u)
+  ============================================================== -->
+  <section class="section-trust" id="section-trust">
+    <div class="trust-panel" id="trust-panel">
+
+      <!-- Left Column: Heading, Paragraph & Overlapping Glass Tiles -->
+      <div class="trust-left-col">
+        <!-- Frosted Glass Tile 1: Asterisk at top right of line 1 -->
+        <div class="glass-tile glass-tile-asterisk">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2V22M2 12H22M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round"/>
+          </svg>
+        </div>
+
+        <!-- Frosted Glass Tile 2: Four-dot tile over "Businesses" -->
+        <div class="glass-tile glass-tile-dots">
+          <div class="four-dots-grid">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+        </div>
+
+        <h2 class="trust-heading">
+          Trusted by<br>
+          Hundreds of<br>
+          Growing<br>
+          Businesses
+        </h2>
+
+        <p class="trust-subtext">
+          Strategic craft and precision brand engineering designed to elevate industry disruptors into category leaders across the globe.
+        </p>
+      </div>
+
+      <!-- Right Column: 3 Cards (326u tall, 8u radius) -->
+      <div class="trust-cards-row">
+
+        <!-- Card 1: Avatar card (light grey #d6d6d6, 293u) -->
+        <div class="trust-card card-avatar-stat" id="card-avatar-stat">
+          <!-- 8 round 48u avatars in a 4 × 2 grid -->
+          <div class="avatars-grid-4x2" id="avatars-grid">
+            <div class="avatar-item">
+              <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/300f41b1-3de5-4153-afde-06e15e753ad0.webp" alt="Client avatar 1" loading="lazy">
+            </div>
+            <div class="avatar-item">
+              <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/bfff4cdf-4fda-4491-ada6-62f3b6236492.webp" alt="Client avatar 2" loading="lazy">
+            </div>
+            <div class="avatar-item">
+              <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/943b121e-fe72-479f-93ae-aa8cd1650f69.webp" alt="Client avatar 3" loading="lazy">
+            </div>
+            <div class="avatar-item">
+              <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/c673306f-2b81-4c3d-a7d2-3df61d481abb.webp" alt="Client avatar 4" loading="lazy">
+            </div>
+            <div class="avatar-item">
+              <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/2e4fcf11-d0fc-4f31-8f7a-dfe751777141.webp" alt="Client avatar 5" loading="lazy">
+            </div>
+            <div class="avatar-item">
+              <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/ab458fcd-4c2c-426f-8213-21cc3c7274be.webp" alt="Client avatar 6" loading="lazy">
+            </div>
+            <div class="avatar-item">
+              <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/c1fcd833-5ac9-41e9-9352-fead7e64fa24.webp" alt="Client avatar 7" loading="lazy">
+            </div>
+            <div class="avatar-item">
+              <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/4c2b3307-e555-4633-949c-efd3b7e09d82.webp" alt="Client avatar 8" loading="lazy">
+            </div>
+          </div>
+
+          <div class="avatar-stat-info">
+            <div class="avatar-stat-number" id="count-trust-56">0M+</div>
+            <div class="avatar-stat-label">Global Collaborations</div>
+          </div>
+        </div>
+
+        <!-- Card 2: Awards card (#262626, 298u) -->
+        <div class="trust-card card-awards-stat" id="card-awards-stat">
+          <div class="awards-top-info">
+            <div class="awards-stat-number" id="count-trust-10">0+</div>
+            <div class="awards-stat-label">Industry Awards</div>
+          </div>
+
+          <!-- SVG laurel badge: BEST GROWTH PARTNER 2026 -->
+          <div class="laurel-badge-wrap">
+            <svg class="laurel-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="24" cy="24" r="22" stroke="rgba(255,255,255,0.25)" stroke-width="1.2" stroke-dasharray="2 3"/>
+              <!-- Laurel left branch -->
+              <path d="M16 34 C12 28, 12 18, 20 12" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M14 30 Q10 28 12 25" stroke="#ffffff" stroke-width="1.2"/>
+              <path d="M13 24 Q9 22 12 19" stroke="#ffffff" stroke-width="1.2"/>
+              <path d="M15 18 Q12 15 16 14" stroke="#ffffff" stroke-width="1.2"/>
+              <!-- Laurel right branch -->
+              <path d="M32 34 C36 28, 36 18, 28 12" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
+              <path d="M34 30 Q38 28 36 25" stroke="#ffffff" stroke-width="1.2"/>
+              <path d="M35 24 Q39 22 36 19" stroke="#ffffff" stroke-width="1.2"/>
+              <path d="M33 18 Q36 15 32 14" stroke="#ffffff" stroke-width="1.2"/>
+              <!-- Center star -->
+              <polygon points="24,19 25.5,23 29.5,23.5 26.5,26.5 27.5,30.5 24,28.5 20.5,30.5 21.5,26.5 18.5,23.5 22.5,23" fill="#ffffff"/>
+            </svg>
+            <div class="laurel-badge-text">
+              Best Growth<br>Partner 2026
+            </div>
+          </div>
+
+          <div class="awards-card-note">
+            Recognized for exceptional design systems and strategic excellence.
+          </div>
+        </div>
+
+        <!-- Card 3: Portrait card (200u, cut off by panel's right edge) -->
+        <div class="trust-card card-portrait-stat">
+          <img
+            class="card-portrait-img"
+            src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/addecc7d-666f-4342-8290-ed7f7cbbffd6.webp"
+            alt="Side profile in a white t-shirt on a blue-grey gradient"
+            loading="lazy"
+          >
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =============================================================
+       JAVASCRIPT: MOTION & INTERACTION ORCHESTRATION
+  ============================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const isRecorder = new URLSearchParams(window.location.search).get('rec') === '1';
+
+      // -----------------------------------------------------------
+      // 1. MANIFESTO WORDS PREPARATION (5 lines, 26 words)
+      // -----------------------------------------------------------
+      const manifestoParagraph = document.getElementById('manifesto-text');
+      const manifestoLines = [
+        ["We", "believe", "the", "strongest", "brands", "are"],
+        ["built", "through", "strategy,", "not", "just"],
+        ["aesthetics.", "Every", "campaign", "is", "designed"],
+        ["to", "capture", "attention,", "inspire", "action,", "and"],
+        ["create", "lasting", "business", "growth."]
+      ];
+
+      let wordIndexCounter = 0;
+      let htmlMarkup = '';
+
+      manifestoLines.forEach((lineWords, lineIdx) => {
+        lineWords.forEach((word) => {
+          htmlMarkup += `<span class="manifesto-word" data-word-idx="${wordIndexCounter}">${word} </span>`;
+          wordIndexCounter++;
+        });
+        if (lineIdx < manifestoLines.length - 1) {
+          htmlMarkup += `<br class="manifesto-desktop-br">`;
+        }
+      });
+
+      manifestoParagraph.innerHTML = htmlMarkup;
+      const wordSpans = Array.from(manifestoParagraph.querySelectorAll('.manifesto-word'));
+      const totalWords = wordSpans.length;
+
+      // Color interpolation: grey #6f6f6f (111,111,111) to white #f4f4f4 (244,244,244) with 3-word soft edge
+      function updateStatementFill(progress) {
+        if (isReducedMotion) {
+          wordSpans.forEach(span => span.style.color = '#f4f4f4');
+          return;
+        }
+
+        const effectiveProgress = Math.max(0, Math.min(1, progress));
+        const softEdge = 3;
+        const currentPos = effectiveProgress * (totalWords + softEdge);
+
+        wordSpans.forEach((span, idx) => {
+          if (idx <= currentPos - softEdge) {
+            span.style.color = '#f4f4f4';
+          } else if (idx >= currentPos) {
+            span.style.color = '#6f6f6f';
+          } else {
+            const ratio = (currentPos - idx) / softEdge;
+            const clamped = Math.max(0, Math.min(1, ratio));
+            const val = Math.round(111 + (244 - 111) * clamped);
+            span.style.color = `rgb(${val}, ${val}, ${val})`;
+          }
+        });
+      }
+
+      // Initial statement state
+      updateStatementFill(0);
+
+      // -----------------------------------------------------------
+      // 2. NAV SLIDER INTERACTION
+      // -----------------------------------------------------------
+      const navEl = document.getElementById('hero-nav');
+      const navSlider = document.getElementById('nav-slider');
+      const navLinks = Array.from(navEl.querySelectorAll('.nav-link'));
+
+      function positionSliderTo(linkEl) {
+        if (!linkEl || !navSlider) return;
+        const navRect = navEl.getBoundingClientRect();
+        const linkRect = linkEl.getBoundingClientRect();
+        const leftOffset = linkRect.left - navRect.left;
+        navSlider.style.width = linkRect.width + 'px';
+        navSlider.style.transform = `translateX(${leftOffset}px)`;
+      }
+
+      // Position slider on active link
+      const activeLink = navLinks.find(l => l.classList.contains('active')) || navLinks[0];
+      setTimeout(() => positionSliderTo(activeLink), 60);
+
+      navLinks.forEach(link => {
+        link.addEventListener('mouseenter', () => {
+          navLinks.forEach(l => l.classList.remove('hovered'));
+          link.classList.add('hovered');
+          positionSliderTo(link);
+        });
+      });
+
+      navEl.addEventListener('mouseleave', () => {
+        navLinks.forEach(l => l.classList.remove('hovered'));
+        positionSliderTo(activeLink);
+      });
+
+      // -----------------------------------------------------------
+      // 3. NUMBER COUNTER ANIMATION
+      // -----------------------------------------------------------
+      function animateCounter(elem, endVal, suffix, durationMs, delayMs = 0) {
+        if (!elem) return;
+        if (isReducedMotion) {
+          elem.textContent = endVal + suffix;
+          return;
+        }
+
+        setTimeout(() => {
+          let startTime = null;
+          function step(timestamp) {
+            if (!startTime) startTime = timestamp;
+            const elapsed = timestamp - startTime;
+            const p = Math.min(elapsed / durationMs, 1);
+            // Ease out cubic
+            const ease = 1 - Math.pow(1 - p, 3);
+            const current = Math.floor(ease * endVal);
+            elem.textContent = current + suffix;
+            if (p < 1) {
+              requestAnimationFrame(step);
+            } else {
+              elem.textContent = endVal + suffix;
+            }
+          }
+          requestAnimationFrame(step);
+        }, delayMs);
+      }
+
+      // -----------------------------------------------------------
+      // 4. LOAD ANIMATIONS (Web Animations)
+      // -----------------------------------------------------------
+      function initLoadAnimations() {
+        if (isReducedMotion) {
+          document.getElementById('count-hero-400').textContent = '400+';
+          document.getElementById('count-hero-230').textContent = '230+';
+          document.getElementById('out-now-progress-bar').style.width = '100%';
+          return;
+        }
+
+        const easeOutQuint = 'cubic-bezier(0.16, 1, 0.3, 1)';
+
+        // 1. Photo rises 40px, un-blurs and fades in over 1.3 s
+        const heroPhotoWrap = document.getElementById('hero-photo-wrap');
+        if (heroPhotoWrap) {
+          heroPhotoWrap.animate([
+            { opacity: 0, filter: 'blur(10px)', transform: 'translateY(40px)' },
+            { opacity: 1, filter: 'blur(0px)', transform: 'translateY(0px)' }
+          ], {
+            duration: 1300,
+            easing: easeOutQuint,
+            fill: 'forwards'
+          });
+        }
+
+        // 2. Title lines rise out of their masks, 1 s, staggered 110 ms
+        const titlePure = document.getElementById('title-pure');
+        const titleDesign = document.getElementById('title-design');
+
+        if (titlePure) {
+          titlePure.animate([
+            { transform: 'translateY(105%)' },
+            { transform: 'translateY(0%)' }
+          ], {
+            duration: 1000,
+            delay: 150,
+            easing: easeOutQuint,
+            fill: 'forwards'
+          });
+        }
+
+        if (titleDesign) {
+          titleDesign.animate([
+            { transform: 'translateY(105%)' },
+            { transform: 'translateY(0%)' }
+          ], {
+            duration: 1000,
+            delay: 260,
+            easing: easeOutQuint,
+            fill: 'forwards'
+          });
+        }
+
+        // 3. Nav drops in
+        if (navEl) {
+          navEl.animate([
+            { opacity: 0, transform: 'translateY(-20px)' },
+            { opacity: 1, transform: 'translateY(0px)' }
+          ], {
+            duration: 800,
+            delay: 200,
+            easing: easeOutQuint,
+            fill: 'forwards'
+          });
+        }
+
+        // 4. Hero elements rise 14px and fade in, staggered 55 ms
+        const heroStaggerElements = [
+          document.getElementById('title-year-tag'),
+          document.getElementById('hero-date'),
+          document.getElementById('btn-contact'),
+          document.getElementById('hero-about-area'),
+          document.getElementById('btn-book-call'),
+          document.getElementById('pill-true-growth'),
+          document.getElementById('hero-available-tag'),
+          document.getElementById('brand-glass-plate'),
+          document.getElementById('hero-stats-frame'),
+          document.getElementById('card-out-now'),
+          document.getElementById('jacket-wordmarks')
+        ].filter(Boolean);
+
+        heroStaggerElements.forEach((el, index) => {
+          el.animate([
+            { opacity: 0, transform: 'translateY(14px)' },
+            { opacity: 1, transform: 'translateY(0px)' }
+          ], {
+            duration: 800,
+            delay: 340 + index * 55,
+            easing: easeOutQuint,
+            fill: 'forwards'
+          });
+        });
+
+        // 5. Q Industrial progress line draws in
+        const progressBar = document.getElementById('out-now-progress-bar');
+        setTimeout(() => {
+          if (progressBar) progressBar.style.width = '100%';
+        }, 500);
+
+        // 6. "400+" and "230+" count up over 1.4 s
+        animateCounter(document.getElementById('count-hero-400'), 400, '+', 1400, 300);
+        animateCounter(document.getElementById('count-hero-230'), 230, '+', 1400, 450);
+      }
+
+      initLoadAnimations();
+
+      // -----------------------------------------------------------
+      // 5. SCROLL INTERACTIONS: Photo Drift & Statement Fill
+      // -----------------------------------------------------------
+      const heroPhotoImg = document.getElementById('hero-photo');
+      const manifestoSection = document.getElementById('section-manifesto');
+      const trustPanel = document.getElementById('trust-panel');
+      let trustSectionTriggered = false;
+
+      function triggerTrustEntrance() {
+        if (trustSectionTriggered) return;
+        trustSectionTriggered = true;
+
+        // "56M+" and "10+" count up over 1.4s
+        animateCounter(document.getElementById('count-trust-56'), 56, 'M+', 1400, 0);
+        animateCounter(document.getElementById('count-trust-10'), 10, '+', 1400, 100);
+
+        // Avatars pop in (scale 0.4 -> 1, staggered)
+        const avatarItems = document.querySelectorAll('.avatar-item');
+        avatarItems.forEach((item, i) => {
+          setTimeout(() => {
+            item.classList.add('popped');
+          }, 80 + i * 60);
+        });
+      }
+
+      function handleScroll() {
+        if (isRecorder || isReducedMotion) return;
+
+        const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+
+        // 1. Hero photo drifts at 0.12x scroll
+        if (heroPhotoImg && scrollY < window.innerHeight * 1.5) {
+          heroPhotoImg.style.transform = `translateY(${scrollY * 0.12}px)`;
+        }
+
+        // 2. Statement fill grey -> white
+        if (manifestoSection) {
+          const rect = manifestoSection.getBoundingClientRect();
+          const winHeight = window.innerHeight;
+          // Progress from when top enters lower 80% to when bottom leaves upper 20%
+          const enterY = winHeight * 0.8;
+          const exitY = winHeight * 0.2;
+          const progress = (enterY - rect.top) / (enterY - exitY + rect.height * 0.45);
+          updateStatementFill(progress);
+        }
+
+        // 3. Trust panel entrance detection
+        if (trustPanel && !trustSectionTriggered) {
+          const rect = trustPanel.getBoundingClientRect();
+          if (rect.top <= window.innerHeight * 0.85) {
+            triggerTrustEntrance();
+          }
+        }
+      }
+
+      window.addEventListener('scroll', handleScroll, { passive: true });
+      window.addEventListener('resize', () => {
+        positionSliderTo(activeLink);
+        handleScroll();
+      });
+
+      // Smooth scroll button
+      const scrollDownBtn = document.getElementById('btn-scroll-down');
+      if (scrollDownBtn) {
+        scrollDownBtn.addEventListener('click', () => {
+          manifestoSection.scrollIntoView({ behavior: 'smooth' });
+        });
+      }
+
+      // -----------------------------------------------------------
+      // 6. RECORDER MODE (?rec=1)
+      // Capture whole page in single frame; scroll parts run on timer
+      // -----------------------------------------------------------
+      if (isRecorder) {
+        // Continuous slow photo drift
+        let driftStart = null;
+        function driftPhoto(time) {
+          if (!driftStart) driftStart = time;
+          const elapsed = (time - driftStart) / 1000;
+          if (heroPhotoImg) {
+            heroPhotoImg.style.transform = `translateY(${elapsed * 6}px)`;
+          }
+          requestAnimationFrame(driftPhoto);
+        }
+        requestAnimationFrame(driftPhoto);
+
+        // Statement fill: 1.3 - 4.2 s (duration 2.9s)
+        const stmtStart = 1300;
+        const stmtDuration = 2900;
+        setTimeout(() => {
+          let tStart = null;
+          function animateFill(timestamp) {
+            if (!tStart) tStart = timestamp;
+            const elapsed = timestamp - tStart;
+            const p = Math.min(elapsed / stmtDuration, 1);
+            updateStatementFill(p);
+            if (p < 1) {
+              requestAnimationFrame(animateFill);
+            } else {
+              updateStatementFill(1);
+            }
+          }
+          requestAnimationFrame(animateFill);
+        }, stmtStart);
+
+        // Trust counters and avatars: 3.5 - 5.2 s
+        setTimeout(() => {
+          triggerTrustEntrance();
+        }, 3500);
+
+        // Awards card lift: 5.3 s
+        setTimeout(() => {
+          const awardsCard = document.getElementById('card-awards-stat');
+          if (awardsCard) {
+            awardsCard.style.transform = 'translateY(calc(-6 * var(--u)))';
+            awardsCard.style.boxShadow = '0 16px 30px rgba(0, 0, 0, 0.4)';
+          }
+        }, 5300);
+      }
+
+    })();
+  </script>
+</body>
+</html>
