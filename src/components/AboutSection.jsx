@@ -13,7 +13,8 @@ export function AboutSection({ onOpenHireMe }) {
           
           {/* Big Centered Headline: HELLO I'M DESHAN GANEGODA */}
           <h2 className="about-centered-name">
-            HELLO I'M DESHAN GANEGODA
+            <span className="about-greeting">HELLO I'M</span>{' '}
+            <span className="about-name">DESHAN GANEGODA</span>
           </h2>
 
           {/* Big Centered Bio Narrative in Bebas Neue font */}

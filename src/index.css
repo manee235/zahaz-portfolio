@@ -4284,17 +4284,24 @@ body,
   font-family: var(--font-ui);
   font-size: clamp(32px, 4.2vw, 56px);
   font-weight: 700;
-  letter-spacing: -0.025em;
-  line-height: 1.15;
+  letter-spacing: 0.025em;
+  word-spacing: 0.35em;
+  line-height: 1.22;
   text-transform: uppercase;
   color: #ffffff;
   margin: 0 0 24px;
   text-align: center;
 }
 
-.about-role-dot {
-  color: rgba(255, 255, 255, 0.3);
-  margin: 0 10px;
+.about-greeting {
+  color: rgba(255, 255, 255, 0.72);
+  margin-right: 0.22em;
+  font-weight: 600;
+}
+
+.about-name {
+  color: #ffffff;
+  font-weight: 800;
 }
 
 /* Big Centered Bio Narrative in Inter Tight (same as Manifesto "We believe") */
@@ -4386,7 +4393,9 @@ body,
 
   .about-centered-name {
     font-size: clamp(24px, 6.5vw, 36px);
-    line-height: 1.2;
+    line-height: 1.25;
+    letter-spacing: 0.02em;
+    word-spacing: 0.28em;
     margin-bottom: 18px;
   }
 
