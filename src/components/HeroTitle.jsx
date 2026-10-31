@@ -2,7 +2,22 @@ import React from 'react';
 
 export function HeroTitle({ onOpenHireMe }) {
   return (
-    <>
+    <div className="hero-title-area">
+      <h1 className="hero-stacked-title" aria-label="Creative Virtual Product Designer">
+        <span className="hero-title-mask">
+          <span className="hero-title-word word-creative">CREATIVE</span>
+        </span>
+        <span className="hero-title-mask">
+          <span className="hero-title-word word-virtual">VIRTUAL</span>
+        </span>
+        <span className="hero-title-mask">
+          <span className="hero-title-word word-product">PRODUCT</span>
+        </span>
+        <span className="hero-title-mask">
+          <span className="hero-title-word word-designer">DESIGNER</span>
+        </span>
+      </h1>
+
       <button
         type="button"
         onClick={onOpenHireMe}
@@ -12,7 +27,8 @@ export function HeroTitle({ onOpenHireMe }) {
         <span>Hire Me</span>
         <span>↗</span>
       </button>
-    </>
+    </div>
   );
 }
 
+export default HeroTitle;

@@ -565,45 +565,75 @@ img {
   will-change: transform;
 }
 
-/* Title: "PURE / DESIGN" at (57, 246) and "('25)" at (339, 272) */
+/* -------------------------------------------------------------
+   HERO TITLE AREA: STACKED CONDENSED DISPLAY TYPOGRAPHY
+   "CREATIVE / VIRTUAL / PRODUCT / DESIGNER"
+------------------------------------------------------------- */
 .hero-title-area {
   position: absolute;
   left: calc(57 * var(--u));
-  top: calc(246 * var(--u));
+  top: calc(210 * var(--u));
   z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.title-line-mask {
+.hero-stacked-title {
+  display: flex;
+  flex-direction: column;
+  font-family: 'Bebas Neue', var(--font-display), sans-serif;
+  font-size: calc(92 * var(--u));
+  line-height: 0.86;
+  letter-spacing: 0.015em;
+  text-transform: uppercase;
+  color: #ffffff;
+  user-select: none;
+  margin: 0;
+  padding: 0;
+}
+
+.hero-title-mask {
   overflow: hidden;
   display: block;
 }
 
-.title-line {
+.hero-title-word {
   display: block;
-  font-family: var(--font-display);
-  font-variation-settings: 'wdth' 104, 'wght' 640;
-  font-size: calc(90 * var(--u));
-  line-height: 0.86;
-  letter-spacing: -0.06em;
-  color: #ffffff;
-  text-transform: uppercase;
-  animation: titleUnmask 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation: heroWordReveal 0.9s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   transform: translateY(105%);
   will-change: transform, filter, opacity;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), color 0.25s ease;
+  text-shadow: 0 0 1px rgba(255, 255, 255, 0.9),
+               -1px 0 rgba(56, 189, 248, 0.2),
+               1px 0 rgba(244, 63, 94, 0.2);
 }
 
-.title-line-pure {
-  animation-delay: 0.15s;
+.hero-title-word:hover {
+  transform: translateX(8px);
+  color: #38bdf8;
 }
 
-.title-line-design {
-  animation-delay: 0.26s;
+.word-creative {
+  animation-delay: 0.12s;
 }
 
-@keyframes titleUnmask {
+.word-virtual {
+  animation-delay: 0.22s;
+}
+
+.word-product {
+  animation-delay: 0.32s;
+}
+
+.word-designer {
+  animation-delay: 0.42s;
+}
+
+@keyframes heroWordReveal {
   0% {
-    transform: translateY(110%) scale(0.96);
-    filter: blur(18px);
+    transform: translateY(108%) scale(0.96);
+    filter: blur(14px);
     opacity: 0;
   }
   100% {
@@ -611,22 +641,6 @@ img {
     filter: blur(0px);
     opacity: 1;
   }
-}
-
-.title-year-tag {
-  position: absolute;
-  left: calc(339 * var(--u));
-  top: calc(272 * var(--u));
-  font-family: var(--font-display);
-  font-variation-settings: 'wdth' 95, 'wght' 500;
-  font-size: calc(44 * var(--u));
-  line-height: 0.86;
-  letter-spacing: -0.04em;
-  color: rgba(255, 255, 255, 0.6);
-  z-index: 20;
-  animation: elemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
-  opacity: 0;
-  transform: translateY(14px);
 }
 
 /* About: ● (ABOUT) at y 458 */
@@ -669,11 +683,12 @@ img {
   margin-top: calc(14 * var(--u));
 }
 
-/* Book A Call button: at y 584 */
+/* Book A Call (Hire Me) button flowing below stacked title */
 .btn-book-call {
-  position: absolute;
-  left: calc(57 * var(--u));
-  top: calc(584 * var(--u));
+  position: relative;
+  left: auto;
+  top: auto;
+  margin-top: calc(28 * var(--u));
   height: calc(44 * var(--u));
   padding: 0 calc(24 * var(--u));
   border-radius: 9999px;
@@ -682,13 +697,16 @@ img {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: calc(6 * var(--u));
+  gap: calc(8 * var(--u));
   font-family: var(--font-ui);
   font-size: calc(14 * var(--u));
   font-weight: 600;
   z-index: 20;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 18px rgba(255, 255, 255, 0.22);
   transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s, box-shadow 0.2s;
-  animation: elemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+  animation: elemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.52s forwards;
   opacity: 0;
   transform: translateY(14px);
 }
@@ -696,7 +714,7 @@ img {
 .btn-book-call:hover {
   transform: translateY(-2px);
   background: #e2e8f0;
-  box-shadow: 0 4px 18px rgba(56, 189, 248, 0.35);
+  box-shadow: 0 6px 24px rgba(56, 189, 248, 0.4);
 }
 
 /* Stats Frame: at (57, 693), 341 × 208u, frosted dark panel */
@@ -1640,25 +1658,27 @@ img {
   /* Title: next in order */
   .hero-title-area {
     position: static;
-    margin-top: calc(36 * var(--u));
+    margin-top: calc(28 * var(--u));
     order: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 100%;
   }
 
-  .title-line {
-    font-size: calc(56 * var(--u));
-    line-height: 0.9;
+  .hero-stacked-title {
+    font-size: calc(52 * var(--u));
+    line-height: 0.88;
+    align-items: center;
+    text-align: center;
+  }
+
+  .hero-title-word {
     transform: none;
     animation: none;
-  }
-
-  .title-year-tag {
-    position: static;
-    font-size: calc(28 * var(--u));
-    margin-left: calc(10 * var(--u));
-    vertical-align: middle;
     opacity: 1;
-    transform: none;
-    animation: none;
+    filter: none;
   }
 
   /* (ABOUT) copy */
@@ -1927,7 +1947,8 @@ img {
     animation: none !important;
   }
 
-  .title-line {
+  .title-line,
+  .hero-title-word {
     transform: none !important;
     animation: none !important;
   }
