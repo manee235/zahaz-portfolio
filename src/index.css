@@ -247,10 +247,12 @@ img {
 /* Hero Figure Container: contains Photo, Brand Plate & Wordmarks */
 .hero-figure-container {
   position: absolute;
-  left: calc(338 * var(--u));
-  top: calc(-86 * var(--u));
-  width: calc(764 * var(--u));
-  height: calc(1024 * var(--u));
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  top: auto;
+  width: calc(520 * var(--u));
+  height: calc(840 * var(--u));
   z-index: 2;
   perspective: 1000px;
 }
@@ -260,8 +262,6 @@ img {
   inset: 0;
   width: 100%;
   height: 100%;
-  -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
-  mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
   animation: photoReveal 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   opacity: 0;
   filter: blur(10px);
@@ -295,8 +295,8 @@ img {
   inset: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  object-position: center top;
+  object-fit: contain;
+  object-position: center bottom;
   pointer-events: none;
   will-change: transform, opacity, filter;
 }
@@ -306,13 +306,14 @@ img {
   filter: contrast(1.05) brightness(1.02);
 }
 
-/* Brand Plate: Dark glass plate over man's back at (532, 444), 364 × 73u */
+/* Brand Plate: Dark glass plate over man's back */
 .brand-glass-plate {
   position: absolute;
-  left: calc(194 * var(--u));
-  top: calc(530 * var(--u));
-  width: calc(364 * var(--u));
-  height: calc(73 * var(--u));
+  left: 50%;
+  transform: translateX(-50%);
+  top: calc(440 * var(--u));
+  width: calc(310 * var(--u));
+  height: calc(64 * var(--u));
   background: rgba(18, 18, 18, 0.76);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
@@ -321,7 +322,7 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 calc(24 * var(--u));
+  padding: 0 calc(20 * var(--u));
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
   z-index: 10;
   animation: elemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards;
@@ -370,15 +371,15 @@ img {
   border-radius: 1px;
 }
 
-/* Wordmarks across jacket: y = 864 in stage -> 864 - (-86) = 950u in container */
+/* Wordmarks across jacket */
 .jacket-wordmarks {
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: calc(950 * var(--u));
+  top: calc(770 * var(--u));
   font-family: var(--font-display);
   font-variation-settings: 'wdth' 105, 'wght' 500;
-  font-size: calc(13 * var(--u));
+  font-size: calc(12 * var(--u));
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.85);
@@ -1428,14 +1429,15 @@ img {
     order: 4;
   }
 
-  /* Full-width photo (470u) with brand plate and logos over it */
+  /* Proportionate photo (380u) with brand plate and logos over it */
   .hero-figure-container {
     position: relative;
     left: auto;
     top: auto;
     width: 100%;
-    height: calc(470 * var(--u));
-    margin-top: calc(32 * var(--u));
+    max-width: calc(320 * var(--u));
+    height: calc(380 * var(--u));
+    margin: calc(28 * var(--u)) auto 0;
     border-radius: calc(16 * var(--u));
     overflow: hidden;
     order: 5;

@@ -14,13 +14,13 @@ export function HeroFigure({ scrollY, mousePos = { x: 0, y: 0 }, isRecorder, isR
       };
 
   const plateTilt = isReducedMotion
-    ? {}
+    ? { transform: 'translateX(-50%)' }
     : {
-        transform: `translate3d(${mousePos.x * 24}px, ${mousePos.y * 24}px, 30px) translateY(${scrollY * 0.12}px)`,
+        transform: `translateX(-50%) translate3d(${mousePos.x * 24}px, ${mousePos.y * 24}px, 30px) translateY(${scrollY * 0.12}px)`,
       };
 
   const wordmarksTilt = isReducedMotion
-    ? {}
+    ? { transform: 'translateX(-50%)' }
     : {
         transform: `translateX(-50%) translate3d(${mousePos.x * 8}px, ${mousePos.y * 8}px, 0px)`,
       };
