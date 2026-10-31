@@ -50,7 +50,7 @@ export function ContactFooter({ onOpenHireMe }) {
               </button>
             </div>
 
-            {/* Direct Connect Options: Circular Icons for Email, Phone, WhatsApp, Instagram, Facebook, Behance */}
+            {/* Direct Connect Options: Circular Icons for Email, Phone, WhatsApp, Facebook, Behance */}
             <div className="contact-connect-group">
               <span className="contact-connect-label">OR CONNECT WITH US</span>
               
@@ -107,28 +107,9 @@ export function ContactFooter({ onOpenHireMe }) {
                   </span>
                 </a>
 
-                {/* 4. Instagram */}
+                {/* 4. Facebook */}
                 <a
-                  href="https://instagram.com/sahasradeshan"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="contact-icon-pill contact-pill-instagram"
-                  title="Follow on Instagram (@sahasradeshan)"
-                  aria-label="Instagram"
-                  role="listitem"
-                >
-                  <span className="contact-icon-symbol" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
-                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
-                    </svg>
-                  </span>
-                </a>
-
-                {/* 5. Facebook */}
-                <a
-                  href="https://facebook.com"
+                  href="https://www.facebook.com/share/1DHdERJiJJ/?mibextid=wwXIfr"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="contact-icon-pill contact-pill-facebook"
@@ -143,13 +124,13 @@ export function ContactFooter({ onOpenHireMe }) {
                   </span>
                 </a>
 
-                {/* 6. Behance */}
+                {/* 5. Behance */}
                 <a
                   href="https://www.behance.net/sahasradeshan"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="contact-icon-pill contact-pill-behance"
-                  title="View portfolio on Behance"
+                  title="View portfolio on Behance (sahasradeshan)"
                   aria-label="Behance"
                   role="listitem"
                 >
@@ -171,7 +152,7 @@ export function ContactFooter({ onOpenHireMe }) {
               <li><a href="#studio">Studio</a></li>
               <li><a href="#works">Case Studies</a></li>
               <li><a href="#works">Gallery</a></li>
-              <li><a href="#contact">About Me</a></li>
+              <li><a href="#about">About Me</a></li>
             </ul>
           </div>
 
