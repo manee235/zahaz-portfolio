@@ -32,3 +32,4 @@ export function SahasWordmarkSvg({ className = '', fill = '#000000', style = {} 
 }
 
 export default SahasWordmarkSvg;
+

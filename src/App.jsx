@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react';
 import { HeroSection } from './components/HeroSection';
 import { BarSection } from './components/BarSection';
 import { ManifestoSection } from './components/ManifestoSection';
+import { ProjectsSection } from './components/ProjectsSection';
 import { TrustSection } from './components/TrustSection';
 import { LoadingScreen } from './components/LoadingScreen';
 import { useScrollProgress } from './hooks/useScrollProgress';
@@ -73,7 +74,10 @@ export function App() {
       {/* 3. Manifesto Section (grey to white fill) */}
       <ManifestoSection isRecorder={isRecorder} isReducedMotion={isReducedMotion} />
 
-      {/* 4. Trust Section (1302 × 429u panel) with Parallax Floating Tiles */}
+      {/* 4. Projects Section (3D Curved Cylindrical Carousel Hero) */}
+      <ProjectsSection isReducedMotion={isReducedMotion} />
+
+      {/* 5. Trust Section (1302 × 429u panel) with Parallax Floating Tiles */}
       <TrustSection scrollY={scrollY} isRecorder={isRecorder} isReducedMotion={isReducedMotion} />
     </div>
   );
