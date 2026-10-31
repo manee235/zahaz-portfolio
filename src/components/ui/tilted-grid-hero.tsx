@@ -15,6 +15,8 @@ export type TiltedGridImage = {
   description?: string;
   deliverables?: string[];
   metrics?: string;
+  glowColor?: string;
+  glowSecondary?: string;
 };
 
 export type TiltedGridHeroHandle = {
@@ -46,6 +48,8 @@ export type TiltedGridHeroProps = {
   direction?: 'back-to-front' | 'front-to-back';
   /** Callback fired when a tile is clicked */
   onImageClick?: (image: TiltedGridImage, index: number) => void;
+  /** Callback fired when the active/focused foreground image changes */
+  onActiveImageChange?: (image: TiltedGridImage, index: number) => void;
   children?: React.ReactNode;
   className?: string;
   style?: React.CSSProperties;
@@ -63,6 +67,7 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
       fade = 10,
       direction = 'back-to-front',
       onImageClick,
+      onActiveImageChange,
       children,
       className,
       style,
@@ -71,6 +76,7 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
     ref
   ) {
     const containerRef = React.useRef<HTMLDivElement>(null);
+    const runwayRef = React.useRef<HTMLDivElement>(null);
     const trackRef = React.useRef<HTMLDivElement>(null);
     const dofLayersRef = React.useRef<(HTMLDivElement | null)[]>([]);
 
@@ -81,7 +87,12 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
     const offsetRef = React.useRef(0);
     const velocityRef = React.useRef(0);
     const isDraggingRef = React.useRef(false);
-    const isHoveredRef = React.useRef(false);
+    const isHoveringCardRef = React.useRef(false);
+    const activeIdleSpeedRef = React.useRef(0);
+    const lastInteractionTimeRef = React.useRef(performance.now());
+    const lastReportedIdxRef = React.useRef<number>(-1);
+    const isPausedRef = React.useRef(false);
+
     const dragStartPos = React.useRef({ x: 0, y: 0, time: 0 });
     const lastPointerPos = React.useRef({ x: 0, time: 0 });
     const hasDraggedSignificantly = React.useRef(false);
@@ -128,30 +139,47 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
       };
     }, [measureCycleWidth, displayList]);
 
-    // Auto-drift, momentum & Depth of Field (DoF) optical focus calculation
+    // Responsive 3D Geometry
+    const activeAngleY = isMobile ? 0 : angleY;
+    const activePushBack = isMobile ? -20 : pushBack;
+    const activeAngleX = isMobile ? 0 : angleX;
+
+    // Continuous Idle Animation, Momentum Physics, Ambient Glow Tracking & Optical DoF Focus
     React.useEffect(() => {
       let animId: number;
-      // Drift rate in pixels per 60fps frame
-      const driftRate = direction === 'back-to-front' ? 0.65 : -0.65;
+      // Base continuous drift rate (pixels per frame at 60fps)
+      const baseDriftRate = direction === 'back-to-front' ? 1.05 : -1.05;
 
       const loop = () => {
+        const now = performance.now();
         const singleWidth = singleSetWidthRef.current;
+        const totalItems = displayList.length;
 
-        if (!isDraggingRef.current) {
-          // Momentum decay
-          if (Math.abs(velocityRef.current) > 0.08) {
-            offsetRef.current += velocityRef.current;
-            velocityRef.current *= 0.94; // friction
-          } else {
-            velocityRef.current = 0;
-            // Gentle auto-drift when not hovered or active
-            if (!isHoveredRef.current) {
-              offsetRef.current -= driftRate;
-            }
+        // 1. Physics: Dragging vs Momentum vs Idle Glide
+        if (isDraggingRef.current) {
+          lastInteractionTimeRef.current = now;
+          activeIdleSpeedRef.current = 0;
+        } else if (Math.abs(velocityRef.current) > 0.08) {
+          // Momentum decay following drag or scroll release
+          offsetRef.current += velocityRef.current;
+          velocityRef.current *= 0.94; // smooth friction
+          lastInteractionTimeRef.current = now;
+          activeIdleSpeedRef.current = 0;
+        } else {
+          velocityRef.current = 0;
+
+          // Continuous Idle Animation:
+          // Active when not dragging or paused.
+          // If hovering over a specific card to inspect, glide at 25% speed (slow-mo inspection)
+          if (!isPausedRef.current) {
+            const targetSpeed = isHoveringCardRef.current ? baseDriftRate * 0.22 : baseDriftRate;
+            // Smooth acceleration ramp for silky-smooth motion
+            activeIdleSpeedRef.current += (targetSpeed - activeIdleSpeedRef.current) * 0.055;
+            offsetRef.current -= activeIdleSpeedRef.current;
           }
         }
 
-        // Seamless wrap modulo
+        // 2. Seamless wrap modulo
         if (singleWidth > 0) {
           while (offsetRef.current <= -singleWidth) {
             offsetRef.current += singleWidth;
@@ -161,41 +189,60 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
           }
         }
 
+        // 3. Apply position to track
         if (trackRef.current) {
           trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
         }
 
-        // Depth of Field Focus Calculation:
-        // Far cards in the distance (right side / negative Z) are blurred.
-        // Near cards in foreground (left side / positive Z) are in sharp focus.
-        const totalItems = displayList.length;
-        if (singleWidth > 0 && totalItems > 0) {
-          const itemStep = singleWidth / (images.length || 1);
+        // 4. Subtle Weightless Zero-Gravity Floating Breathing when idle
+        if (runwayRef.current && !isMobile) {
+          const breathY = Math.sin(now * 0.0015) * 5;
+          const breathRotX = Math.cos(now * 0.0012) * 0.55;
+          runwayRef.current.style.transform = `translate3d(0, ${breathY.toFixed(2)}px, ${activePushBack}px) rotateY(${activeAngleY}deg) rotateX(${(activeAngleX + breathRotX).toFixed(2)}deg)`;
+        }
+
+        // 5. Active Foreground Image Detection & Optical Depth of Field (DoF) Focus
+        if (singleWidth > 0 && totalItems > 0 && images.length > 0) {
+          const itemStep = singleWidth / images.length;
           const containerW = window.innerWidth;
           const isMob = containerW < 768;
 
           // Focal zone configuration:
-          // Left side (near foreground): blurRatio = 0 (crystal clear)
-          // Right side (far distance): blurRatio = 1 (cinematic blur)
-          const focalStart = isMob ? containerW * 0.15 : containerW * 0.28;
+          // Foreground card area (sharp focus): around 35% to 45% screen width
+          const focalCenter = isMob ? containerW * 0.48 : containerW * 0.38;
+          const focalStart = isMob ? containerW * 0.16 : containerW * 0.28;
           const focalEnd = isMob ? containerW * 0.72 : containerW * 0.82;
           const falloff = Math.max(1, focalEnd - focalStart);
 
-          for (let i = 0; i < totalItems; i++) {
-            const dofEl = dofLayersRef.current[i];
-            if (!dofEl) continue;
+          let closestDist = Infinity;
+          let closestOriginalIdx = 0;
 
+          for (let i = 0; i < totalItems; i++) {
             // Calculate card's screen X position
             let cardScreenX = offsetRef.current + i * itemStep;
             while (cardScreenX < -itemStep * 1.5) cardScreenX += singleWidth;
             while (cardScreenX > containerW + itemStep * 1.5) cardScreenX -= singleWidth;
 
-            // Near cards in foreground: blurRatio = 0 (crisp, focused)
-            // Far cards in distance: blurRatio = 1 (blurred bokeh)
-            let blurRatio = (cardScreenX - focalStart) / falloff;
-            blurRatio = Math.max(0, Math.min(1, blurRatio));
+            // Track active card closest to foreground focal point
+            const distToFocal = Math.abs(cardScreenX - focalCenter);
+            if (distToFocal < closestDist) {
+              closestDist = distToFocal;
+              closestOriginalIdx = i % images.length;
+            }
 
-            dofEl.style.opacity = blurRatio.toFixed(3);
+            // Optical Depth of Field: Far cards in distance (right side) blur with cinematic bokeh
+            const dofEl = dofLayersRef.current[i];
+            if (dofEl) {
+              let blurRatio = (cardScreenX - focalStart) / falloff;
+              blurRatio = Math.max(0, Math.min(1, blurRatio));
+              dofEl.style.opacity = blurRatio.toFixed(3);
+            }
+          }
+
+          // Emit active image change for dynamic backblur ambient glow
+          if (closestOriginalIdx !== lastReportedIdxRef.current && images[closestOriginalIdx]) {
+            lastReportedIdxRef.current = closestOriginalIdx;
+            onActiveImageChange?.(images[closestOriginalIdx], closestOriginalIdx);
           }
         }
 
@@ -204,14 +251,24 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
 
       animId = requestAnimationFrame(loop);
       return () => cancelAnimationFrame(animId);
-    }, [direction, displayList.length, images.length]);
+    }, [
+      direction,
+      displayList.length,
+      images,
+      activeAngleX,
+      activeAngleY,
+      activePushBack,
+      isMobile,
+      onActiveImageChange,
+    ]);
 
-    // Handle Wheel / Trackpad Scroll
+    // Handle Wheel / Trackpad Scroll Scrubbing
     React.useEffect(() => {
       const container = containerRef.current;
       if (!container) return;
 
       const handleWheel = (e: WheelEvent) => {
+        lastInteractionTimeRef.current = performance.now();
         const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) * 0.7 ? e.deltaX : e.deltaY;
         if (Math.abs(delta) > 0) {
           offsetRef.current -= delta * 0.95;
@@ -227,6 +284,7 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
     const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
       isDraggingRef.current = true;
       hasDraggedSignificantly.current = false;
+      lastInteractionTimeRef.current = performance.now();
       dragStartPos.current = { x: e.clientX, y: e.clientY, time: performance.now() };
       lastPointerPos.current = { x: e.clientX, time: performance.now() };
       velocityRef.current = 0;
@@ -243,6 +301,7 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
 
     const handlePointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
       if (!isDraggingRef.current) return;
+      lastInteractionTimeRef.current = performance.now();
 
       const dx = e.clientX - lastPointerPos.current.x;
       const totalDx = Math.abs(e.clientX - dragStartPos.current.x);
@@ -266,6 +325,7 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
     const handlePointerUpOrCancel = (e: React.PointerEvent<HTMLDivElement>) => {
       if (!isDraggingRef.current) return;
       isDraggingRef.current = false;
+      lastInteractionTimeRef.current = performance.now();
 
       const el = e.currentTarget;
       if (el && typeof el.releasePointerCapture === "function") {
@@ -284,30 +344,28 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
       ref,
       () => ({
         scrollPrev: (dist = 360) => {
+          lastInteractionTimeRef.current = performance.now();
           velocityRef.current = Math.abs(dist) * 0.08;
           offsetRef.current += dist;
         },
         scrollNext: (dist = 360) => {
+          lastInteractionTimeRef.current = performance.now();
           velocityRef.current = -Math.abs(dist) * 0.08;
           offsetRef.current -= dist;
         },
         scrollBy: (delta: number) => {
+          lastInteractionTimeRef.current = performance.now();
           offsetRef.current += delta;
         },
         pause: () => {
-          isHoveredRef.current = true;
+          isPausedRef.current = true;
         },
         resume: () => {
-          isHoveredRef.current = false;
+          isPausedRef.current = false;
         },
       }),
       []
     );
-
-    // Responsive 3D Geometry
-    const activeAngleY = isMobile ? 0 : angleY;
-    const activePushBack = isMobile ? -20 : pushBack;
-    const activeAngleX = isMobile ? 0 : angleX;
 
     const maskStyle = `linear-gradient(90deg, transparent 0%, #000 ${fade}%, #000 ${100 - fade}%, transparent 100%)`;
 
@@ -320,12 +378,6 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
           height: "100%",
           touchAction: "pan-y",
           ...style,
-        }}
-        onMouseEnter={() => {
-          isHoveredRef.current = true;
-        }}
-        onMouseLeave={() => {
-          isHoveredRef.current = false;
         }}
         {...props}
       >
@@ -343,6 +395,7 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
         >
           {/* Angled 3D Runway Plane */}
           <div
+            ref={runwayRef}
             className="relative flex items-center justify-start pointer-events-auto"
             style={{
               transformStyle: "preserve-3d",
@@ -355,7 +408,7 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
             onPointerUp={handlePointerUpOrCancel}
             onPointerCancel={handlePointerUpOrCancel}
           >
-            {/* Interactive Looping Track moving with drag/wheel/auto-drift */}
+            {/* Interactive Looping Track with idle drift, wheel & touch momentum */}
             <div
               ref={trackRef}
               className="angled-stream-track flex items-center will-change-transform"
@@ -376,6 +429,12 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
                       width: isMobile ? "clamp(230px, 72vw, 320px)" : "clamp(260px, 34vh, 420px)",
                       aspectRatio: "1 / 1",
                       borderRadius: "20px",
+                    }}
+                    onMouseEnter={() => {
+                      isHoveringCardRef.current = true;
+                    }}
+                    onMouseLeave={() => {
+                      isHoveringCardRef.current = false;
                     }}
                     onClick={() => {
                       if (!hasDraggedSignificantly.current) {

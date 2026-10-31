@@ -16,6 +16,8 @@ const PROJECT_IMAGES = [
     metrics: "Best Spatial Architecture 2026 · Featured in ArchDaily & Frame Magazine",
     src: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1200&q=80",
     alt: "Aura Residence - Spatial Architecture & Brutalist Monolith",
+    glowColor: "rgba(224, 169, 109, 0.45)",
+    glowSecondary: "rgba(56, 189, 248, 0.32)",
   },
   {
     id: 'proj-02',
@@ -29,6 +31,8 @@ const PROJECT_IMAGES = [
     metrics: "+240% syndicate engagement · Awwwards Site of the Month",
     src: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1200&q=80",
     alt: "Kinetix Identity - Fluid Monochromatic Brand Platform",
+    glowColor: "rgba(6, 182, 212, 0.48)",
+    glowSecondary: "rgba(139, 92, 246, 0.38)",
   },
   {
     id: 'proj-03',
@@ -42,6 +46,8 @@ const PROJECT_IMAGES = [
     metrics: "Prix de la Photographie Paris · 14 Global Gallery Showings",
     src: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=1200&q=80",
     alt: "Vogue Noir - Editorial Direction & Chiaroscuro Campaign",
+    glowColor: "rgba(245, 158, 11, 0.46)",
+    glowSecondary: "rgba(217, 119, 6, 0.32)",
   },
   {
     id: 'proj-04',
@@ -55,6 +61,8 @@ const PROJECT_IMAGES = [
     metrics: "Mies van der Rohe Award Nominee 2026",
     src: "https://images.unsplash.com/photo-1513694203232-719a280e022f?auto=format&fit=crop&w=1200&q=80",
     alt: "Atelier Form - Concrete Sculptural Pavilion",
+    glowColor: "rgba(249, 115, 22, 0.45)",
+    glowSecondary: "rgba(168, 85, 247, 0.3)",
   },
   {
     id: 'proj-05',
@@ -68,6 +76,8 @@ const PROJECT_IMAGES = [
     metrics: "€14.2M In Private Commissions In First 90 Days",
     src: "https://images.unsplash.com/photo-1509631179647-0177331693ae?auto=format&fit=crop&w=1200&q=80",
     alt: "Elysium Paris - Haute Couture Digital Experience",
+    glowColor: "rgba(236, 72, 153, 0.48)",
+    glowSecondary: "rgba(139, 92, 246, 0.36)",
   },
   {
     id: 'proj-06',
@@ -81,6 +91,8 @@ const PROJECT_IMAGES = [
     metrics: "LEED Platinum Certified · Council on Tall Buildings Excellence",
     src: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80",
     alt: "Prism Tower - Corporate Headquarters Architectural Identity",
+    glowColor: "rgba(2, 132, 199, 0.48)",
+    glowSecondary: "rgba(6, 182, 212, 0.32)",
   },
   {
     id: 'proj-07',
@@ -94,6 +106,8 @@ const PROJECT_IMAGES = [
     metrics: "Wallpaper* Design Awards 2026 Best Urban Hotel",
     src: "https://images.unsplash.com/photo-1618221195710-dd6b41faaea6?auto=format&fit=crop&w=1200&q=80",
     alt: "Nordic Haven - Bespoke Interior & Spatial System",
+    glowColor: "rgba(16, 185, 129, 0.46)",
+    glowSecondary: "rgba(245, 158, 11, 0.32)",
   },
   {
     id: 'proj-08',
@@ -107,6 +121,8 @@ const PROJECT_IMAGES = [
     metrics: "+195% International Revenue Growth",
     src: "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=1200&q=80",
     alt: "Sartorial Lab - Luxury Menswear Global Strategy",
+    glowColor: "rgba(217, 119, 6, 0.46)",
+    glowSecondary: "rgba(99, 102, 241, 0.32)",
   },
   {
     id: 'proj-09',
@@ -120,6 +136,8 @@ const PROJECT_IMAGES = [
     metrics: "Tokyo TDC Annual Award 2026 · Limited Edition Sold Out",
     src: "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=1200&q=80",
     alt: "Chronicle Monograph - Limited Edition Editorial Artbook",
+    glowColor: "rgba(148, 163, 184, 0.48)",
+    glowSecondary: "rgba(56, 189, 248, 0.35)",
   },
   {
     id: 'proj-10',
@@ -133,6 +151,8 @@ const PROJECT_IMAGES = [
     metrics: "Grand Prix d'Horlogerie de Genève Selection",
     src: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?auto=format&fit=crop&w=1200&q=80",
     alt: "Chronos One - Matte Black Titanium Horology Design",
+    glowColor: "rgba(244, 63, 94, 0.48)",
+    glowSecondary: "rgba(239, 68, 68, 0.35)",
   },
 ];
 
@@ -141,6 +161,7 @@ const CATEGORIES = ['ALL WORKS (24)', 'BRAND IDENTITY', 'SPATIAL & ARCHITECTURE'
 export function ProjectsSection({ isReducedMotion = false }) {
   const [activeCategory, setActiveCategory] = useState(0);
   const [selectedIdx, setSelectedIdx] = useState(null);
+  const [activeProject, setActiveProject] = useState(PROJECT_IMAGES[0]);
   const [inView, setInView] = useState(false);
   const sectionRef = useRef(null);
   const carouselRef = useRef(null);
@@ -204,7 +225,43 @@ export function ProjectsSection({ isReducedMotion = false }) {
 
   return (
     <section className="projects-fullscreen-section" id="works" ref={sectionRef}>
-      {/* 3D Angled Line Carousel: Scrollable, draggable, with touch swipe & wheel scrub */}
+      {/* Dynamic Ambient Backblur Glow Layer (Synchronized to Active Focused Image) */}
+      <div className="projects-ambient-backblur-stage" aria-hidden="true">
+        {/* Dual Atmospheric Glowing Auras */}
+        <div 
+          className="ambient-backblur-glow primary-glow"
+          style={{
+            background: `radial-gradient(circle, ${activeProject?.glowColor || 'rgba(56, 189, 248, 0.45)'} 0%, rgba(0, 0, 0, 0) 70%)`,
+          }}
+        />
+        <div 
+          className="ambient-backblur-glow secondary-glow"
+          style={{
+            background: `radial-gradient(circle, ${activeProject?.glowSecondary || 'rgba(139, 92, 246, 0.35)'} 0%, rgba(0, 0, 0, 0) 70%)`,
+          }}
+        />
+
+        {/* Active Image Backblur (Cloned and heavily diffused) */}
+        <div className="ambient-image-blur-wrap">
+          {activeProject?.src && (
+            <img
+              key={activeProject.id || activeProject.src}
+              src={activeProject.src}
+              alt=""
+              className="ambient-image-blurred"
+              loading="lazy"
+            />
+          )}
+        </div>
+
+        {/* Frosted Backblur Glass Diffusion Plate */}
+        <div className="ambient-backblur-diffusion" />
+
+        {/* Deep Vignette & Top/Bottom Editorial Shadows */}
+        <div className="ambient-backblur-vignette" />
+      </div>
+
+      {/* 3D Angled Line Carousel: Idle animation, draggable, with touch swipe & wheel scrub */}
       <TiltedGridHero
         ref={carouselRef}
         images={filteredProjects}
@@ -218,6 +275,7 @@ export function ProjectsSection({ isReducedMotion = false }) {
         className="w-full h-full min-h-screen"
         style={{ width: '100vw', height: '100vh', minHeight: '100vh' }}
         onImageClick={handleTileClick}
+        onActiveImageChange={setActiveProject}
       >
         {/* Full-bleed Edge-to-Edge Foreground Layer */}
         <div className="projects-fullscreen-overlay">
