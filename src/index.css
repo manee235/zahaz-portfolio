@@ -2100,22 +2100,22 @@ img {
 
 .loading-bebas-char {
   display: inline-block;
-  opacity: 1;
-  filter: blur(0px);
-  transform: translateY(0) scale(1);
-  text-shadow: 0 0 45px rgba(255, 255, 255, 0.4);
-  animation: blurTypeFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  opacity: 0;
+  filter: blur(24px);
+  transform: translateY(14px) scale(0.92);
+  text-shadow: 0 0 45px rgba(255, 255, 255, 0.45);
+  animation: blurFadeLetterByLetter 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes blurTypeFadeIn {
+@keyframes blurFadeLetterByLetter {
   0% {
     opacity: 0;
-    filter: blur(18px);
-    transform: translateY(10px) scale(0.92);
+    filter: blur(24px);
+    transform: translateY(14px) scale(0.92);
   }
   60% {
-    opacity: 0.9;
-    filter: blur(3px);
+    opacity: 0.85;
+    filter: blur(5px);
   }
   100% {
     opacity: 1;
@@ -2124,21 +2124,71 @@ img {
   }
 }
 
-.loading-type-cursor {
-  display: inline-block;
-  width: clamp(3px, 0.5vw, 6px);
-  height: 0.78em;
-  background-color: #ffffff;
-  margin-left: 8px;
-  border-radius: 2px;
-  vertical-align: middle;
-  box-shadow: 0 0 16px rgba(255, 255, 255, 0.85);
-  animation: cursorBlink 0.85s ease-in-out infinite;
+/* Progress Strip Placed Directly Below ZAHAZ Text */
+.loading-below-strip-wrap {
+  width: 100%;
+  max-width: clamp(260px, 42vw, 420px);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: clamp(22px, 3.8vh, 34px);
+  animation: stripFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.35s both;
 }
 
-@keyframes cursorBlink {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.15; }
+@keyframes stripFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.loading-below-strip-track {
+  width: 100%;
+  height: 2px;
+  background-color: rgba(255, 255, 255, 0.14);
+  border-radius: 9999px;
+  overflow: hidden;
+  position: relative;
+}
+
+.loading-below-strip-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  background-color: #ffffff;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.7);
+  transition: width 0.15s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.loading-below-strip-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  font-family: var(--font-ui);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.loading-below-status {
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.loading-below-pct {
+  font-weight: 700;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+  flex-shrink: 0;
 }
 
 /* State 2: Loaded Successfully -> "Let's work together" (Regular Size, Not Bold) */
@@ -2246,7 +2296,7 @@ img {
   letter-spacing: 0.26em;
 }
 
-/* Bottom bar */
+/* Bottom bar (Middle strip removed, clean 2-column layout) */
 .loading-bottom-bar {
   width: 100%;
   display: flex;
@@ -2279,27 +2329,6 @@ img {
   color: rgba(255, 255, 255, 0.5);
 }
 
-/* Minimal 2px progress track */
-.loading-track-wrapper {
-  flex: 1;
-  max-width: 440px;
-  height: 2px;
-  background-color: rgba(255, 255, 255, 0.14);
-  border-radius: 9999px;
-  overflow: hidden;
-  position: relative;
-}
-
-.loading-track-bar {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 100%;
-  background-color: #ffffff;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.6);
-  transition: width 0.1s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
 .loading-meta-pct {
   min-width: 60px;
   text-align: right;
@@ -2321,20 +2350,13 @@ img {
     padding-bottom: 12px;
   }
   .loading-bottom-bar {
-    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
     gap: 12px;
-    padding-top: 12px;
+    padding-top: 14px;
   }
-  .loading-track-wrapper {
-    order: 3;
-    width: 100%;
-    max-width: 100%;
-  }
-  .loading-meta-status {
-    order: 1;
-  }
-  .loading-meta-pct {
-    order: 2;
+  .loading-below-strip-wrap {
+    max-width: 85%;
   }
 }
 

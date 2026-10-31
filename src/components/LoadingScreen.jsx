@@ -3,9 +3,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 /**
  * LoadingScreen
  * Obsidian Black editorial preloader featuring:
- * 1. "ZAHAZ" in Bebas Neue with tight typewriter blur-fade animation (no phantom letter gap).
- * 2. On completion, transitions to "Let's work together" (reduced size, regular weight, no bold).
- * 3. Waits indefinitely until the user explicitly clicks "ENTER WEBSITE" (no auto-enter).
+ * 1. "ZAHAZ" in Bebas Neue with letter-by-letter blur fading animation (no typewriter cursor).
+ * 2. Progress track and status strip placed directly BELOW the ZAHAZ wordmark.
+ * 3. Bottom bar has NO middle line/strip.
+ * 4. When loading completes, transitions to "Let's work together" (regular size/weight, not bold).
+ * 5. Waits until user clicks "ENTER WEBSITE" to enter.
  */
 export function LoadingScreen({
   progress = 0,
@@ -19,36 +21,15 @@ export function LoadingScreen({
   const [isExiting, setIsExiting] = useState(false);
   const [showSuccessStage, setShowSuccessStage] = useState(false);
 
-  // Typewriter sequence for "ZAHAZ"
+  // Characters for ZAHAZ
   const wordChars = ['Z', 'A', 'H', 'A', 'Z'];
-  const [visibleCount, setVisibleCount] = useState(1);
 
-  // Blur-fade typewriter progression - cursor stays flush next to current letter
-  useEffect(() => {
-    if (showSuccessStage) return;
-
-    // Minimum chars based on progress (at least 1, up to 5 at 100%)
-    const progressChars = Math.max(1, Math.min(5, Math.ceil((progress / 100) * 5)));
-
-    const interval = setInterval(() => {
-      setVisibleCount((prev) => {
-        if (prev < wordChars.length) {
-          return prev + 1;
-        }
-        return Math.max(1, progressChars);
-      });
-    }, 450);
-
-    return () => clearInterval(interval);
-  }, [progress, showSuccessStage, wordChars.length]);
-
-  // When loaded (100% / isReady), lock all 5 letters then reveal success stage
+  // When loaded (100% / isReady), pause briefly to show full loaded name, then reveal "Let's work together"
   useEffect(() => {
     if (isReady || progress >= 100) {
-      setVisibleCount(5);
       const successTimer = setTimeout(() => {
         setShowSuccessStage(true);
-      }, 550);
+      }, 700);
 
       return () => clearTimeout(successTimer);
     }
@@ -111,22 +92,36 @@ export function LoadingScreen({
         </div>
       </header>
 
-      {/* Main Center Stage: Either ZAHAZ Typewriter Loading OR "Let's work together" */}
+      {/* Main Center Stage: Either ZAHAZ Name Loading OR "Let's work together" */}
       <main className="loading-center-stage">
         {!showSuccessStage ? (
-          /* State 1: ZAHAZ in Bebas Neue with Blur-Fading Typewriter (Cursor flush to current letter) */
+          /* State 1: ZAHAZ in Bebas Neue with Letter-by-Letter Blur-Fading + Progress Strip Below */
           <div className="loading-bebas-wrap" aria-label="Loading ZAHAZ">
             <h1 className="loading-bebas-wordmark">
-              {wordChars.slice(0, visibleCount).map((char, index) => (
+              {wordChars.map((char, index) => (
                 <span
                   key={`${char}-${index}`}
                   className="loading-bebas-char"
+                  style={{ animationDelay: `${index * 0.15}s` }}
                 >
                   {char}
                 </span>
               ))}
-              <span className="loading-type-cursor" aria-hidden="true" />
             </h1>
+
+            {/* Progress Strip Placed Directly Below ZAHAZ Text */}
+            <div className="loading-below-strip-wrap">
+              <div className="loading-below-strip-track">
+                <div
+                  className="loading-below-strip-bar"
+                  style={{ width: `${boundedProgress}%` }}
+                />
+              </div>
+              <div className="loading-below-strip-meta">
+                <span className="loading-below-status">{status}</span>
+                <span className="loading-below-pct">{displayPct}%</span>
+              </div>
+            </div>
           </div>
         ) : (
           /* State 2: Loaded Successfully -> "Let's work together" (Regular Size, Not Bold) + ENTER WEBSITE */
@@ -165,23 +160,15 @@ export function LoadingScreen({
         )}
       </main>
 
-      {/* Bottom Footer: Progress, Count & Minimal Track */}
+      {/* Bottom Footer: Meta status & count ONLY — Middle strip removed */}
       <footer className="loading-bottom-bar">
         <div className="loading-meta-status">
           <span className="loading-status-text">
-            {showSuccessStage ? 'SYSTEM READY · ARCHIVE DECRYPTED' : status}
+            {showSuccessStage ? 'SYSTEM READY · ARCHIVE DECRYPTED' : 'ASSET ARCHIVE'}
           </span>
           <span className="loading-counter-tag">
             [ {loadedCount} / {totalCount} ASSETS ]
           </span>
-        </div>
-
-        {/* 2px Minimal White Progress Track */}
-        <div className="loading-track-wrapper">
-          <div
-            className="loading-track-bar"
-            style={{ width: `${boundedProgress}%` }}
-          />
         </div>
 
         <div className="loading-meta-pct">
