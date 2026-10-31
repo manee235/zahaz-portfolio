@@ -367,6 +367,18 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
                       {/* Subtle Gradient Framing */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 opacity-60 transition-opacity duration-300 group-hover:opacity-40 pointer-events-none" />
 
+                      {/* Front Lens Flare Blur Ray Optical Elements */}
+                      <div className="card-lens-flare-wrap pointer-events-none" aria-hidden="true">
+                        {/* Diagonal Volumetric Diffused Blur Ray */}
+                        <div className="lens-flare-blur-ray" />
+                        {/* Razor Anamorphic Flare Streak */}
+                        <div className="lens-flare-laser-streak" />
+                        {/* Concentric Optical Flare Glow Orb */}
+                        <div className="lens-flare-epicenter-orb" />
+                        {/* Dynamic Shimmer Light Sweep */}
+                        <div className="lens-flare-sweep-ray" />
+                      </div>
+
                       {/* Hover / Touch Caption Overlay */}
                       <div className="absolute bottom-0 inset-x-0 p-4 flex flex-col gap-1 transform translate-y-2 opacity-90 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 transition-all duration-300 pointer-events-none">
                         <span className="text-[10px] font-semibold tracking-widest text-[#ff3355] uppercase">
@@ -387,6 +399,13 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
               })}
             </div>
           </div>
+        </div>
+
+        {/* Foreground Optical Front Lens Flare Ray Atmosphere */}
+        <div className="stage-front-lens-flare pointer-events-none" aria-hidden="true">
+          <div className="stage-flare-glow-orb" />
+          <div className="stage-flare-anamorphic-streak" />
+          <div className="stage-flare-blur-beam" />
         </div>
 
         {/* Foreground Children (Headline, Filters, Bottom Controls) with high z-index */}

@@ -62,18 +62,6 @@ export function HeroNav({ isLoaded = true, onOpenHireMe }) {
         </svg>
       ),
     },
-    {
-      id: 'action',
-      label: 'Hire Me',
-      href: '#contact',
-      icon: (
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-          <rect x="4" y="4" width="16" height="16" rx="4.5" />
-          <line x1="12" y1="8.5" x2="12" y2="15.5" />
-          <line x1="8.5" y1="12" x2="15.5" y2="12" />
-        </svg>
-      ),
-    },
   ];
 
   // Update position of the sliding push indicator pill
@@ -100,7 +88,6 @@ export function HeroNav({ isLoaded = true, onOpenHireMe }) {
   useEffect(() => {
     const handleResize = () => updateSlider(activeTab);
     window.addEventListener('resize', handleResize, { passive: true });
-    // Run after fonts & styles compute
     const timer = setTimeout(() => updateSlider(activeTab), 150);
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -139,11 +126,6 @@ export function HeroNav({ isLoaded = true, onOpenHireMe }) {
     e.preventDefault();
     setActiveTab(item.id);
 
-    if (item.id === 'action' && typeof onOpenHireMe === 'function') {
-      onOpenHireMe();
-      return;
-    }
-
     let target = null;
     if (item.id === 'home') target = document.getElementById('home') || document.querySelector('.hero-wrapper');
     else if (item.id === 'studio') target = document.getElementById('studio') || document.querySelector('.section-manifesto');
@@ -159,41 +141,64 @@ export function HeroNav({ isLoaded = true, onOpenHireMe }) {
 
   return (
     <nav className="floating-dock-nav" aria-label="Main Navigation">
-      <div className="dock-pill-track" ref={trackRef}>
-        {/* Animated Sliding Push Pill Indicator */}
-        <div
-          className="dock-slider-pill"
-          style={{
-            transform: `translate3d(${sliderStyle.left}px, ${sliderStyle.top}px, 0)`,
-            width: `${sliderStyle.width}px`,
-            height: `${sliderStyle.height}px`,
-            opacity: sliderStyle.opacity,
-          }}
-          aria-hidden="true"
-        />
+      {/* Main Navigation Track Pill with Sliding Transition */}
+      <div className="dock-nav-pill">
+        <div className="dock-pill-track" ref={trackRef}>
+          {/* Animated Sliding Push Pill Indicator */}
+          <div
+            className="dock-slider-pill"
+            style={{
+              transform: `translate3d(${sliderStyle.left}px, ${sliderStyle.top}px, 0)`,
+              width: `${sliderStyle.width}px`,
+              height: `${sliderStyle.height}px`,
+              opacity: sliderStyle.opacity,
+            }}
+            aria-hidden="true"
+          />
 
-        {navItems.map((item) => {
-          const isActive = activeTab === item.id;
-          return (
-            <a
-              key={item.id}
-              ref={(el) => {
-                if (el) itemRefs.current[item.id] = el;
-              }}
-              href={item.href}
-              className={`dock-btn ${isActive ? 'active' : ''}`}
-              onClick={(e) => handleClick(e, item)}
-              aria-label={item.label}
-              title={item.label}
-            >
-              <span className="dock-icon" aria-hidden="true">
-                {item.icon}
-              </span>
-              <span className="dock-label">{item.label}</span>
-            </a>
-          );
-        })}
+          {navItems.map((item) => {
+            const isActive = activeTab === item.id;
+            return (
+              <a
+                key={item.id}
+                ref={(el) => {
+                  if (el) itemRefs.current[item.id] = el;
+                }}
+                href={item.href}
+                className={`dock-btn ${isActive ? 'active' : ''}`}
+                onClick={(e) => handleClick(e, item)}
+                aria-label={item.label}
+                title={item.label}
+              >
+                <span className="dock-icon" aria-hidden="true">
+                  {item.icon}
+                </span>
+                <span className="dock-label">{item.label}</span>
+              </a>
+            );
+          })}
+        </div>
       </div>
+
+      {/* Standalone Separated "Hire Me" Pill */}
+      <button
+        type="button"
+        className="dock-hire-separated-pill"
+        onClick={onOpenHireMe}
+        aria-label="Open Hire Me inquiry"
+        title="Hire Me"
+      >
+        <span className="dock-hire-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="4" y="4" width="16" height="16" rx="4.5" />
+            <line x1="12" y1="8.5" x2="12" y2="15.5" />
+            <line x1="8.5" y1="12" x2="15.5" y2="12" />
+          </svg>
+        </span>
+        <span className="dock-hire-label">Hire Me</span>
+      </button>
     </nav>
   );
 }
+
+export default HeroNav;
