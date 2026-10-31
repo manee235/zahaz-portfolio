@@ -257,6 +257,82 @@ img {
   perspective: 1000px;
 }
 
+/* Big Typographic Backdrop Name behind Avatar */
+.hero-backdrop-name {
+  position: absolute;
+  left: 50%;
+  top: calc(140 * var(--u));
+  transform: translateX(-50%);
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  text-align: center;
+  animation: backdropNameReveal 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.15s forwards;
+  opacity: 0;
+  will-change: transform, opacity, filter;
+}
+
+@keyframes backdropNameReveal {
+  0% {
+    opacity: 0;
+    filter: blur(20px);
+    transform: translateX(-50%) translateY(32px) scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+    transform: translateX(-50%) translateY(0px) scale(1);
+  }
+}
+
+.backdrop-glass-wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.backdrop-text-zahaz {
+  display: block;
+  font-family: var(--font-display);
+  font-variation-settings: 'wdth' 115, 'wght' 900;
+  font-size: calc(230 * var(--u));
+  line-height: 0.82;
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* Frosted glass blur dispersion underlayer */
+.backdrop-text-blur {
+  position: absolute;
+  inset: 0;
+  color: rgba(255, 255, 255, 0.42);
+  -webkit-text-stroke: calc(2 * var(--u)) rgba(255, 255, 255, 0.45);
+  filter: blur(14px);
+  opacity: 0.9;
+  transform: scale(1.015);
+  pointer-events: none;
+}
+
+/* Foreground glass surface: specular bevels & translucent frosted reflection (no color gradient) */
+.backdrop-text-glass {
+  position: relative;
+  background: linear-gradient(
+    175deg,
+    rgba(255, 255, 255, 0.76) 0%,
+    rgba(255, 255, 255, 0.12) 48%,
+    rgba(255, 255, 255, 0.04) 52%,
+    rgba(255, 255, 255, 0.36) 100%
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  -webkit-text-stroke: calc(1.5 * var(--u)) rgba(255, 255, 255, 0.58);
+  filter: 
+    drop-shadow(0 20px 45px rgba(0, 0, 0, 0.85))
+    drop-shadow(0 0 25px rgba(255, 255, 255, 0.22));
+}
+
 .hero-photo-wrap {
   position: absolute;
   inset: 0;
@@ -1442,6 +1518,29 @@ img {
     overflow: hidden;
     order: 5;
     transform: none !important;
+  }
+
+  .hero-backdrop-name {
+    top: calc(32 * var(--u));
+    transform: translateX(-50%) !important;
+    animation: none;
+    opacity: 1;
+    filter: none;
+  }
+
+  .backdrop-text-zahaz {
+    font-size: calc(96 * var(--u));
+    letter-spacing: -0.04em;
+  }
+
+  .backdrop-text-blur {
+    filter: blur(8px);
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
+  }
+
+  .backdrop-text-glass {
+    -webkit-text-stroke: 1px rgba(255, 255, 255, 0.55);
+    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.7));
   }
 
   .hero-photo-wrap {

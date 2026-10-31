@@ -1,6 +1,5 @@
 import React from 'react';
 import GradientASCII from './GradientASCII';
-import { HeroNav } from './HeroNav';
 import { HeroTitle } from './HeroTitle';
 import { HeroFigure } from './HeroFigure';
 import { HeroStatsFrame } from './HeroStatsFrame';
@@ -55,7 +54,6 @@ export function HeroSection({ scrollY, isRecorder, isReducedMotion }) {
       </div>
 
       <div className="hero-stage" id="hero-stage">
-        <HeroNav />
         <div className="hero-title-wrapper" style={titleParallax}>
           <HeroTitle />
         </div>
