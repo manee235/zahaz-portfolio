@@ -127,61 +127,94 @@ img {
   display: contents;
 }
 
-/* Nav Pill: at (57, 61), 48u tall */
-.hero-nav {
-  position: absolute;
-  left: calc(57 * var(--u));
-  top: calc(61 * var(--u));
-  height: calc(48 * var(--u));
-  background: #ffffff;
+/* -------------------------------------------------------------
+   FLOATING DOCK NAVIGATION
+   Desktop: Top Middle
+   Mobile: Bottom
+------------------------------------------------------------- */
+.floating-dock-nav {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: rgba(14, 14, 18, 0.88);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 
+    0 14px 40px rgba(0, 0, 0, 0.65),
+    0 0 0 1px rgba(255, 255, 255, 0.05),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
   border-radius: 9999px;
-  padding: calc(4 * var(--u));
-  display: inline-flex;
+  padding: 5px 8px;
+  display: flex;
   align-items: center;
-  z-index: 30;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-  animation: navDrop 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
-  opacity: 0;
-  transform: translateY(-20px);
+  pointer-events: auto;
+  user-select: none;
+  animation: dockFloatInTop 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
 }
 
-@keyframes navDrop {
+@keyframes dockFloatInTop {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-24px);
+  }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
   }
 }
 
-.nav-slider {
-  position: absolute;
-  top: calc(4 * var(--u));
-  bottom: calc(4 * var(--u));
-  left: 0;
-  background: var(--ink);
-  border-radius: 9999px;
-  transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), width 0.32s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: 1;
-  pointer-events: none;
-}
-
-.nav-link {
-  position: relative;
-  z-index: 2;
-  height: 100%;
+.dock-pill-track {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 0 calc(20 * var(--u));
-  font-size: calc(14 * var(--u));
-  font-weight: 500;
-  color: #333333;
-  transition: color 0.25s ease;
-  white-space: nowrap;
+  gap: 6px;
 }
 
-.nav-link.active,
-.nav-link.hovered {
+.dock-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 9999px;
+  color: rgba(255, 255, 255, 0.72);
+  text-decoration: none;
+  font-family: var(--font-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+}
+
+.dock-btn:hover {
   color: #ffffff;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.dock-btn.active {
+  background: #ffffff;
+  color: #08080c;
+  font-weight: 600;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+}
+
+.dock-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+.dock-label {
+  white-space: nowrap;
 }
 
 /* Top Right Date: at (1038, 70) */
@@ -1425,18 +1458,57 @@ img {
     order: 1;
   }
 
-  .hero-nav {
-    position: static;
-    height: calc(44 * var(--u));
-    padding: calc(3 * var(--u));
-    opacity: 1;
-    transform: none;
-    animation: none;
+  .floating-dock-nav {
+    top: auto;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 10px;
+    background: #111116;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 
+      0 16px 45px rgba(0, 0, 0, 0.85),
+      0 0 0 1px rgba(255, 255, 255, 0.08);
+    animation: dockFloatInBottom 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    max-width: calc(100vw - 32px);
+    width: auto;
+    z-index: 9999;
   }
 
-  .nav-link {
-    padding: 0 calc(12 * var(--u));
-    font-size: calc(13 * var(--u));
+  @keyframes dockFloatInBottom {
+    from {
+      opacity: 0;
+      transform: translateX(-50%) translateY(24px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+  }
+
+  .dock-pill-track {
+    gap: 8px;
+  }
+
+  .dock-label {
+    display: none;
+  }
+
+  .dock-btn {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 50%;
+    color: rgba(255, 255, 255, 0.78);
+  }
+
+  .dock-btn.active {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #08080c;
+    box-shadow: 0 4px 20px rgba(255, 255, 255, 0.25);
   }
 
   .hero-date {

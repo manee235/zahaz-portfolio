@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { HeroNav } from './components/HeroNav';
 import { HeroSection } from './components/HeroSection';
 import { BarSection } from './components/BarSection';
 import { ManifestoSection } from './components/ManifestoSection';
@@ -58,6 +59,9 @@ export function App() {
         totalCount={totalCount}
         onFinished={() => setHasFinishedLoading(true)}
       />
+
+      {/* Floating Dock Navigation (Desktop: Top Middle, Mobile: Bottom) */}
+      <HeroNav isLoaded={hasFinishedLoading} />
 
       {/* 1. Hero Section (1440 × 938u) with Mouse & Scroll Parallax */}
       <HeroSection
