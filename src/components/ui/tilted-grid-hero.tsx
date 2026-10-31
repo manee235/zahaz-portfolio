@@ -93,8 +93,15 @@ function measure(
 
 export type TiltedGridImage = {
   src: string;
-  /** Only used if you drop the decorative treatment; the band is aria-hidden. */
   alt?: string;
+  title?: string;
+  category?: string;
+  year?: string;
+  client?: string;
+  role?: string;
+  description?: string;
+  deliverables?: string[];
+  metrics?: string;
 };
 
 export type TiltedGridHeroProps = {
@@ -110,13 +117,13 @@ export type TiltedGridHeroProps = {
    * @default 4
    */
   speed?: number;
-  /** Tile height, as a percentage of the hero's height. @default 32 */
+  /** Tile height, as a percentage of the hero's height. @default 36 */
   tileHeight?: number;
-  /** Tile width divided by tile height. @default 16 / 9 */
+  /** Tile width divided by tile height. @default 1 */
   aspectRatio?: number;
-  /** Space between tiles, as a percentage of a tile's height. @default 6 */
+  /** Space between tiles, as a percentage of a tile's height. @default 7 */
   gap?: number;
-  /** Vertical centre of the row, as a percentage of the hero's height. @default 52 */
+  /** Vertical centre of the row, as a percentage of the hero's height. @default 50 */
   axis?: number;
   /**
    * How far the row has bent round by the frame's edge, in degrees. Higher
@@ -129,6 +136,8 @@ export type TiltedGridHeroProps = {
   /** Content rendered above the band. */
   children?: React.ReactNode;
   className?: string;
+  /** Callback fired when a tile is clicked */
+  onImageClick?: (image: TiltedGridImage, index: number) => void;
 };
 
 export function TiltedGridHero({
@@ -143,6 +152,7 @@ export function TiltedGridHero({
   children,
   className,
   style,
+  onImageClick,
   ...props
 }: React.ComponentProps<"div"> & TiltedGridHeroProps) {
   const ref = React.useRef<HTMLDivElement>(null);
@@ -268,7 +278,7 @@ export function TiltedGridHero({
           return (
             <div
               key={t}
-              className={cn(tile, "absolute")}
+              className={cn(tile, "absolute pointer-events-auto cursor-pointer group")}
               style={{
                 left: `calc(50% - ${u(aspectRatio / 2)})`,
                 top: `calc(${axis}% - ${u(0.5)})`,
@@ -285,11 +295,23 @@ export function TiltedGridHero({
                 });
               }}
             >
+              {/* Click target overlay */}
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  onImageClick?.(img, (shown[t] ?? first) % Math.max(images.length, 1));
+                }}
+                className="absolute inset-0 z-30 w-full h-full cursor-pointer pointer-events-auto bg-transparent border-none outline-none rounded-2xl group-hover:ring-2 group-hover:ring-white/40 transition-all duration-300"
+                aria-label={img?.title || img?.alt || "View project details"}
+                title="Click to view project details"
+              />
+
               {Array.from({ length: SLICES }, (_, k) => (
                 <div
                   key={k}
                   className={cn(
-                    "absolute top-0 overflow-hidden bg-neutral-900 shadow-2xl",
+                    "absolute top-0 overflow-hidden bg-neutral-900 shadow-2xl transition-[filter] duration-300 group-hover:brightness-115",
                     k === 0 && "rounded-l-2xl",
                     k === SLICES - 1 && "rounded-r-2xl",
                   )}
