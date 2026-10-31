@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { TiltedGridHero } from './ui/tilted-grid-hero';
 import { ProjectModal } from './ProjectModal';
 import { ArrowUpRight, Layers, Compass, Eye, MousePointerClick } from 'lucide-react';
@@ -141,6 +141,25 @@ const CATEGORIES = ['ALL WORKS (24)', 'BRAND IDENTITY', 'SPATIAL & ARCHITECTURE'
 export function ProjectsSection({ isReducedMotion = false }) {
   const [activeCategory, setActiveCategory] = useState(0);
   const [selectedIdx, setSelectedIdx] = useState(null);
+  const [inView, setInView] = useState(false);
+  const sectionRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setInView(true);
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => observer.disconnect();
+  }, []);
 
   // Filter projects by active tab if not "ALL WORKS"
   const filteredProjects = PROJECT_IMAGES.filter((item) => {
@@ -173,7 +192,7 @@ export function ProjectsSection({ isReducedMotion = false }) {
   const currentProject = selectedIdx !== null ? PROJECT_IMAGES[selectedIdx] : null;
 
   return (
-    <section className="projects-fullscreen-section" id="works">
+    <section className="projects-fullscreen-section" id="works" ref={sectionRef}>
       {/* 3D Angled Line Carousel: Pushed back in Z, streaming from back in the distance to front */}
       <TiltedGridHero
         images={filteredProjects}
@@ -193,7 +212,7 @@ export function ProjectsSection({ isReducedMotion = false }) {
           
           {/* Top Floating Editorial Bar */}
           <header className="projects-overlay-top">
-            <div className="projects-overlay-title-group">
+            <div className={`projects-overlay-title-group text-blur-reveal ${inView ? 'is-in-view' : ''} delay-100`}>
               <div className="projects-tag-group">
                 <span className="projects-dot-badge">●</span>
                 <span className="projects-pill-label">(SELECTED WORKS)</span>
@@ -204,7 +223,7 @@ export function ProjectsSection({ isReducedMotion = false }) {
             </div>
 
             {/* Filter Pills */}
-            <div className="projects-filter-bar" role="tablist">
+            <div className={`projects-filter-bar text-blur-reveal ${inView ? 'is-in-view' : ''} delay-225`} role="tablist">
               {CATEGORIES.map((cat, idx) => (
                 <button
                   key={cat}
@@ -221,7 +240,7 @@ export function ProjectsSection({ isReducedMotion = false }) {
           </header>
 
           {/* Bottom Floating Bar */}
-          <footer className="projects-overlay-bottom">
+          <footer className={`projects-overlay-bottom text-blur-reveal ${inView ? 'is-in-view' : ''} delay-375`}>
             <div className="projects-specs-strip">
               <div className="spec-item">
                 <Compass className="size-3.5 text-neutral-400" />

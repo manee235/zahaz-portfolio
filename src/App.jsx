@@ -19,7 +19,6 @@ export function App() {
   const assetUrls = useMemo(
     () => [
       MEDIA.heroPhoto,
-      MEDIA.heroPhotoRed,
       MEDIA.card230Photo,
       MEDIA.qIndustrial,
       ...(MEDIA.avatars || []),

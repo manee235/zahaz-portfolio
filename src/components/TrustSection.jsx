@@ -106,16 +106,21 @@ export function TrustSection({ scrollY = 0, isRecorder, isReducedMotion }) {
           </div>
 
           <h2 className="trust-heading">
-            Trusted by
-            <br />
-            Hundreds of
-            <br />
-            Growing
-            <br />
-            Businesses
+            <span className={`trust-heading-line text-blur-reveal ${inView ? 'is-in-view' : ''} delay-100`}>
+              Trusted by
+            </span>
+            <span className={`trust-heading-line text-blur-reveal ${inView ? 'is-in-view' : ''} delay-200`}>
+              Hundreds of
+            </span>
+            <span className={`trust-heading-line text-blur-reveal ${inView ? 'is-in-view' : ''} delay-300`}>
+              Growing
+            </span>
+            <span className={`trust-heading-line text-blur-reveal ${inView ? 'is-in-view' : ''} delay-400`}>
+              Businesses
+            </span>
           </h2>
 
-          <p className="trust-subtext">
+          <p className={`trust-subtext text-blur-reveal ${inView ? 'is-in-view' : ''} delay-500`}>
             Strategic craft and precision brand engineering designed to elevate industry disruptors
             into category leaders across the globe.
           </p>
@@ -124,7 +129,7 @@ export function TrustSection({ scrollY = 0, isRecorder, isReducedMotion }) {
         {/* Right Column: 3 Cards (326u tall, 8u radius) */}
         <div className="trust-cards-row">
           {/* Card 1: Avatar card (light grey #d6d6d6, 293u) */}
-          <div className="trust-card card-avatar-stat">
+          <div className={`trust-card card-avatar-stat text-blur-reveal ${inView ? 'is-in-view' : ''} delay-300`}>
             <div className="avatars-grid-4x2">
               {MEDIA.avatars.map((avatarUrl, idx) => (
                 <div
@@ -147,7 +152,7 @@ export function TrustSection({ scrollY = 0, isRecorder, isReducedMotion }) {
 
           {/* Card 2: Awards card (#262626, 298u) */}
           <div
-            className="trust-card card-awards-stat"
+            className={`trust-card card-awards-stat text-blur-reveal ${inView ? 'is-in-view' : ''} delay-450`}
             id="card-awards-stat"
             style={
               awardsCardLifted
@@ -203,7 +208,7 @@ export function TrustSection({ scrollY = 0, isRecorder, isReducedMotion }) {
           </div>
 
           {/* Card 3: Portrait card (200u, cut off by panel's right edge) with Magic Reveal */}
-          <div className="trust-card card-portrait-stat">
+          <div className={`trust-card card-portrait-stat text-blur-reveal ${inView ? 'is-in-view' : ''} delay-600`}>
             <MagicAvatar
               isRecorder={false}
               isReducedMotion={isReducedMotion}

@@ -3,7 +3,9 @@ import { MANIFESTO_LINES } from '../constants/media';
 
 export function ManifestoSection({ isRecorder, isReducedMotion }) {
   const sectionRef = useRef(null);
+  const sublineRef = useRef(null);
   const [scrollProgress, setScrollProgress] = useState(0);
+  const [sublineInView, setSublineInView] = useState(false);
 
   // Flatten words with line index
   const allWords = useMemo(() => {
@@ -19,6 +21,17 @@ export function ManifestoSection({ isRecorder, isReducedMotion }) {
   }, []);
 
   const totalWords = allWords.length;
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        setSublineInView(true);
+      }
+    }, { threshold: 0.2 });
+
+    if (sublineRef.current) observer.observe(sublineRef.current);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     if (isReducedMotion) {
@@ -60,21 +73,41 @@ export function ManifestoSection({ isRecorder, isReducedMotion }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, [isRecorder, isReducedMotion]);
 
-  // Compute word color with 3-word soft edge
-  const getWordColor = (idx) => {
-    if (isReducedMotion) return '#f4f4f4';
-    const softEdge = 3;
+  // Compute word appearance: color, blur, pushing translation & opacity
+  const getWordStyle = (idx) => {
+    if (isReducedMotion) {
+      return { color: '#f4f4f4', filter: 'none', transform: 'none', opacity: 1 };
+    }
+    const softEdge = 3.5;
     const currentPos = scrollProgress * (totalWords + softEdge);
 
     if (idx <= currentPos - softEdge) {
-      return '#f4f4f4';
+      return {
+        color: '#f4f4f4',
+        filter: 'blur(0px)',
+        transform: 'translateY(0px)',
+        opacity: 1,
+      };
     } else if (idx >= currentPos) {
-      return '#6f6f6f';
+      return {
+        color: '#555555',
+        filter: 'blur(5px)',
+        transform: 'translateY(8px)',
+        opacity: 0.35,
+      };
     } else {
       const ratio = (currentPos - idx) / softEdge;
       const clamped = Math.max(0, Math.min(1, ratio));
-      const val = Math.round(111 + (244 - 111) * clamped);
-      return `rgb(${val}, ${val}, ${val})`;
+      const val = Math.round(85 + (244 - 85) * clamped);
+      const blurVal = (5 * (1 - clamped)).toFixed(2);
+      const pushY = (8 * (1 - clamped)).toFixed(2);
+      const opacityVal = (0.35 + 0.65 * clamped).toFixed(2);
+      return {
+        color: `rgb(${val}, ${val}, ${val})`,
+        filter: `blur(${blurVal}px)`,
+        transform: `translateY(${pushY}px)`,
+        opacity: opacityVal,
+      };
     }
   };
 
@@ -85,13 +118,6 @@ export function ManifestoSection({ isRecorder, isReducedMotion }) {
           {MANIFESTO_LINES.map((line, lIdx) => (
             <React.Fragment key={lIdx}>
               {line.map((word, wIdx) => {
-                const wordObj = allWords.find(
-                  (w) => w.lineIdx === lIdx && w.word === word && allWords.indexOf(w) >= lIdx
-                );
-                const globalIdx = allWords.findIndex(
-                  (item, idx) => item.lineIdx === lIdx && item.word === word && idx >= (allWords.filter((x, i) => i < idx && x.lineIdx === lIdx).length)
-                );
-                // calculate word index accurately
                 let runningIdx = 0;
                 for (let i = 0; i < lIdx; i++) {
                   runningIdx += MANIFESTO_LINES[i].length;
@@ -102,7 +128,7 @@ export function ManifestoSection({ isRecorder, isReducedMotion }) {
                   <span
                     key={wIdx}
                     className="manifesto-word"
-                    style={{ color: getWordColor(runningIdx) }}
+                    style={getWordStyle(runningIdx)}
                   >
                     {word}{' '}
                   </span>
@@ -114,7 +140,10 @@ export function ManifestoSection({ isRecorder, isReducedMotion }) {
         </p>
       </div>
 
-      <div className="manifesto-subline">
+      <div
+        ref={sublineRef}
+        className={`manifesto-subline text-blur-reveal ${sublineInView ? 'is-in-view' : ''} delay-200`}
+      >
         Performance-driven marketing, from strategy to execution.{' '}
         <span className="subline-italic">Built for growing brands.</span>
       </div>

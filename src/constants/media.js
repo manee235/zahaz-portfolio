@@ -1,14 +1,14 @@
-import sahasPortraitBase from '../Assets/images/sahas-portrait-base.png.png';
+import avatar2 from '../Assets/images/avatar2.png';
 import sahasPortraitRed from '../Assets/images/sahas-portrait-red.png.png';
 import sahasWordmark from '../Assets/Logo/sahas-wordmark.svg.svg';
 
 export const MEDIA = {
-  heroPhoto: sahasPortraitBase,
+  heroPhoto: avatar2,
   heroPhotoRed: sahasPortraitRed,
   wordmarkSvg: sahasWordmark,
   card230Photo: 'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/a9d3641f-d629-46e5-8d2d-5f75386b803d.webp',
   qIndustrial: 'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/9340eb08-877d-4d08-91fb-b70754541d98.webp',
-  portraitCard: sahasPortraitBase,
+  portraitCard: avatar2,
   portraitCardRed: sahasPortraitRed,
   avatars: [
     'https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/300f41b1-3de5-4153-afde-06e15e753ad0.webp',
