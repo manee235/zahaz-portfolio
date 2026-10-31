@@ -72,6 +72,7 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
   ) {
     const containerRef = React.useRef<HTMLDivElement>(null);
     const trackRef = React.useRef<HTMLDivElement>(null);
+    const dofLayersRef = React.useRef<(HTMLDivElement | null)[]>([]);
 
     // Responsive mobile state
     const [isMobile, setIsMobile] = React.useState(false);
@@ -127,7 +128,7 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
       };
     }, [measureCycleWidth, displayList]);
 
-    // Auto-drift & momentum animation loop
+    // Auto-drift, momentum & Depth of Field (DoF) optical focus calculation
     React.useEffect(() => {
       let animId: number;
       // Drift rate in pixels per 60fps frame
@@ -164,12 +165,46 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
           trackRef.current.style.transform = `translate3d(${offsetRef.current}px, 0, 0)`;
         }
 
+        // Depth of Field Focus Calculation:
+        // Far cards in the distance (right side / negative Z) are blurred.
+        // Near cards in foreground (left side / positive Z) are in sharp focus.
+        const totalItems = displayList.length;
+        if (singleWidth > 0 && totalItems > 0) {
+          const itemStep = singleWidth / (images.length || 1);
+          const containerW = window.innerWidth;
+          const isMob = containerW < 768;
+
+          // Focal zone configuration:
+          // Left side (near foreground): blurRatio = 0 (crystal clear)
+          // Right side (far distance): blurRatio = 1 (cinematic blur)
+          const focalStart = isMob ? containerW * 0.15 : containerW * 0.28;
+          const focalEnd = isMob ? containerW * 0.72 : containerW * 0.82;
+          const falloff = Math.max(1, focalEnd - focalStart);
+
+          for (let i = 0; i < totalItems; i++) {
+            const dofEl = dofLayersRef.current[i];
+            if (!dofEl) continue;
+
+            // Calculate card's screen X position
+            let cardScreenX = offsetRef.current + i * itemStep;
+            while (cardScreenX < -itemStep * 1.5) cardScreenX += singleWidth;
+            while (cardScreenX > containerW + itemStep * 1.5) cardScreenX -= singleWidth;
+
+            // Near cards in foreground: blurRatio = 0 (crisp, focused)
+            // Far cards in distance: blurRatio = 1 (blurred bokeh)
+            let blurRatio = (cardScreenX - focalStart) / falloff;
+            blurRatio = Math.max(0, Math.min(1, blurRatio));
+
+            dofEl.style.opacity = blurRatio.toFixed(3);
+          }
+        }
+
         animId = requestAnimationFrame(loop);
       };
 
       animId = requestAnimationFrame(loop);
       return () => cancelAnimationFrame(animId);
-    }, [direction]);
+    }, [direction, displayList.length, images.length]);
 
     // Handle Wheel / Trackpad Scroll
     React.useEffect(() => {
@@ -177,10 +212,8 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
       if (!container) return;
 
       const handleWheel = (e: WheelEvent) => {
-        // Trackpad horizontal scroll or shift-wheel or vertical wheel
         const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) * 0.7 ? e.deltaX : e.deltaY;
         if (Math.abs(delta) > 0) {
-          // Scrub smoothly
           offsetRef.current -= delta * 0.95;
           velocityRef.current = -delta * 0.22;
         }
@@ -192,7 +225,6 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
 
     // Pointer Drag / Touch Gestures
     const handlePointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
-      // Allow dragging on both desktop and mobile
       isDraggingRef.current = true;
       hasDraggedSignificantly.current = false;
       dragStartPos.current = { x: e.clientX, y: e.clientY, time: performance.now() };
@@ -244,7 +276,6 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
         }
       }
 
-      // Add gentle flick momentum clamp
       velocityRef.current = Math.max(-28, Math.min(28, velocityRef.current));
     };
 
@@ -346,8 +377,7 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
                       aspectRatio: "1 / 1",
                       borderRadius: "20px",
                     }}
-                    onClick={(e) => {
-                      // Only trigger click if user wasn't dragging
+                    onClick={() => {
                       if (!hasDraggedSignificantly.current) {
                         onImageClick?.(item, originalIndex);
                       }
@@ -355,7 +385,7 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
                   >
                     {/* Square Card Container */}
                     <div className="relative w-full h-full overflow-hidden rounded-2xl border border-white/14 bg-neutral-900/90 shadow-[0_20px_50px_rgba(0,0,0,0.85)] transition-all duration-300 group-hover:scale-[1.04] group-hover:border-white/40 group-hover:shadow-[0_30px_70px_rgba(0,0,0,0.95)]">
-                      {/* 1:1 Square Image */}
+                      {/* 1:1 Square Image - Sharp Base Layer */}
                       <img
                         src={item.src}
                         alt={item.title || item.alt || "Project visual"}
@@ -364,23 +394,29 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
                         loading="lazy"
                       />
 
+                      {/* Depth of Field Camera Blur Layer (Activated for far cards in distance) */}
+                      <div
+                        ref={(el) => {
+                          dofLayersRef.current[idx] = el;
+                        }}
+                        className="card-dof-overlay pointer-events-none"
+                        aria-hidden="true"
+                      >
+                        <img
+                          src={item.src}
+                          alt=""
+                          draggable={false}
+                          className="card-dof-blurred-img"
+                          loading="lazy"
+                        />
+                        <div className="card-dof-haze" />
+                      </div>
+
                       {/* Subtle Gradient Framing */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 opacity-60 transition-opacity duration-300 group-hover:opacity-40 pointer-events-none" />
 
-                      {/* Front Lens Flare Blur Ray Optical Elements */}
-                      <div className="card-lens-flare-wrap pointer-events-none" aria-hidden="true">
-                        {/* Diagonal Volumetric Diffused Blur Ray */}
-                        <div className="lens-flare-blur-ray" />
-                        {/* Razor Anamorphic Flare Streak */}
-                        <div className="lens-flare-laser-streak" />
-                        {/* Concentric Optical Flare Glow Orb */}
-                        <div className="lens-flare-epicenter-orb" />
-                        {/* Dynamic Shimmer Light Sweep */}
-                        <div className="lens-flare-sweep-ray" />
-                      </div>
-
                       {/* Hover / Touch Caption Overlay */}
-                      <div className="absolute bottom-0 inset-x-0 p-4 flex flex-col gap-1 transform translate-y-2 opacity-90 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 transition-all duration-300 pointer-events-none">
+                      <div className="absolute bottom-0 inset-x-0 p-4 flex flex-col gap-1 transform translate-y-2 opacity-90 sm:opacity-0 sm:group-hover:translate-y-0 sm:group-hover:opacity-100 transition-all duration-300 pointer-events-none z-10">
                         <span className="text-[10px] font-semibold tracking-widest text-[#ff3355] uppercase">
                           {item.category || "PROJECT"}
                         </span>
@@ -390,7 +426,7 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
                       </div>
 
                       {/* Inspect Tag */}
-                      <div className="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-black/60 border border-white/20 text-[9px] font-semibold tracking-wider text-neutral-300 uppercase backdrop-blur-md opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                      <div className="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-black/60 border border-white/20 text-[9px] font-semibold tracking-wider text-neutral-300 uppercase backdrop-blur-md opacity-90 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-10">
                         INSPECT ↗
                       </div>
                     </div>
@@ -399,13 +435,6 @@ export const TiltedGridHero = React.forwardRef<TiltedGridHeroHandle, React.Compo
               })}
             </div>
           </div>
-        </div>
-
-        {/* Foreground Optical Front Lens Flare Ray Atmosphere */}
-        <div className="stage-front-lens-flare pointer-events-none" aria-hidden="true">
-          <div className="stage-flare-glow-orb" />
-          <div className="stage-flare-anamorphic-streak" />
-          <div className="stage-flare-blur-beam" />
         </div>
 
         {/* Foreground Children (Headline, Filters, Bottom Controls) with high z-index */}
