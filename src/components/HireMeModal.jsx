@@ -8,11 +8,8 @@ import {
   Box,
   Palette,
   Globe,
-  Send,
   MessageCircle,
   Mail,
-  Minus,
-  Plus,
 } from 'lucide-react';
 
 const SERVICES = [
@@ -42,24 +39,15 @@ const SERVICES = [
   },
 ];
 
-const BUDGET_TIERS = [
-  { id: 't1', label: '< $1,000', desc: 'Starter / Single Asset' },
-  { id: 't2', label: '$1,000 – $2,500', desc: 'Standard Project' },
-  { id: 't3', label: '$2,500 – $5,000', desc: 'Comprehensive Virtual Design' },
-  { id: 't4', label: '$5,000 – $10,000', desc: 'Full Scale Direction' },
-  { id: 't5', label: '$10,000+', desc: 'Enterprise / Custom' },
-];
-
 export function HireMeModal({ isOpen = false, onClose = () => {} }) {
   const [step, setStep] = useState(1);
-  const totalSteps = 4;
+  const totalSteps = 3;
 
   // Form state
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [selectedServices, setSelectedServices] = useState(['product']);
-  const [budgetIndex, setBudgetIndex] = useState(1); // default '$1,000 – $2,500'
   const [brief, setBrief] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -93,8 +81,6 @@ export function HireMeModal({ isOpen = false, onClose = () => {} }) {
     }
   };
 
-  const selectedTier = BUDGET_TIERS[budgetIndex] || BUDGET_TIERS[0];
-
   const handleNext = () => {
     if (step === 1 && (!name.trim() || !email.trim())) return;
     if (step < totalSteps) {
@@ -118,7 +104,6 @@ export function HireMeModal({ isOpen = false, onClose = () => {} }) {
 • Name: ${name}
 • Email: ${email}
 ${phone ? `• Phone: ${phone}\n` : ''}• Services: ${serviceNames}
-• Budget: ${selectedTier.label} (${selectedTier.desc})
 ${brief ? `• Project Details: ${brief}\n` : ''}
 Looking forward to hearing from you!`;
 
@@ -140,7 +125,6 @@ Name: ${name}
 Email: ${email}
 Phone: ${phone || 'Not provided'}
 Services: ${serviceNames}
-Budget: ${selectedTier.label} (${selectedTier.desc})
 
 Project Details:
 ${brief || 'Let’s discuss in detail!'}
@@ -186,7 +170,7 @@ ${name}`;
           <div className="stepper-progress-track">
             <div
               className="stepper-progress-fill"
-              style={{ width: `${Math.max(10, progressPercent)}%` }}
+              style={{ width: `${Math.max(15, progressPercent)}%` }}
             />
           </div>
         </div>
@@ -248,7 +232,7 @@ ${name}`;
             </div>
           )}
 
-          {/* STEP 2: Service Type */}
+          {/* STEP 2: Service Type & Project Brief */}
           {step === 2 && (
             <div className="stepper-pane animate-fade-in">
               <h3 className="stepper-title">What Service Do You Need?</h3>
@@ -283,74 +267,6 @@ ${name}`;
                   );
                 })}
               </div>
-            </div>
-          )}
-
-          {/* STEP 3: Budget Selection by Stepper / Stripper */}
-          {step === 3 && (
-            <div className="stepper-pane animate-fade-in">
-              <h3 className="stepper-title">Select Your Budget Range</h3>
-              <p className="stepper-desc">
-                Use the budget strip or stepper controls to select your scope.
-              </p>
-
-              {/* Active Selected Budget Highlight */}
-              <div className="budget-highlight-display">
-                <span className="budget-badge-pill">ESTIMATED BUDGET</span>
-                <div className="budget-hero-amount">{selectedTier.label}</div>
-                <div className="budget-hero-sub">{selectedTier.desc}</div>
-              </div>
-
-              {/* Interactive Budget Stripper (Segment Strip) */}
-              <div className="budget-strip-container">
-                <div className="budget-strip-track">
-                  {BUDGET_TIERS.map((tier, idx) => {
-                    const isCurrent = budgetIndex === idx;
-                    const isPassed = budgetIndex >= idx;
-                    return (
-                      <button
-                        key={tier.id}
-                        type="button"
-                        className={`budget-strip-step ${isCurrent ? 'active' : ''} ${isPassed ? 'passed' : ''}`}
-                        onClick={() => setBudgetIndex(idx)}
-                        title={tier.label}
-                      >
-                        <span className="strip-step-dot" />
-                        <span className="strip-step-label">{tier.label}</span>
-                      </button>
-                    );
-                  })}
-                </div>
-              </div>
-
-              {/* Incremental Stepper Controls */}
-              <div className="budget-stepper-controls">
-                <button
-                  type="button"
-                  className="stepper-ctrl-btn"
-                  onClick={() => setBudgetIndex(Math.max(0, budgetIndex - 1))}
-                  disabled={budgetIndex === 0}
-                  aria-label="Decrease budget tier"
-                >
-                  <Minus size={16} />
-                  <span>Lower</span>
-                </button>
-
-                <div className="stepper-level-indicator">
-                  Tier {budgetIndex + 1} of {BUDGET_TIERS.length}
-                </div>
-
-                <button
-                  type="button"
-                  className="stepper-ctrl-btn"
-                  onClick={() => setBudgetIndex(Math.min(BUDGET_TIERS.length - 1, budgetIndex + 1))}
-                  disabled={budgetIndex === BUDGET_TIERS.length - 1}
-                  aria-label="Increase budget tier"
-                >
-                  <span>Higher</span>
-                  <Plus size={16} />
-                </button>
-              </div>
 
               {/* Optional Brief Details */}
               <div className="hire-input-group" style={{ marginTop: '20px' }}>
@@ -360,7 +276,7 @@ ${name}`;
                 <textarea
                   id="hire-client-brief"
                   className="hire-textarea"
-                  rows={2}
+                  rows={3}
                   placeholder="Briefly describe what you're looking to build or design..."
                   value={brief}
                   onChange={(e) => setBrief(e.target.value)}
@@ -369,8 +285,8 @@ ${name}`;
             </div>
           )}
 
-          {/* STEP 4: Review & Direct Dispatch */}
-          {step === 4 && (
+          {/* STEP 3: Review & Direct Dispatch */}
+          {step === 3 && (
             <div className="stepper-pane animate-fade-in">
               <h3 className="stepper-title">Review & Submit Your Project</h3>
               <p className="stepper-desc">
@@ -387,6 +303,12 @@ ${name}`;
                   <span className="summary-label">EMAIL</span>
                   <span className="summary-val">{email || 'Not specified'}</span>
                 </div>
+                {phone && (
+                  <div className="summary-item">
+                    <span className="summary-label">PHONE</span>
+                    <span className="summary-val">{phone}</span>
+                  </div>
+                )}
                 <div className="summary-item">
                   <span className="summary-label">SERVICES</span>
                   <div className="summary-tags">
@@ -397,12 +319,12 @@ ${name}`;
                     ))}
                   </div>
                 </div>
-                <div className="summary-item">
-                  <span className="summary-label">BUDGET</span>
-                  <span className="summary-val budget-highlight">
-                    {selectedTier.label}
-                  </span>
-                </div>
+                {brief && (
+                  <div className="summary-item">
+                    <span className="summary-label">BRIEF</span>
+                    <span className="summary-val">{brief}</span>
+                  </div>
+                )}
               </div>
 
               {/* Send Actions */}
