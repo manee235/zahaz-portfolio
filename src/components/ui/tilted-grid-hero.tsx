@@ -3,95 +3,8 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-/* ── the curved row ──────────────────────────────────────────────
- * Scroll Tilted Grid turned on its side, with the tilt drawn as a curve.
- * One row of images streams from right to left around the inside of a
- * cylinder. The centre faces you flat, the ends bend toward you so each
- * end image curves along its length, and the ends fade into the page.
- *
- * A CSS box can't bend, so every tile is cut into SLICES vertical strips,
- * each a flat facet of the cylinder showing its share of the image. The
- * strips sit still inside their tile, each turned its own few degrees
- * round the cylinder's axis, and the tile (preserve-3d) is what moves: one
- * rotateY about that same axis carries the whole tile along the arc. A
- * tile is one animation, so its strips can never drift apart or show
- * different images. Only a tile's delay differs, and that sets where on
- * the arc it sits. The band is transform-only on the compositor; the fade
- * is a static mask over it.
- *
- * The only JS is a ResizeObserver that sizes the loop, and a handler that
- * hands a tile its next image each time it wraps, out of sight.
- * ─────────────────────────────────────────────────────────────── */
-
-// Strips per tile. Each is a few degrees of arc, too little to read as a
-// facet; fewer starts to show corners along the top and bottom edges. A
-// tight curve wraps a tile round a wide arc, so it needs this many.
-const SLICES = 16;
-
-// Camera distance from the screen, as a multiple of the cylinder's radius.
-// Just past the axis, so the ends come right up to the lens and swell; much
-// further back and the row flattens out however tight the cylinder.
-const CAMERA = 1.6;
-
-/**
- * Cylinder radius, as a share of the hero's width, that puts the frame's
- * edge `bend` radians round the arc as seen through the camera:
- * r·sinθ · CAMERA / (CAMERA − 1 + cosθ) = width / 2, solved for r.
- */
-function arc(bend: number) {
-  return (CAMERA - 1 + Math.cos(bend)) / (2 * CAMERA * Math.sin(bend));
-}
-
-// A tile is never wider than this share of the hero, so a phone still
-// shows its neighbours instead of one tile edge to edge.
-const MAX_WIDTH = 55;
-
-/**
- * Lays the loop on the cylinder. The radius puts the frame's edge `bend`
- * radians round the arc (see `arc`). Angles come back in degrees: `unit`
- * is the arc one tile-height spans, `limit` how far round a tile's centre
- * can go before the whole tile is off-screen, and `sweep` how far round
- * the loop's ends sit. The loop reaches past `limit`, so a tile only ever
- * wraps out of sight, and is rounded up to a whole number of tiles so the
- * gap never stretches.
- */
-function measure(
-  width: number,
-  height: number,
-  tile: number,
-  aspect: number,
-  gap: number,
-  bend: number,
-) {
-  const winW = typeof window !== "undefined" ? window.innerWidth : 1440;
-  const winH = typeof window !== "undefined" ? window.innerHeight : 800;
-  const effectiveWidth = width > 0 ? width : winW;
-  const effectiveHeight = height > 0 ? height : winH;
-
-  const h = Math.min(
-    (tile / 100) * effectiveHeight,
-    ((MAX_WIDTH / 100) * effectiveWidth) / aspect,
-  );
-  const radius = effectiveWidth * arc(bend);
-  if (!(h > 0) || !(radius > 0))
-    return { columns: 6, sweep: 90, unit: 15, limit: 75 };
-  const deg = (rad: number) => (rad * 180) / Math.PI;
-  const unit = deg(h / radius);
-  const pitch = (aspect + gap / 100) * unit;
-  const limit = deg(bend) + (aspect * unit) / 2;
-  // Capped so a hero squeezed to a sliver can't mount thousands of tiles.
-  const columns = Math.min(60, Math.max(4, Math.ceil((2 * limit) / pitch)));
-  const round = (n: number) => +n.toFixed(4);
-  const sweep = round((columns * pitch) / 2);
-  return {
-    columns,
-    sweep,
-    unit: round(unit),
-    limit: round(Math.min(sweep, limit)),
-  };
-}
-
 export type TiltedGridImage = {
+  id?: string;
   src: string;
   alt?: string;
   title?: string;
@@ -105,249 +18,186 @@ export type TiltedGridImage = {
 };
 
 export type TiltedGridHeroProps = {
-  /**
-   * Images run along the row in order. A tile takes its next image each
-   * time it wraps off-screen, so the whole list plays through however
-   * few tiles the frame needs. Short lists simply repeat.
-   */
+  /** Images to stream continuously along the 3D angled line */
   images: TiltedGridImage[];
-  /**
-   * Seconds for the row to advance by one tile. Speed is per tile, not per
-   * crossing, so a phone and an ultrawide move at the same pace.
-   * @default 4
-   */
+  /** Seconds for one full cycle loop @default 34 */
   speed?: number;
-  /** Tile height, as a percentage of the hero's height. @default 36 */
-  tileHeight?: number;
-  /** Tile width divided by tile height. @default 1 */
-  aspectRatio?: number;
-  /** Space between tiles, as a percentage of a tile's height. @default 7 */
+  /** Distance in pixels pushed back into Z space @default -200 */
+  pushBack?: number;
+  /** Angle along Y axis in degrees to create back-to-front perspective @default 24 */
+  angleY?: number;
+  /** Subtle vertical tilt in degrees @default 4 */
+  angleX?: number;
+  /** Height/width of each 1:1 square tile in pixels (or responsive clamp) */
+  tileSize?: number;
+  /** Gap between square tiles in pixels @default 32 */
   gap?: number;
-  /** Vertical centre of the row, as a percentage of the hero's height. @default 50 */
-  axis?: number;
-  /**
-   * How far the row has bent round by the frame's edge, in degrees. Higher
-   * curls the ends harder toward the viewer. Clamped to 5–85.
-   * @default 76
-   */
-  curve?: number;
-  /** Width of the fade at each end, as a percentage of the hero's width. @default 10 */
+  /** Edge mask fade percentage @default 10 */
   fade?: number;
-  /** Content rendered above the band. */
-  children?: React.ReactNode;
-  className?: string;
+  /** Direction of movement: 'back-to-front' or 'front-to-back' @default 'back-to-front' */
+  direction?: 'back-to-front' | 'front-to-back';
   /** Callback fired when a tile is clicked */
   onImageClick?: (image: TiltedGridImage, index: number) => void;
+  children?: React.ReactNode;
+  className?: string;
+  style?: React.CSSProperties;
 };
 
 export function TiltedGridHero({
-  images,
-  speed = 4,
-  tileHeight = 36,
-  aspectRatio = 1,
-  gap = 7,
-  axis = 50,
-  curve = 76,
+  images = [],
+  speed = 36,
+  pushBack = -200,
+  angleY = 24,
+  angleX = 4,
+  gap = 32,
   fade = 10,
+  direction = 'back-to-front',
+  onImageClick,
   children,
   className,
   style,
-  onImageClick,
   ...props
 }: React.ComponentProps<"div"> & TiltedGridHeroProps) {
-  const ref = React.useRef<HTMLDivElement>(null);
+  const containerRef = React.useRef<HTMLDivElement>(null);
   const id = React.useId().replace(/[^a-zA-Z0-9]/g, "");
-  const orbit = `tgh-o-${id}`;
-  const tile = `tgh-t-${id}`;
-  const bend = (Math.min(85, Math.max(5, curve)) * Math.PI) / 180;
+  const animName = `angled-stream-${id}`;
 
-  // Initial layout measurement fallback
-  const [layout, setLayout] = React.useState<ReturnType<typeof measure>>(() =>
-    measure(
-      typeof window !== "undefined" ? window.innerWidth : 1440,
-      typeof window !== "undefined" ? window.innerHeight : 800,
-      tileHeight,
-      aspectRatio,
-      gap,
-      bend,
-    ),
-  );
-
-  const [shown, setShown] = React.useState<Record<number, number>>({});
-
-  React.useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const measureEl = () => {
-      const width = el.clientWidth || window.innerWidth;
-      const height = el.clientHeight || window.innerHeight;
-      if (width <= 0 || height <= 0) return;
-      const next = measure(width, height, tileHeight, aspectRatio, gap, bend);
-      setLayout((prev) =>
-        prev?.columns === next.columns &&
-        prev.sweep === next.sweep &&
-        prev.unit === next.unit
-          ? prev
-          : next,
-      );
-    };
-
-    measureEl();
-
-    const ro = new ResizeObserver(([entry]) => {
-      const { width, height } = entry.contentRect;
-      const effectiveW = width || el.clientWidth || window.innerWidth;
-      const effectiveH = height || el.clientHeight || window.innerHeight;
-      if (effectiveW <= 0 || effectiveH <= 0) return;
-      const next = measure(effectiveW, effectiveH, tileHeight, aspectRatio, gap, bend);
-      setLayout((prev) =>
-        prev?.columns === next.columns &&
-        prev.sweep === next.sweep &&
-        prev.unit === next.unit
-          ? prev
-          : next,
-      );
-    });
-
-    ro.observe(el);
-    window.addEventListener("resize", measureEl);
-    return () => {
-      ro.disconnect();
-      window.removeEventListener("resize", measureEl);
-    };
-  }, [tileHeight, aspectRatio, gap, bend]);
-
-  // Fetch every image up front
-  React.useEffect(() => {
-    for (const { src } of images) {
-      if (src) new Image().src = src;
-    }
+  // Duplicate items 3 times for a seamless, infinite loop
+  const displayList = React.useMemo(() => {
+    if (!images || images.length === 0) return [];
+    return [...images, ...images, ...images];
   }, [images]);
 
-  const { columns, sweep, unit, limit } = layout;
+  // Preload all unique images
+  React.useEffect(() => {
+    images.forEach(({ src }) => {
+      if (src) new Image().src = src;
+    });
+  }, [images]);
 
-  // Every length is a multiple of the tile's height
-  const u = (n: number) =>
-    `calc(${+n.toFixed(4)} * min(${tileHeight}cqh, ${+(
-      MAX_WIDTH / aspectRatio
-    ).toFixed(4)}cqw))`;
+  // Direction animation logic:
+  // With angleY > 0 (e.g. 24deg), right side is in the back (deep negative Z), left side is in the front (positive Z).
+  // Translating from 0% to -33.333% moves items from right (back) to left (front) = back-to-front stream!
+  const fromTranslate = direction === 'back-to-front' ? '0%' : '-33.3333%';
+  const toTranslate = direction === 'back-to-front' ? '-33.3333%' : '0%';
 
-  const r = 100 * arc(bend);
-  const radius = `${+r.toFixed(3)}cqw`;
-  const turn = (deg: number) =>
-    `translateZ(${radius}) rotateY(${+deg.toFixed(4)}deg) translateZ(-${radius})`;
+  const keyframesCss = `
+    @keyframes ${animName} {
+      0% {
+        transform: translate3d(${fromTranslate}, 0, 0);
+      }
+      100% {
+        transform: translate3d(${toTranslate}, 0, 0);
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .angled-stream-track-${id} {
+        animation-play-state: paused !important;
+      }
+    }
+  `;
 
-  const hide = +(((sweep - limit) / (2 * sweep || 1)) * 100).toFixed(4);
-  const css =
-    `@keyframes ${orbit}{` +
-    `from{transform:${turn(-sweep)}}to{transform:${turn(sweep)}}` +
-    `0%,${hide}%,${100 - hide}%,100%{visibility:hidden}` +
-    `${hide + 0.001}%,${100 - hide - 0.001}%{visibility:visible}}` +
-    `@media(prefers-reduced-motion:reduce){.${tile}{animation-play-state:paused}}`;
-
-  const share = aspectRatio / SLICES;
-  const duration = columns * speed;
-  const mask = `linear-gradient(90deg,transparent,#000 ${fade}%,#000 ${
-    100 - fade
-  }%,transparent)`;
+  const maskStyle = `linear-gradient(90deg, transparent 0%, #000 ${fade}%, #000 ${100 - fade}%, transparent 100%)`;
 
   return (
     <div
-      ref={ref}
+      ref={containerRef}
       className={cn("relative overflow-hidden w-full h-full", className)}
+      style={{
+        width: "100%",
+        height: "100%",
+        ...style,
+      }}
       {...props}
-      style={{ containerType: "size", width: "100%", height: "100%", ...style }}
     >
-      <style>{css}</style>
+      <style>{keyframesCss}</style>
 
+      {/* 3D Perspective Stage: Pushed backward in Z, angled from back to front */}
       <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 transition-opacity duration-700"
+        className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden"
         style={{
-          opacity: 1,
-          perspective: `${+(r * CAMERA).toFixed(3)}cqw`,
-          perspectiveOrigin: `50% ${axis}%`,
-          maskImage: mask,
-          WebkitMaskImage: mask,
+          perspective: "1300px",
+          perspectiveOrigin: "50% 50%",
+          maskImage: maskStyle,
+          WebkitMaskImage: maskStyle,
+          zIndex: 1,
         }}
+        aria-hidden
       >
-        {Array.from({ length: columns }, (_, t) => {
-          const first = columns - 1 - t;
-          const img = images[(shown[t] ?? first) % Math.max(images.length, 1)];
-          return (
-            <div
-              key={t}
-              className={cn(tile, "absolute pointer-events-auto cursor-pointer group")}
-              style={{
-                left: `calc(50% - ${u(aspectRatio / 2)})`,
-                top: `calc(${axis}% - ${u(0.5)})`,
-                width: u(aspectRatio),
-                height: u(1),
-                transformStyle: "preserve-3d",
-                animation: `${orbit} ${duration}s linear ${-t * speed}s infinite`,
-              }}
-              onAnimationIteration={(e) => {
-                const lap = Math.round(e.elapsedTime / duration);
-                setShown((prev) => {
-                  const next = lap * columns + first;
-                  return prev[t] === next ? prev : { ...prev, [t]: next };
-                });
-              }}
-            >
-              {/* Click target overlay */}
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onImageClick?.(img, (shown[t] ?? first) % Math.max(images.length, 1));
-                }}
-                className="absolute inset-0 z-30 w-full h-full cursor-pointer pointer-events-auto bg-transparent border-none outline-none rounded-2xl group-hover:ring-2 group-hover:ring-white/40 transition-all duration-300"
-                aria-label={img?.title || img?.alt || "View project details"}
-                title="Click to view project details"
-              />
-
-              {Array.from({ length: SLICES }, (_, k) => (
+        {/* Angled 3D Runway Plane: Pushed back in Z & rotated in Y */}
+        <div
+          className="relative flex items-center justify-start pointer-events-auto"
+          style={{
+            transformStyle: "preserve-3d",
+            transform: `translate3d(0, 0, ${pushBack}px) rotateY(${angleY}deg) rotateX(${angleX}deg)`,
+            width: "100%",
+            willChange: "transform",
+          }}
+        >
+          {/* Looping Track moving along the angled 3D line */}
+          <div
+            className={`angled-stream-track-${id} flex items-center will-change-transform`}
+            style={{
+              gap: `${gap}px`,
+              animation: `${animName} ${speed}s linear infinite`,
+              width: "max-content",
+            }}
+          >
+            {displayList.map((item, idx) => {
+              const originalIndex = idx % Math.max(images.length, 1);
+              return (
                 <div
-                  key={k}
-                  className={cn(
-                    "absolute top-0 overflow-hidden bg-neutral-900 shadow-2xl transition-[filter] duration-300 group-hover:brightness-115",
-                    k === 0 && "rounded-l-2xl",
-                    k === SLICES - 1 && "rounded-r-2xl",
-                  )}
+                  key={`${item.id || item.src}-${idx}`}
+                  className="relative group shrink-0 select-none cursor-pointer"
                   style={{
-                    left: u((aspectRatio - share) / 2),
-                    width:
-                      k === SLICES - 1 ? u(share) : `calc(${u(share)} + 1px)`,
-                    height: u(1),
-                    transform: turn(
-                      (aspectRatio / 2 - (k + 0.5) * share) * unit,
-                    ),
+                    width: "clamp(260px, 34vh, 420px)",
+                    aspectRatio: "1 / 1",
+                    borderRadius: "20px",
                   }}
+                  onClick={() => onImageClick?.(item, originalIndex)}
                 >
-                  {img ? (
+                  {/* Square Card Container */}
+                  <div className="relative w-full h-full overflow-hidden rounded-2xl border border-white/14 bg-neutral-900/90 shadow-[0_20px_50px_rgba(0,0,0,0.85)] transition-all duration-300 group-hover:scale-[1.04] group-hover:border-white/40 group-hover:shadow-[0_30px_70px_rgba(0,0,0,0.95)]">
+                    
+                    {/* 1:1 Square Image */}
                     <img
-                      src={img.src}
-                      alt={k === 0 ? (img.alt ?? "") : ""}
+                      src={item.src}
+                      alt={item.title || item.alt || "Project visual"}
                       draggable={false}
-                      className="absolute top-0 object-cover"
-                      style={{
-                        left: u(-k * share),
-                        width: u(aspectRatio),
-                        height: u(1),
-                        maxWidth: "none",
-                        minWidth: u(aspectRatio),
-                      }}
+                      className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
+                      loading="lazy"
                     />
-                  ) : null}
+
+                    {/* Subtle Gradient Framing */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/20 opacity-60 transition-opacity duration-300 group-hover:opacity-40 pointer-events-none" />
+
+                    {/* Hover Caption Overlay */}
+                    <div className="absolute bottom-0 inset-x-0 p-4 flex flex-col gap-1 transform translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none">
+                      <span className="text-[10px] font-semibold tracking-widest text-[#ff3355] uppercase">
+                        {item.category || "PROJECT"}
+                      </span>
+                      <h4 className="text-sm font-semibold text-white tracking-tight font-['Archivo'] truncate">
+                        {item.title || "Selected Work"}
+                      </h4>
+                    </div>
+
+                    {/* Subtle Click Hint Pill */}
+                    <div className="absolute top-3 right-3 px-2 py-0.5 rounded-full bg-black/60 border border-white/20 text-[9px] font-semibold tracking-wider text-neutral-300 uppercase backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                      INSPECT ↗
+                    </div>
+
+                  </div>
                 </div>
-              ))}
-            </div>
-          );
-        })}
+              );
+            })}
+          </div>
+        </div>
       </div>
 
-      {children}
+      {/* Foreground Children (Headline, Filters, Controls) with high z-index */}
+      <div className="relative z-20 w-full h-full pointer-events-none">
+        {children}
+      </div>
     </div>
   );
 }

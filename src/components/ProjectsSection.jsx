@@ -152,7 +152,6 @@ export function ProjectsSection({ isReducedMotion = false }) {
   });
 
   const handleTileClick = (img, tileLoopIdx) => {
-    // Find matching project in project list
     const foundIdx = PROJECT_IMAGES.findIndex((p) => p.src === img.src);
     setSelectedIdx(foundIdx !== -1 ? foundIdx : 0);
   };
@@ -175,20 +174,21 @@ export function ProjectsSection({ isReducedMotion = false }) {
 
   return (
     <section className="projects-fullscreen-section" id="works">
+      {/* 3D Angled Line Carousel: Pushed back in Z, streaming from back in the distance to front */}
       <TiltedGridHero
         images={filteredProjects}
-        speed={4.2}
-        curve={76}
-        tileHeight={38}
-        aspectRatio={1}
-        gap={7}
-        axis={50}
-        fade={8}
+        speed={32}
+        pushBack={-220}
+        angleY={24}
+        angleX={4}
+        gap={36}
+        fade={10}
+        direction="back-to-front"
         className="w-full h-full min-h-screen"
         style={{ width: '100vw', height: '100vh', minHeight: '100vh' }}
         onImageClick={handleTileClick}
       >
-        {/* Full-bleed Edge-to-Edge UI Layer */}
+        {/* Full-bleed Edge-to-Edge Foreground Layer */}
         <div className="projects-fullscreen-overlay">
           
           {/* Top Floating Editorial Bar */}
@@ -224,7 +224,7 @@ export function ProjectsSection({ isReducedMotion = false }) {
           <div className="projects-overlay-center">
             <div className="projects-badge-pill">
               <Sparkles className="size-3 text-neutral-200 animate-pulse" />
-              <span>3D FULL-BLEED CYLINDER REEL</span>
+              <span>3D ANGLED PERSPECTIVE REEL</span>
             </div>
             
             <h3 className="projects-center-headline">
@@ -234,7 +234,7 @@ export function ProjectsSection({ isReducedMotion = false }) {
             </h3>
 
             <p className="projects-center-subtext">
-              Images curve in from one edge of your display, flatten out at the centre, then fade away round the other.
+              Projects stream along an angled 3D depth vector—emerging from the distant background and advancing forward in sharp focus.
             </p>
 
             <div className="projects-click-hint">
@@ -247,13 +247,13 @@ export function ProjectsSection({ isReducedMotion = false }) {
           <footer className="projects-overlay-bottom">
             <div className="projects-specs-strip">
               <div className="spec-item">
-                <Layers className="size-3.5 text-neutral-400" />
-                <span className="spec-label">16-Facet Cylinder</span>
+                <Compass className="size-3.5 text-neutral-400" />
+                <span className="spec-label">24° Angled 3D Vector</span>
               </div>
               <div className="spec-separator" />
               <div className="spec-item">
-                <Compass className="size-3.5 text-neutral-400" />
-                <span className="spec-label">76° Panoramic Arc</span>
+                <Layers className="size-3.5 text-neutral-400" />
+                <span className="spec-label">Pushed Backward (-220px)</span>
               </div>
               <div className="spec-separator" />
               <div className="spec-item">

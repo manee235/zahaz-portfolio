@@ -50,8 +50,9 @@ export default function TiltedGridHeroDemo() {
   return (
     <TiltedGridHero
       images={IMAGES}
-      aspectRatio={1}
-      tileHeight={38}
+      pushBack={-180}
+      angleY={24}
+      speed={34}
       className="h-[560px] w-full rounded-2xl border border-white/10 bg-black/60 shadow-2xl backdrop-blur-md"
     >
       <div className="relative z-10 flex h-full flex-col items-center justify-between py-12 text-center">
