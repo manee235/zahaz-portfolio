@@ -46,3 +46,4 @@ export function useMouseParallax(active = true) {
 
   return mousePos;
 }
+

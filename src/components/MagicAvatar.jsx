@@ -12,14 +12,12 @@ export function MagicAvatar({
   const containerRef = useRef(null);
   const [isHovered, setIsHovered] = useState(false);
   const [coords, setCoords] = useState({ x: '50%', y: '50%', pxX: 0, pxY: 0 });
-  const [recorderAnimActive, setRecorderAnimActive] = useState(false);
 
   // Recorder mode automated sweep
   useEffect(() => {
     if (!isRecorder || isReducedMotion) return;
 
     const timer = setTimeout(() => {
-      setRecorderAnimActive(true);
       setIsHovered(true);
 
       let start = null;
@@ -29,7 +27,6 @@ export function MagicAvatar({
         if (!start) start = timestamp;
         const elapsed = timestamp - start;
         const p = Math.min(elapsed / duration, 1);
-        // Circular sweep around the portrait
         const angle = p * Math.PI * 2.5;
         const cx = 50 + Math.cos(angle) * 28;
         const cy = 48 + Math.sin(angle) * 32;
@@ -45,7 +42,6 @@ export function MagicAvatar({
           requestAnimationFrame(sweep);
         } else {
           setIsHovered(false);
-          setRecorderAnimActive(false);
         }
       }
 
@@ -87,7 +83,7 @@ export function MagicAvatar({
   return (
     <div
       ref={containerRef}
-      className={`magic-avatar-container ${className} ${isHovered ? 'is-hovered' : ''}`}
+      className={`magic-avatar-container noir-avatar ${className} ${isHovered ? 'is-hovered' : ''}`}
       style={{
         ...style,
         ...tiltStyle,
@@ -99,15 +95,21 @@ export function MagicAvatar({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Layer 1: Base Portrait */}
+      {/* Layer 1: High-Contrast Film Noir Base Portrait */}
       <img
-        className="magic-avatar-img magic-avatar-base"
+        className="magic-avatar-img magic-avatar-base noir-base-portrait"
         src={MEDIA.heroPhoto}
-        alt="Sahas - Creative Director & Founder"
+        alt="Sahas - Film Noir Portrait"
         loading="eager"
       />
 
-      {/* Layer 2: Red Reveal Portrait */}
+      {/* Layer 2: Cinematic Chiaroscuro Vignette */}
+      <div className="noir-vignette-overlay" aria-hidden="true" />
+
+      {/* Layer 3: Authentic 35mm Film Grain Texture */}
+      <div className="noir-grain-overlay" aria-hidden="true" />
+
+      {/* Layer 4: Electric Red Magic Reveal Portrait */}
       <img
         className="magic-avatar-img magic-avatar-red"
         src={MEDIA.heroPhotoRed}
@@ -116,13 +118,13 @@ export function MagicAvatar({
         aria-hidden="true"
       />
 
-      {/* Layer 3: Magic Flare / Cursor Aura */}
+      {/* Layer 5: Luminous Crimson Cursor Aura */}
       <div className="magic-reveal-flare" aria-hidden="true" />
 
-      {/* Subtle Interactive Reveal Badge */}
+      {/* Interactive Badge */}
       <div className="magic-reveal-badge" aria-hidden="true">
         <span className="badge-pulse-dot" />
-        <span className="badge-text">MAGIC REVEAL</span>
+        <span className="badge-text">NOIR · MAGIC REVEAL</span>
       </div>
     </div>
   );

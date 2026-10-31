@@ -40,7 +40,7 @@
       }
     }
 
-    /* CSS Reset */
+    /* Reset & Base */
     *, *::before, *::after {
       box-sizing: border-box;
       margin: 0;
@@ -62,7 +62,6 @@
       overflow-x: hidden;
       width: 100%;
       min-height: 100vh;
-      position: relative;
     }
 
     a {
@@ -84,7 +83,7 @@
     }
 
     /* -------------------------------------------------------------
-       2. SECTION 1: HERO SECTION (1440 × 938u)
+       SECTION 1: HERO SECTION (1440 × 938u)
     ------------------------------------------------------------- */
     .hero-wrapper {
       width: 100%;
@@ -93,6 +92,7 @@
       justify-content: center;
       position: relative;
       overflow: hidden;
+      perspective: 1200px;
     }
 
     .hero-stage {
@@ -104,7 +104,26 @@
       background-color: var(--paper);
     }
 
-    /* Header Row / Container: display: contents on desktop, flex row on phone */
+    /* Parallax Wrappers (Desktop) */
+    .hero-title-wrapper,
+    .hero-stats-wrapper,
+    .hero-right-wrapper {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 20;
+      will-change: transform;
+    }
+
+    .hero-title-wrapper > *,
+    .hero-stats-wrapper > *,
+    .hero-right-wrapper > * {
+      pointer-events: auto;
+    }
+
+    /* Header Row */
     .hero-top-row {
       display: contents;
     }
@@ -122,9 +141,16 @@
       align-items: center;
       z-index: 30;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      animation: navDrop 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
       opacity: 0;
       transform: translateY(-20px);
-      will-change: transform, opacity;
+    }
+
+    @keyframes navDrop {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     .nav-slider {
@@ -171,6 +197,7 @@
       letter-spacing: -0.01em;
       white-space: nowrap;
       z-index: 25;
+      animation: elemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.35s forwards;
       opacity: 0;
       transform: translateY(14px);
     }
@@ -194,6 +221,7 @@
       font-weight: 500;
       z-index: 25;
       transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s;
+      animation: elemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
       opacity: 0;
       transform: translateY(14px);
     }
@@ -221,6 +249,7 @@
       width: calc(764 * var(--u));
       height: calc(1024 * var(--u));
       z-index: 2;
+      perspective: 1000px;
     }
 
     .hero-photo-wrap {
@@ -228,25 +257,149 @@
       inset: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none;
       -webkit-mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
       mask-image: linear-gradient(to right, transparent 0%, black 6%, black 94%, transparent 100%);
+      animation: photoReveal 1.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       opacity: 0;
       filter: blur(10px);
       transform: translateY(40px);
       will-change: transform, opacity, filter;
     }
 
-    .hero-photo-img {
+    @keyframes photoReveal {
+      to {
+        opacity: 1;
+        filter: blur(0px);
+        transform: translateY(0px);
+      }
+    }
+
+    /* -------------------------------------------------------------
+       MAGIC REVEAL AVATAR COMPONENT
+    ------------------------------------------------------------- */
+    .magic-avatar-container {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      cursor: crosshair;
+      user-select: none;
+      --reveal-x: 50%;
+      --reveal-y: 50%;
+      --reveal-radius: 240px;
+      will-change: transform;
+      transition: transform 0.15s ease-out;
+    }
+
+    .magic-avatar-img {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       object-position: center top;
-      will-change: transform;
+      pointer-events: none;
+      will-change: transform, opacity, filter, mask-image;
+    }
+
+    /* Layer 1: Base Portrait */
+    .magic-avatar-base {
+      z-index: 1;
+      filter: contrast(1.04) brightness(0.98);
+      transition: filter 0.4s ease;
+    }
+
+    .magic-avatar-container.is-hovered .magic-avatar-base {
+      filter: contrast(1.1) brightness(0.92);
+    }
+
+    /* Layer 2: Red Reveal Portrait with Dynamic Spotlight Mask */
+    .magic-avatar-red {
+      z-index: 2;
+      opacity: 0;
+      -webkit-mask-image: radial-gradient(circle var(--reveal-radius) at var(--reveal-x) var(--reveal-y), black 0%, black 55%, transparent 100%);
+      mask-image: radial-gradient(circle var(--reveal-radius) at var(--reveal-x) var(--reveal-y), black 0%, black 55%, transparent 100%);
+      transition: opacity 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      filter: contrast(1.18) brightness(1.06) saturate(1.22);
+    }
+
+    .magic-avatar-container.is-hovered .magic-avatar-red {
+      opacity: 1;
+    }
+
+    /* Layer 3: Magic Flare / Cursor Aura */
+    .magic-reveal-flare {
+      position: absolute;
+      inset: 0;
+      z-index: 3;
+      pointer-events: none;
+      opacity: 0;
+      background: radial-gradient(circle calc(var(--reveal-radius) + 40px) at var(--reveal-x) var(--reveal-y), rgba(255, 30, 65, 0.42) 0%, rgba(255, 10, 40, 0.14) 48%, transparent 76%);
+      mix-blend-mode: screen;
+      transition: opacity 0.35s ease;
+    }
+
+    .magic-avatar-container.is-hovered .magic-reveal-flare {
+      opacity: 1;
+    }
+
+    /* Magic Reveal Badge */
+    .magic-reveal-badge {
+      position: absolute;
+      bottom: calc(24 * var(--u));
+      left: 50%;
+      transform: translateX(-50%) translateY(8px);
+      background: rgba(14, 14, 14, 0.82);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 30, 65, 0.45);
+      box-shadow: 0 6px 20px rgba(255, 20, 50, 0.28);
+      border-radius: 9999px;
+      padding: calc(5 * var(--u)) calc(14 * var(--u));
+      display: inline-flex;
+      align-items: center;
+      gap: calc(7 * var(--u));
+      z-index: 5;
+      opacity: 0;
+      transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      pointer-events: none;
+    }
+
+    .magic-avatar-container.is-hovered .magic-reveal-badge {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .badge-pulse-dot {
+      width: calc(6 * var(--u));
+      height: calc(6 * var(--u));
+      border-radius: 50%;
+      background: #ff2547;
+      box-shadow: 0 0 10px #ff2547;
+      animation: pulseDot 1.4s infinite ease-in-out;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1.4);
+        opacity: 0.55;
+      }
+    }
+
+    .badge-text {
+      font-family: var(--font-display);
+      font-variation-settings: 'wdth' 110, 'wght' 600;
+      font-size: calc(10.5 * var(--u));
+      letter-spacing: 0.12em;
+      color: #ffffff;
+      text-transform: uppercase;
     }
 
     /* Brand Plate: Dark glass plate over man's back at (532, 444), 364 × 73u */
-    /* Relative to figure container: left: 532 - 338 = 194u, top: 444 - (-86) = 530u */
     .brand-glass-plate {
       position: absolute;
       left: calc(194 * var(--u));
@@ -264,8 +417,10 @@
       padding: 0 calc(24 * var(--u));
       box-shadow: 0 16px 36px rgba(0, 0, 0, 0.28);
       z-index: 10;
+      animation: elemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.65s forwards;
       opacity: 0;
       transform: translateY(14px);
+      will-change: transform;
     }
 
     .brand-mark-triangle {
@@ -279,13 +434,17 @@
       height: calc(24 * var(--u));
     }
 
-    .brand-plate-name {
-      font-family: var(--font-display);
-      font-variation-settings: 'wdth' 120, 'wght' 700;
-      font-size: calc(25 * var(--u));
-      letter-spacing: 0.12em;
-      color: #ffffff;
-      text-transform: uppercase;
+    .brand-plate-wordmark {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: calc(28 * var(--u));
+    }
+
+    .brand-wordmark-img {
+      height: calc(22 * var(--u));
+      width: auto;
+      filter: brightness(0) invert(1);
       user-select: none;
     }
 
@@ -318,9 +477,11 @@
       color: rgba(255, 255, 255, 0.85);
       white-space: nowrap;
       z-index: 10;
+      animation: elemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.85s forwards;
       opacity: 0;
       text-shadow: 0 2px 10px rgba(0, 0, 0, 0.7);
       pointer-events: none;
+      will-change: transform;
     }
 
     /* Title: "PURE / DESIGN" at (57, 246) and "('25)" at (339, 272) */
@@ -345,8 +506,23 @@
       letter-spacing: -0.06em;
       color: var(--ink);
       text-transform: uppercase;
+      animation: titleUnmask 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
       transform: translateY(105%);
       will-change: transform;
+    }
+
+    .title-line-pure {
+      animation-delay: 0.15s;
+    }
+
+    .title-line-design {
+      animation-delay: 0.26s;
+    }
+
+    @keyframes titleUnmask {
+      to {
+        transform: translateY(0%);
+      }
     }
 
     .title-year-tag {
@@ -360,6 +536,7 @@
       letter-spacing: -0.04em;
       color: #666666;
       z-index: 20;
+      animation: elemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
       opacity: 0;
       transform: translateY(14px);
     }
@@ -371,6 +548,7 @@
       top: calc(458 * var(--u));
       max-width: calc(260 * var(--u));
       z-index: 20;
+      animation: elemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.45s forwards;
       opacity: 0;
       transform: translateY(14px);
     }
@@ -421,6 +599,7 @@
       font-weight: 500;
       z-index: 20;
       transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s;
+      animation: elemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
       opacity: 0;
       transform: translateY(14px);
     }
@@ -444,6 +623,7 @@
       grid-template-columns: 1fr 1fr;
       gap: calc(8 * var(--u));
       z-index: 20;
+      animation: elemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.75s forwards;
       opacity: 0;
       transform: translateY(14px);
     }
@@ -479,7 +659,7 @@
       margin-top: calc(3 * var(--u));
     }
 
-    /* 6 Tiny Fictional Partner Marks */
+    /* 6 Fictional Partner Marks */
     .partner-marks-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -606,6 +786,7 @@
       align-items: center;
       gap: calc(8 * var(--u));
       z-index: 20;
+      animation: elemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
       opacity: 0;
       transform: translateY(14px);
     }
@@ -640,6 +821,7 @@
       line-height: 1.35;
       color: var(--ink);
       z-index: 20;
+      animation: elemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.6s forwards;
       opacity: 0;
       transform: translateY(14px);
     }
@@ -661,6 +843,7 @@
       top: calc(490 * var(--u));
       width: calc(220 * var(--u));
       z-index: 20;
+      animation: elemRise 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
       opacity: 0;
       transform: translateY(14px);
       cursor: pointer;
@@ -749,8 +932,19 @@
       transition: width 1.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
 
+    .out-now-progress-bar.active {
+      width: 100%;
+    }
+
+    @keyframes elemRise {
+      to {
+        opacity: 1;
+        transform: translateY(0px);
+      }
+    }
+
     /* -------------------------------------------------------------
-       3. SECTION 2: BLACK BAR & MANIFESTO STATEMENT
+       SECTION 2: BLACK BAR & MANIFESTO STATEMENT
     ------------------------------------------------------------- */
     .section-bar {
       width: 100%;
@@ -877,7 +1071,7 @@
     }
 
     /* -------------------------------------------------------------
-       4. SECTION 3: TRUST PANEL & STAT CARDS (1302 × 429u)
+       SECTION 3: TRUST PANEL & STAT CARDS (1302 × 429u)
        150u bottom padding
     ------------------------------------------------------------- */
     .section-trust {
@@ -945,6 +1139,8 @@
       z-index: 12;
       pointer-events: none;
       box-shadow: 0 10px 25px rgba(0, 0, 0, 0.35);
+      will-change: transform;
+      transition: transform 0.15s ease-out;
     }
 
     /* Tile 1: Asterisk tile top right of line 1 */
@@ -1136,22 +1332,27 @@
       position: relative;
     }
 
-    .card-portrait-img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center;
-      filter: grayscale(100%);
-      transition: filter 0.4s ease, transform 0.4s ease;
+    .portrait-card-magic-avatar {
+      --reveal-radius: 130px !important;
     }
 
-    .card-portrait-stat:hover .card-portrait-img {
-      filter: grayscale(40%);
-      transform: scale(1.05);
+    .portrait-card-magic-avatar .magic-avatar-img {
+      object-fit: cover;
+      object-position: center top;
+      filter: grayscale(100%);
+      transition: filter 0.4s ease;
+    }
+
+    .portrait-card-magic-avatar:hover .magic-avatar-img {
+      filter: grayscale(0%);
+    }
+
+    .portrait-card-magic-avatar .magic-reveal-badge {
+      display: none;
     }
 
     /* -------------------------------------------------------------
-       5. PHONE RESPONSIVE (<= 760px)
+       PHONE RESPONSIVE (<= 760px)
        u = 100vw / 390
     ------------------------------------------------------------- */
     @media (max-width: 760px) {
@@ -1166,6 +1367,14 @@
         flex-direction: column;
         padding: calc(24 * var(--u)) calc(20 * var(--u)) calc(48 * var(--u));
         position: relative;
+      }
+
+      .hero-title-wrapper,
+      .hero-stats-wrapper,
+      .hero-right-wrapper {
+        display: contents;
+        position: static;
+        transform: none !important;
       }
 
       /* Header Row: Nav on left, 40u square Contact Us on right */
@@ -1185,6 +1394,7 @@
         padding: calc(3 * var(--u));
         opacity: 1;
         transform: none;
+        animation: none;
       }
 
       .nav-link {
@@ -1205,6 +1415,7 @@
         font-size: calc(17 * var(--u));
         opacity: 1;
         transform: none;
+        animation: none;
       }
 
       .btn-contact-text {
@@ -1222,6 +1433,7 @@
         font-size: calc(56 * var(--u));
         line-height: 0.9;
         transform: none;
+        animation: none;
       }
 
       .title-year-tag {
@@ -1231,6 +1443,7 @@
         vertical-align: middle;
         opacity: 1;
         transform: none;
+        animation: none;
       }
 
       /* (ABOUT) copy */
@@ -1240,6 +1453,7 @@
         max-width: 100%;
         opacity: 1;
         transform: none;
+        animation: none;
         order: 3;
       }
 
@@ -1250,6 +1464,7 @@
         align-self: flex-start;
         opacity: 1;
         transform: none;
+        animation: none;
         order: 4;
       }
 
@@ -1264,6 +1479,7 @@
         border-radius: calc(16 * var(--u));
         overflow: hidden;
         order: 5;
+        transform: none !important;
       }
 
       .hero-photo-wrap {
@@ -1273,7 +1489,12 @@
         overflow: hidden;
         opacity: 1;
         filter: none;
-        transform: none;
+        transform: none !important;
+        animation: none;
+      }
+
+      .magic-avatar-container {
+        transform: none !important;
       }
 
       .brand-glass-plate {
@@ -1285,10 +1506,11 @@
         height: calc(64 * var(--u));
         opacity: 1;
         z-index: 15;
+        animation: none;
       }
 
-      .brand-plate-name {
-        font-size: calc(20 * var(--u));
+      .brand-wordmark-img {
+        height: calc(18 * var(--u));
       }
 
       .jacket-wordmarks {
@@ -1297,6 +1519,8 @@
         font-size: calc(11 * var(--u));
         letter-spacing: 0.12em;
         opacity: 1;
+        animation: none;
+        transform: translateX(-50%) !important;
       }
 
       /* True Growth pill */
@@ -1306,6 +1530,7 @@
         align-self: flex-start;
         opacity: 1;
         transform: none;
+        animation: none;
         order: 6;
       }
 
@@ -1316,6 +1541,7 @@
         margin-top: calc(16 * var(--u));
         opacity: 1;
         transform: none;
+        animation: none;
         order: 7;
       }
 
@@ -1328,6 +1554,7 @@
         margin-top: calc(24 * var(--u));
         opacity: 1;
         transform: none;
+        animation: none;
         order: 8;
       }
 
@@ -1338,6 +1565,7 @@
         margin-top: calc(28 * var(--u));
         opacity: 1;
         transform: none;
+        animation: none;
         order: 9;
       }
 
@@ -1397,6 +1625,7 @@
         height: calc(60 * var(--u));
         left: calc(220 * var(--u));
         top: calc(-10 * var(--u));
+        transform: none !important;
       }
 
       .glass-tile-asterisk svg {
@@ -1405,7 +1634,7 @@
       }
 
       .glass-tile-dots {
-        display: none; /* prompt requirement: second glass tile hidden on phone */
+        display: none; /* Prompt requirement: second glass tile hidden on phone */
       }
 
       .trust-cards-row {
@@ -1427,7 +1656,7 @@
     }
 
     /* -------------------------------------------------------------
-       6. REDUCED MOTION PREFERENCE
+       REDUCED MOTION PREFERENCE
     ------------------------------------------------------------- */
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -1453,10 +1682,12 @@
         opacity: 1 !important;
         transform: none !important;
         filter: none !important;
+        animation: none !important;
       }
 
       .title-line {
         transform: none !important;
+        animation: none !important;
       }
 
       .out-now-progress-bar {
@@ -1471,6 +1702,15 @@
         transform: scale(1) !important;
         opacity: 1 !important;
       }
+
+      .magic-avatar-red {
+        opacity: 0 !important;
+      }
+
+      .magic-reveal-flare,
+      .magic-reveal-badge {
+        display: none !important;
+      }
     }
   </style>
 </head>
@@ -1479,7 +1719,7 @@
   <!-- =============================================================
        SECTION 1: HERO (1440 × 938u)
   ============================================================== -->
-  <header class="hero-wrapper">
+  <header class="hero-wrapper" id="hero-wrapper">
     <div class="hero-stage" id="hero-stage">
 
       <!-- Header Row (Nav, Date, Contact Us) -->
@@ -1503,60 +1743,77 @@
         </a>
       </div>
 
-      <!-- Title: "PURE / DESIGN" at (57, 246), with "('25)" at (339, 272) -->
-      <div class="hero-title-area" id="hero-title-area">
-        <div class="title-line-mask">
-          <h1 class="title-line" id="title-pure">
-            PURE
-          </h1>
-        </div>
-        <div class="title-line-mask">
-          <div class="title-line" id="title-design">
-            DESIGN
+      <!-- Title Wrapper (Parallax Layer) -->
+      <div class="hero-title-wrapper" id="hero-title-wrapper">
+        <div class="hero-title-area" id="hero-title-area">
+          <div class="title-line-mask">
+            <h1 class="title-line title-line-pure" id="title-pure">
+              PURE
+            </h1>
+          </div>
+          <div class="title-line-mask">
+            <div class="title-line title-line-design" id="title-design">
+              DESIGN
+            </div>
           </div>
         </div>
-      </div>
-      <div class="title-year-tag" id="title-year-tag">(’25)</div>
+        <div class="title-year-tag" id="title-year-tag">(’25)</div>
 
-      <!-- About: "● (ABOUT)" at y 458, two lines copy, "Book A Call ↗" at y 584 -->
-      <div class="hero-about-area" id="hero-about-area">
-        <div class="about-label">
-          <span class="about-label-dot"></span>
-          <span>(ABOUT)</span>
+        <div class="hero-about-area" id="hero-about-area">
+          <div class="about-label">
+            <span class="about-label-dot"></span>
+            <span>(ABOUT)</span>
+          </div>
+          <p class="about-copy">
+            Building stunning website that every brand deserves to be seen.
+          </p>
         </div>
-        <p class="about-copy">
-          Building stunning website that every brand deserves to be seen.
-        </p>
+
+        <a href="#book-call" class="btn-book-call" id="btn-book-call">
+          <span>Book A Call</span>
+          <span>↗</span>
+        </a>
       </div>
 
-      <a href="#book-call" class="btn-book-call" id="btn-book-call">
-        <span>Book A Call</span>
-        <span>↗</span>
-      </a>
-
-      <!-- Central Hero Figure: Photo, Zahas Brand Plate & Jacket Wordmarks -->
+      <!-- Central Hero Figure: Avatar Photo with Magic Reveal & Wordmark Plate -->
       <div class="hero-figure-container" id="hero-figure-container">
-        <!-- Photo: 764 × 1024u, masked transparent over 6% on left and right -->
+        <!-- Photo Wrap with Magic Reveal -->
         <div class="hero-photo-wrap" id="hero-photo-wrap">
-          <img
-            class="hero-photo-img"
-            id="hero-photo"
-            src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/7dc8b8f3-4ccb-4599-8ce4-7f7c7881bad9.webp"
-            alt="East Asian man in dark technical jacket seen from behind"
-            loading="eager"
-          >
+          <div class="magic-avatar-container" id="hero-magic-avatar">
+            <img
+              class="magic-avatar-img magic-avatar-base"
+              id="magic-avatar-base"
+              src="./src/Assets/images/sahas-portrait-base.png.png"
+              alt="Sahas - Creative Director & Founder"
+              loading="eager"
+            >
+            <img
+              class="magic-avatar-img magic-avatar-red"
+              id="magic-avatar-red"
+              src="./src/Assets/images/sahas-portrait-red.png.png"
+              alt="Sahas - Redux Variant"
+              loading="eager"
+              aria-hidden="true"
+            >
+            <div class="magic-reveal-flare"></div>
+            <div class="magic-reveal-badge">
+              <span class="badge-pulse-dot"></span>
+              <span class="badge-text">MAGIC REVEAL</span>
+            </div>
+          </div>
         </div>
 
         <!-- Brand Plate: dark glass plate over man's back at (532, 444), 364 × 73u -->
         <div class="brand-glass-plate" id="brand-glass-plate">
           <div class="brand-mark-triangle">
-            <!-- Two-part geometric triangular mark -->
             <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d="M14 2L26 22H17L14 16L11 22H2L14 2Z" fill="#FFFFFF"/>
               <path d="M14 10.5L18.2 18H9.8L14 10.5Z" fill="#141414"/>
             </svg>
           </div>
-          <div class="brand-plate-name">ZAHAS</div>
+          <div class="brand-plate-wordmark" title="ZAHAS">
+            <img src="./src/Assets/Logo/sahas-wordmark.svg.svg" alt="ZAHAS" class="brand-wordmark-img">
+          </div>
           <div class="brand-plate-menu" aria-label="Menu trigger">
             <span></span>
             <span></span>
@@ -1569,96 +1826,98 @@
         </div>
       </div>
 
-      <!-- Stats frame: at (57, 693), 341 × 208u, light grey #cdcdcd -->
-      <div class="hero-stats-frame" id="hero-stats-frame">
-        <!-- Subcard A: Dark Card -->
-        <div class="stats-subcard-dark">
-          <div class="subcard-count-row">
-            <div class="subcard-number" id="count-hero-400">0+</div>
-            <div class="subcard-subtitle">Trusted Partner</div>
+      <!-- Stats frame Wrapper (Parallax Layer) -->
+      <div class="hero-stats-wrapper" id="hero-stats-wrapper">
+        <div class="hero-stats-frame" id="hero-stats-frame">
+          <!-- Subcard A: Dark Card -->
+          <div class="stats-subcard-dark">
+            <div class="subcard-count-row">
+              <div class="subcard-number" id="count-hero-400">0+</div>
+              <div class="subcard-subtitle">Trusted Partner</div>
+            </div>
+            <!-- 6 Fictional Partner Marks -->
+            <div class="partner-marks-grid">
+              <div class="partner-mark">
+                <svg viewBox="0 0 10 10"><path d="M5 0 L10 5 L5 10 L0 5 Z"/></svg>
+                <span>Halcyon</span>
+              </div>
+              <div class="partner-mark">
+                <svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="none" stroke="#fff" stroke-width="1.3"/><circle cx="5" cy="5" r="1.5"/></svg>
+                <span>Ostra</span>
+              </div>
+              <div class="partner-mark">
+                <svg viewBox="0 0 10 10"><path d="M2 1 H8 V3 H4 V5 H7 V7 H4 V9 H2 Z"/></svg>
+                <span>Fenwick</span>
+              </div>
+              <div class="partner-mark">
+                <svg viewBox="0 0 10 10"><circle cx="3" cy="5" r="2.4"/><circle cx="7" cy="5" r="2.4"/></svg>
+                <span>Monolo</span>
+              </div>
+              <div class="partner-mark">
+                <svg viewBox="0 0 10 10"><polygon points="5,1 9,4.5 5,9 1,4.5"/></svg>
+                <span>Kitefly</span>
+              </div>
+              <div class="partner-mark">
+                <svg viewBox="0 0 10 10"><path d="M5 1 C2 4.5 2 7.5 5 9 C8 7.5 8 4.5 5 1 Z"/></svg>
+                <span>Arbor</span>
+              </div>
+            </div>
+            <button class="btn-partner-book" aria-label="Book a call with trusted partner">
+              <span>Book a call</span>
+              <span>↗</span>
+            </button>
           </div>
-          <!-- 6 Fictional Partner Marks (Halcyon, Ostra, Fenwick, Monolo, Kitefly, Arbor) -->
-          <div class="partner-marks-grid">
-            <div class="partner-mark">
-              <svg viewBox="0 0 10 10"><path d="M5 0 L10 5 L5 10 L0 5 Z"/></svg>
-              <span>Halcyon</span>
-            </div>
-            <div class="partner-mark">
-              <svg viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="none" stroke="#fff" stroke-width="1.3"/><circle cx="5" cy="5" r="1.5"/></svg>
-              <span>Ostra</span>
-            </div>
-            <div class="partner-mark">
-              <svg viewBox="0 0 10 10"><path d="M2 1 H8 V3 H4 V5 H7 V7 H4 V9 H2 Z"/></svg>
-              <span>Fenwick</span>
-            </div>
-            <div class="partner-mark">
-              <svg viewBox="0 0 10 10"><circle cx="3" cy="5" r="2.4"/><circle cx="7" cy="5" r="2.4"/></svg>
-              <span>Monolo</span>
-            </div>
-            <div class="partner-mark">
-              <svg viewBox="0 0 10 10"><polygon points="5,1 9,4.5 5,9 1,4.5"/></svg>
-              <span>Kitefly</span>
-            </div>
-            <div class="partner-mark">
-              <svg viewBox="0 0 10 10"><path d="M5 1 C2 4.5 2 7.5 5 9 C8 7.5 8 4.5 5 1 Z"/></svg>
-              <span>Arbor</span>
-            </div>
-          </div>
-          <button class="btn-partner-book" aria-label="Book a call with trusted partner">
-            <span>Book a call</span>
-            <span>↗</span>
-          </button>
-        </div>
 
-        <!-- Subcard B: Photo Card (Young man in black cap) -->
-        <div class="stats-subcard-photo">
-          <img
-            class="subcard-photo-img"
-            src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/a9d3641f-d629-46e5-8d2d-5f75386b803d.webp"
-            alt="Studio feed photo - young man in black cap"
-            loading="lazy"
-          >
-          <div class="subcard-photo-overlay"></div>
-          <div class="subcard-photo-header">
-            Studio Feed · 05/06
-          </div>
-          <div class="subcard-photo-footer">
-            <div class="photo-footer-num" id="count-hero-230">0+</div>
-            <div class="photo-footer-label">Projects successfully launched worldwide</div>
+          <!-- Subcard B: Photo Card (Young man in black cap) -->
+          <div class="stats-subcard-photo">
+            <img
+              class="subcard-photo-img"
+              src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/a9d3641f-d629-46e5-8d2d-5f75386b803d.webp"
+              alt="Studio feed photo - young man in black cap"
+              loading="lazy"
+            >
+            <div class="subcard-photo-overlay"></div>
+            <div class="subcard-photo-header">
+              Studio Feed · 05/06
+            </div>
+            <div class="subcard-photo-footer">
+              <div class="photo-footer-num" id="count-hero-230">0+</div>
+              <div class="photo-footer-label">Projects successfully launched worldwide</div>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Right Column: Frosted "True Growth" pill with black check disc at (1216, 258) -->
-      <div class="pill-true-growth" id="pill-true-growth">
-        <span class="growth-check-disc">✓</span>
-        <span class="growth-label">True Growth</span>
-      </div>
-
-      <!-- Right Column: "We’re available / ● for you", right-aligned at y 442 -->
-      <div class="hero-available-tag" id="hero-available-tag">
-        <div>We’re available</div>
-        <div><span class="available-dot"></span>for you</div>
-      </div>
-
-      <!-- Right Column: "Out Now / Q Industrial / [2025]" with 196u-tall image card -->
-      <div class="card-out-now" id="card-out-now">
-        <div class="out-now-meta">
-          <span>Out Now</span>
-          <span class="out-now-title">Q Industrial</span>
-          <span class="out-now-year">[2025]</span>
+      <!-- Right Column Wrapper (Parallax Layer) -->
+      <div class="hero-right-wrapper" id="hero-right-wrapper">
+        <div class="pill-true-growth" id="pill-true-growth">
+          <span class="growth-check-disc">✓</span>
+          <span class="growth-label">True Growth</span>
         </div>
-        <div class="out-now-media">
-          <img
-            class="out-now-img"
-            src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/9340eb08-877d-4d08-91fb-b70754541d98.webp"
-            alt="Q Industrial monochrome fashion shot"
-            loading="lazy"
-          >
-          <div class="out-now-arrow-btn">↗</div>
+
+        <div class="hero-available-tag" id="hero-available-tag">
+          <div>We’re available</div>
+          <div><span class="available-dot"></span>for you</div>
         </div>
-        <div class="out-now-progress-track">
-          <div class="out-now-progress-bar" id="out-now-progress-bar"></div>
+
+        <div class="card-out-now" id="card-out-now">
+          <div class="out-now-meta">
+            <span>Out Now</span>
+            <span class="out-now-title">Q Industrial</span>
+            <span class="out-now-year">[2025]</span>
+          </div>
+          <div class="out-now-media">
+            <img
+              class="out-now-img"
+              src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/9340eb08-877d-4d08-91fb-b70754541d98.webp"
+              alt="Q Industrial monochrome fashion shot"
+              loading="lazy"
+            >
+            <div class="out-now-arrow-btn">↗</div>
+          </div>
+          <div class="out-now-progress-track">
+            <div class="out-now-progress-bar" id="out-now-progress-bar"></div>
+          </div>
         </div>
       </div>
 
@@ -1668,7 +1927,6 @@
   <!-- =============================================================
        SECTION 2: BLACK BAR & MANIFESTO SECTION
   ============================================================== -->
-  <!-- Black bar: 111u -->
   <div class="section-bar">
     <div class="bar-inner">
       <div class="bar-left">
@@ -1685,15 +1943,12 @@
     </div>
   </div>
 
-  <!-- Manifesto Statement: 5 lines, 830u wide, 52u font, grey to white fill -->
   <section class="section-manifesto" id="section-manifesto">
     <div class="manifesto-container">
       <p class="manifesto-text" id="manifesto-text" aria-label="Agency manifesto">
-        <!-- Five structured lines with word spans and soft-edge scroll color fill -->
       </p>
     </div>
 
-    <!-- Sub-line: 150u below statement, 23u font size -->
     <div class="manifesto-subline">
       Performance-driven marketing, from strategy to execution.
       <span class="subline-italic">Built for growing brands.</span>
@@ -1706,17 +1961,14 @@
   <section class="section-trust" id="section-trust">
     <div class="trust-panel" id="trust-panel">
 
-      <!-- Left Column: Heading, Paragraph & Overlapping Glass Tiles -->
       <div class="trust-left-col">
-        <!-- Frosted Glass Tile 1: Asterisk at top right of line 1 -->
-        <div class="glass-tile glass-tile-asterisk">
+        <div class="glass-tile glass-tile-asterisk" id="tile-asterisk">
           <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M12 2V22M2 12H22M4.93 4.93L19.07 19.07M19.07 4.93L4.93 19.07" stroke="#ffffff" stroke-width="2.6" stroke-linecap="round"/>
           </svg>
         </div>
 
-        <!-- Frosted Glass Tile 2: Four-dot tile over "Businesses" -->
-        <div class="glass-tile glass-tile-dots">
+        <div class="glass-tile glass-tile-dots" id="tile-dots">
           <div class="four-dots-grid">
             <span></span>
             <span></span>
@@ -1737,37 +1989,19 @@
         </p>
       </div>
 
-      <!-- Right Column: 3 Cards (326u tall, 8u radius) -->
       <div class="trust-cards-row">
 
-        <!-- Card 1: Avatar card (light grey #d6d6d6, 293u) -->
+        <!-- Card 1: Avatar card -->
         <div class="trust-card card-avatar-stat" id="card-avatar-stat">
-          <!-- 8 round 48u avatars in a 4 × 2 grid -->
           <div class="avatars-grid-4x2" id="avatars-grid">
-            <div class="avatar-item">
-              <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/300f41b1-3de5-4153-afde-06e15e753ad0.webp" alt="Client avatar 1" loading="lazy">
-            </div>
-            <div class="avatar-item">
-              <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/bfff4cdf-4fda-4491-ada6-62f3b6236492.webp" alt="Client avatar 2" loading="lazy">
-            </div>
-            <div class="avatar-item">
-              <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/943b121e-fe72-479f-93ae-aa8cd1650f69.webp" alt="Client avatar 3" loading="lazy">
-            </div>
-            <div class="avatar-item">
-              <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/c673306f-2b81-4c3d-a7d2-3df61d481abb.webp" alt="Client avatar 4" loading="lazy">
-            </div>
-            <div class="avatar-item">
-              <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/2e4fcf11-d0fc-4f31-8f7a-dfe751777141.webp" alt="Client avatar 5" loading="lazy">
-            </div>
-            <div class="avatar-item">
-              <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/ab458fcd-4c2c-426f-8213-21cc3c7274be.webp" alt="Client avatar 6" loading="lazy">
-            </div>
-            <div class="avatar-item">
-              <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/c1fcd833-5ac9-41e9-9352-fead7e64fa24.webp" alt="Client avatar 7" loading="lazy">
-            </div>
-            <div class="avatar-item">
-              <img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/4c2b3307-e555-4633-949c-efd3b7e09d82.webp" alt="Client avatar 8" loading="lazy">
-            </div>
+            <div class="avatar-item"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/300f41b1-3de5-4153-afde-06e15e753ad0.webp" alt="Client 1" loading="lazy"></div>
+            <div class="avatar-item"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/bfff4cdf-4fda-4491-ada6-62f3b6236492.webp" alt="Client 2" loading="lazy"></div>
+            <div class="avatar-item"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/943b121e-fe72-479f-93ae-aa8cd1650f69.webp" alt="Client 3" loading="lazy"></div>
+            <div class="avatar-item"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/c673306f-2b81-4c3d-a7d2-3df61d481abb.webp" alt="Client 4" loading="lazy"></div>
+            <div class="avatar-item"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/2e4fcf11-d0fc-4f31-8f7a-dfe751777141.webp" alt="Client 5" loading="lazy"></div>
+            <div class="avatar-item"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/ab458fcd-4c2c-426f-8213-21cc3c7274be.webp" alt="Client 6" loading="lazy"></div>
+            <div class="avatar-item"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/c1fcd833-5ac9-41e9-9352-fead7e64fa24.webp" alt="Client 7" loading="lazy"></div>
+            <div class="avatar-item"><img src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/4c2b3307-e555-4633-949c-efd3b7e09d82.webp" alt="Client 8" loading="lazy"></div>
           </div>
 
           <div class="avatar-stat-info">
@@ -1776,28 +2010,24 @@
           </div>
         </div>
 
-        <!-- Card 2: Awards card (#262626, 298u) -->
+        <!-- Card 2: Awards card -->
         <div class="trust-card card-awards-stat" id="card-awards-stat">
           <div class="awards-top-info">
             <div class="awards-stat-number" id="count-trust-10">0+</div>
             <div class="awards-stat-label">Industry Awards</div>
           </div>
 
-          <!-- SVG laurel badge: BEST GROWTH PARTNER 2026 -->
           <div class="laurel-badge-wrap">
             <svg class="laurel-svg" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
               <circle cx="24" cy="24" r="22" stroke="rgba(255,255,255,0.25)" stroke-width="1.2" stroke-dasharray="2 3"/>
-              <!-- Laurel left branch -->
               <path d="M16 34 C12 28, 12 18, 20 12" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
               <path d="M14 30 Q10 28 12 25" stroke="#ffffff" stroke-width="1.2"/>
               <path d="M13 24 Q9 22 12 19" stroke="#ffffff" stroke-width="1.2"/>
               <path d="M15 18 Q12 15 16 14" stroke="#ffffff" stroke-width="1.2"/>
-              <!-- Laurel right branch -->
               <path d="M32 34 C36 28, 36 18, 28 12" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
               <path d="M34 30 Q38 28 36 25" stroke="#ffffff" stroke-width="1.2"/>
               <path d="M35 24 Q39 22 36 19" stroke="#ffffff" stroke-width="1.2"/>
               <path d="M33 18 Q36 15 32 14" stroke="#ffffff" stroke-width="1.2"/>
-              <!-- Center star -->
               <polygon points="24,19 25.5,23 29.5,23.5 26.5,26.5 27.5,30.5 24,28.5 20.5,30.5 21.5,26.5 18.5,23.5 22.5,23" fill="#ffffff"/>
             </svg>
             <div class="laurel-badge-text">
@@ -1810,14 +2040,24 @@
           </div>
         </div>
 
-        <!-- Card 3: Portrait card (200u, cut off by panel's right edge) -->
+        <!-- Card 3: Portrait card with Magic Reveal -->
         <div class="trust-card card-portrait-stat">
-          <img
-            class="card-portrait-img"
-            src="https://d2ol7oe51mr4n9.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/addecc7d-666f-4342-8290-ed7f7cbbffd6.webp"
-            alt="Side profile in a white t-shirt on a blue-grey gradient"
-            loading="lazy"
-          >
+          <div class="magic-avatar-container portrait-card-magic-avatar" id="trust-magic-avatar">
+            <img
+              class="magic-avatar-img magic-avatar-base"
+              src="./src/Assets/images/sahas-portrait-base.png.png"
+              alt="Sahas - Portrait"
+              loading="lazy"
+            >
+            <img
+              class="magic-avatar-img magic-avatar-red"
+              src="./src/Assets/images/sahas-portrait-red.png.png"
+              alt="Sahas - Red Portrait"
+              loading="lazy"
+              aria-hidden="true"
+            >
+            <div class="magic-reveal-flare"></div>
+          </div>
         </div>
 
       </div>
@@ -1826,7 +2066,7 @@
   </section>
 
   <!-- =============================================================
-       JAVASCRIPT: MOTION & INTERACTION ORCHESTRATION
+       JAVASCRIPT: MOTION & PARALLAX ORCHESTRATION
   ============================================================== -->
   <script>
     (function () {
@@ -1864,7 +2104,6 @@
       const wordSpans = Array.from(manifestoParagraph.querySelectorAll('.manifesto-word'));
       const totalWords = wordSpans.length;
 
-      // Color interpolation: grey #6f6f6f (111,111,111) to white #f4f4f4 (244,244,244) with 3-word soft edge
       function updateStatementFill(progress) {
         if (isReducedMotion) {
           wordSpans.forEach(span => span.style.color = '#f4f4f4');
@@ -1889,11 +2128,10 @@
         });
       }
 
-      // Initial statement state
       updateStatementFill(0);
 
       // -----------------------------------------------------------
-      // 2. NAV SLIDER INTERACTION
+      // 2. NAV SLIDER
       // -----------------------------------------------------------
       const navEl = document.getElementById('hero-nav');
       const navSlider = document.getElementById('nav-slider');
@@ -1908,7 +2146,6 @@
         navSlider.style.transform = `translateX(${leftOffset}px)`;
       }
 
-      // Position slider on active link
       const activeLink = navLinks.find(l => l.classList.contains('active')) || navLinks[0];
       setTimeout(() => positionSliderTo(activeLink), 60);
 
@@ -1926,7 +2163,70 @@
       });
 
       // -----------------------------------------------------------
-      // 3. NUMBER COUNTER ANIMATION
+      // 3. MAGIC REVEAL EFFECT ON AVATAR
+      // -----------------------------------------------------------
+      function setupMagicReveal(containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+
+        function updateRevealPos(e) {
+          const rect = container.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          const pctX = ((x / rect.width) * 100).toFixed(2);
+          const pctY = ((y / rect.height) * 100).toFixed(2);
+          container.style.setProperty('--reveal-x', `${pctX}%`);
+          container.style.setProperty('--reveal-y', `${pctY}%`);
+        }
+
+        container.addEventListener('mouseenter', (e) => {
+          if (isReducedMotion) return;
+          container.classList.add('is-hovered');
+          updateRevealPos(e);
+        });
+
+        container.addEventListener('mousemove', (e) => {
+          if (isReducedMotion) return;
+          updateRevealPos(e);
+        });
+
+        container.addEventListener('mouseleave', () => {
+          if (isReducedMotion) return;
+          container.classList.remove('is-hovered');
+        });
+      }
+
+      setupMagicReveal('hero-magic-avatar');
+      setupMagicReveal('trust-magic-avatar');
+
+      // -----------------------------------------------------------
+      // 4. PARALLAX EFFECT: MOUSE TILT & SCROLL DEPTH
+      // -----------------------------------------------------------
+      const heroWrapper = document.getElementById('hero-wrapper');
+      const figureContainer = document.getElementById('hero-figure-container');
+      const brandPlate = document.getElementById('brand-glass-plate');
+      const titleWrapper = document.getElementById('hero-title-wrapper');
+      const statsWrapper = document.getElementById('hero-stats-wrapper');
+      const rightWrapper = document.getElementById('hero-right-wrapper');
+      const jacketWordmarks = document.getElementById('jacket-wordmarks');
+      const tileAsterisk = document.getElementById('tile-asterisk');
+      const tileDots = document.getElementById('tile-dots');
+      const trustPanel = document.getElementById('trust-panel');
+
+      let targetMouseX = 0, targetMouseY = 0;
+      let currentMouseX = 0, currentMouseY = 0;
+
+      if (!isReducedMotion) {
+        window.addEventListener('mousemove', (e) => {
+          const w = window.innerWidth;
+          const h = window.innerHeight;
+          targetMouseX = ((e.clientX / w) - 0.5) * 2;
+          targetMouseY = ((e.clientY / h) - 0.5) * 2;
+        }, { passive: true });
+      }
+
+      // -----------------------------------------------------------
+      // 5. NUMBER COUNTERS
       // -----------------------------------------------------------
       function animateCounter(elem, endVal, suffix, durationMs, delayMs = 0) {
         if (!elem) return;
@@ -1941,7 +2241,6 @@
             if (!startTime) startTime = timestamp;
             const elapsed = timestamp - startTime;
             const p = Math.min(elapsed / durationMs, 1);
-            // Ease out cubic
             const ease = 1 - Math.pow(1 - p, 3);
             const current = Math.floor(ease * endVal);
             elem.textContent = current + suffix;
@@ -1956,129 +2255,18 @@
       }
 
       // -----------------------------------------------------------
-      // 4. LOAD ANIMATIONS (Web Animations)
+      // 6. SCROLL & ANIMATION LOOP
       // -----------------------------------------------------------
-      function initLoadAnimations() {
-        if (isReducedMotion) {
-          document.getElementById('count-hero-400').textContent = '400+';
-          document.getElementById('count-hero-230').textContent = '230+';
-          document.getElementById('out-now-progress-bar').style.width = '100%';
-          return;
-        }
-
-        const easeOutQuint = 'cubic-bezier(0.16, 1, 0.3, 1)';
-
-        // 1. Photo rises 40px, un-blurs and fades in over 1.3 s
-        const heroPhotoWrap = document.getElementById('hero-photo-wrap');
-        if (heroPhotoWrap) {
-          heroPhotoWrap.animate([
-            { opacity: 0, filter: 'blur(10px)', transform: 'translateY(40px)' },
-            { opacity: 1, filter: 'blur(0px)', transform: 'translateY(0px)' }
-          ], {
-            duration: 1300,
-            easing: easeOutQuint,
-            fill: 'forwards'
-          });
-        }
-
-        // 2. Title lines rise out of their masks, 1 s, staggered 110 ms
-        const titlePure = document.getElementById('title-pure');
-        const titleDesign = document.getElementById('title-design');
-
-        if (titlePure) {
-          titlePure.animate([
-            { transform: 'translateY(105%)' },
-            { transform: 'translateY(0%)' }
-          ], {
-            duration: 1000,
-            delay: 150,
-            easing: easeOutQuint,
-            fill: 'forwards'
-          });
-        }
-
-        if (titleDesign) {
-          titleDesign.animate([
-            { transform: 'translateY(105%)' },
-            { transform: 'translateY(0%)' }
-          ], {
-            duration: 1000,
-            delay: 260,
-            easing: easeOutQuint,
-            fill: 'forwards'
-          });
-        }
-
-        // 3. Nav drops in
-        if (navEl) {
-          navEl.animate([
-            { opacity: 0, transform: 'translateY(-20px)' },
-            { opacity: 1, transform: 'translateY(0px)' }
-          ], {
-            duration: 800,
-            delay: 200,
-            easing: easeOutQuint,
-            fill: 'forwards'
-          });
-        }
-
-        // 4. Hero elements rise 14px and fade in, staggered 55 ms
-        const heroStaggerElements = [
-          document.getElementById('title-year-tag'),
-          document.getElementById('hero-date'),
-          document.getElementById('btn-contact'),
-          document.getElementById('hero-about-area'),
-          document.getElementById('btn-book-call'),
-          document.getElementById('pill-true-growth'),
-          document.getElementById('hero-available-tag'),
-          document.getElementById('brand-glass-plate'),
-          document.getElementById('hero-stats-frame'),
-          document.getElementById('card-out-now'),
-          document.getElementById('jacket-wordmarks')
-        ].filter(Boolean);
-
-        heroStaggerElements.forEach((el, index) => {
-          el.animate([
-            { opacity: 0, transform: 'translateY(14px)' },
-            { opacity: 1, transform: 'translateY(0px)' }
-          ], {
-            duration: 800,
-            delay: 340 + index * 55,
-            easing: easeOutQuint,
-            fill: 'forwards'
-          });
-        });
-
-        // 5. Q Industrial progress line draws in
-        const progressBar = document.getElementById('out-now-progress-bar');
-        setTimeout(() => {
-          if (progressBar) progressBar.style.width = '100%';
-        }, 500);
-
-        // 6. "400+" and "230+" count up over 1.4 s
-        animateCounter(document.getElementById('count-hero-400'), 400, '+', 1400, 300);
-        animateCounter(document.getElementById('count-hero-230'), 230, '+', 1400, 450);
-      }
-
-      initLoadAnimations();
-
-      // -----------------------------------------------------------
-      // 5. SCROLL INTERACTIONS: Photo Drift & Statement Fill
-      // -----------------------------------------------------------
-      const heroPhotoImg = document.getElementById('hero-photo');
-      const manifestoSection = document.getElementById('section-manifesto');
-      const trustPanel = document.getElementById('trust-panel');
       let trustSectionTriggered = false;
+      const manifestoSection = document.getElementById('section-manifesto');
 
       function triggerTrustEntrance() {
         if (trustSectionTriggered) return;
         trustSectionTriggered = true;
 
-        // "56M+" and "10+" count up over 1.4s
         animateCounter(document.getElementById('count-trust-56'), 56, 'M+', 1400, 0);
         animateCounter(document.getElementById('count-trust-10'), 10, '+', 1400, 100);
 
-        // Avatars pop in (scale 0.4 -> 1, staggered)
         const avatarItems = document.querySelectorAll('.avatar-item');
         avatarItems.forEach((item, i) => {
           setTimeout(() => {
@@ -2087,43 +2275,87 @@
         });
       }
 
-      function handleScroll() {
-        if (isRecorder || isReducedMotion) return;
-
+      function renderFrame() {
         const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+        const isDesktop = window.innerWidth > 760;
 
-        // 1. Hero photo drifts at 0.12x scroll
-        if (heroPhotoImg && scrollY < window.innerHeight * 1.5) {
-          heroPhotoImg.style.transform = `translateY(${scrollY * 0.12}px)`;
+        if (isDesktop && !isReducedMotion) {
+          // Lerp mouse
+          currentMouseX += (targetMouseX - currentMouseX) * 0.08;
+          currentMouseY += (targetMouseY - currentMouseY) * 0.08;
+
+          // Parallax Hero Photo
+          if (figureContainer) {
+            figureContainer.style.transform = `translate3d(${currentMouseX * 12}px, ${scrollY * 0.16 + currentMouseY * 12}px, 0px)`;
+          }
+
+          // Parallax Brand Plate
+          if (brandPlate) {
+            brandPlate.style.transform = `translate3d(${currentMouseX * 24}px, ${currentMouseY * 24 + scrollY * 0.12}px, 30px)`;
+          }
+
+          // Parallax Title
+          if (titleWrapper) {
+            titleWrapper.style.transform = `translate3d(${currentMouseX * -8}px, ${currentMouseY * -6 - scrollY * 0.08}px, 0px)`;
+          }
+
+          // Parallax Stats Frame
+          if (statsWrapper) {
+            statsWrapper.style.transform = `translate3d(${currentMouseX * 10}px, ${currentMouseY * 10 + scrollY * 0.12}px, 0px)`;
+          }
+
+          // Parallax Right Column
+          if (rightWrapper) {
+            rightWrapper.style.transform = `translate3d(${currentMouseX * 14}px, ${currentMouseY * 14 + scrollY * 0.1}px, 0px)`;
+          }
+
+          // Floating Glass Tiles in Trust Panel
+          if (trustPanel) {
+            const rect = trustPanel.getBoundingClientRect();
+            const centerOffset = rect.top - window.innerHeight / 2;
+            if (tileAsterisk) {
+              tileAsterisk.style.transform = `translate3d(0, ${centerOffset * -0.06}px, 0)`;
+            }
+            if (tileDots) {
+              tileDots.style.transform = `translate3d(0, ${centerOffset * 0.05}px, 0)`;
+            }
+          }
         }
 
-        // 2. Statement fill grey -> white
-        if (manifestoSection) {
+        // Manifesto fill on scroll
+        if (!isRecorder && !isReducedMotion && manifestoSection) {
           const rect = manifestoSection.getBoundingClientRect();
           const winHeight = window.innerHeight;
-          // Progress from when top enters lower 80% to when bottom leaves upper 20%
           const enterY = winHeight * 0.8;
           const exitY = winHeight * 0.2;
           const progress = (enterY - rect.top) / (enterY - exitY + rect.height * 0.45);
           updateStatementFill(progress);
         }
 
-        // 3. Trust panel entrance detection
-        if (trustPanel && !trustSectionTriggered) {
+        // Trust panel trigger
+        if (!trustSectionTriggered && trustPanel) {
           const rect = trustPanel.getBoundingClientRect();
           if (rect.top <= window.innerHeight * 0.85) {
             triggerTrustEntrance();
           }
         }
+
+        requestAnimationFrame(renderFrame);
       }
 
-      window.addEventListener('scroll', handleScroll, { passive: true });
-      window.addEventListener('resize', () => {
-        positionSliderTo(activeLink);
-        handleScroll();
-      });
+      requestAnimationFrame(renderFrame);
 
-      // Smooth scroll button
+      // Hero counters initial
+      animateCounter(document.getElementById('count-hero-400'), 400, '+', 1400, 300);
+      animateCounter(document.getElementById('count-hero-230'), 230, '+', 1400, 450);
+
+      // Progress bar in Q Industrial
+      setTimeout(() => {
+        const bar = document.getElementById('out-now-progress-bar');
+        if (bar) bar.classList.add('active');
+      }, 500);
+
+      // Scroll Down button
       const scrollDownBtn = document.getElementById('btn-scroll-down');
       if (scrollDownBtn) {
         scrollDownBtn.addEventListener('click', () => {
@@ -2132,47 +2364,55 @@
       }
 
       // -----------------------------------------------------------
-      // 6. RECORDER MODE (?rec=1)
-      // Capture whole page in single frame; scroll parts run on timer
+      // 7. RECORDER MODE (?rec=1)
       // -----------------------------------------------------------
       if (isRecorder) {
-        // Continuous slow photo drift
-        let driftStart = null;
-        function driftPhoto(time) {
-          if (!driftStart) driftStart = time;
-          const elapsed = (time - driftStart) / 1000;
-          if (heroPhotoImg) {
-            heroPhotoImg.style.transform = `translateY(${elapsed * 6}px)`;
+        // Automated sweep on avatar
+        const heroAvatar = document.getElementById('hero-magic-avatar');
+        setTimeout(() => {
+          if (heroAvatar) {
+            heroAvatar.classList.add('is-hovered');
+            let start = null;
+            const duration = 2600;
+            function sweep(time) {
+              if (!start) start = time;
+              const elapsed = time - start;
+              const p = Math.min(elapsed / duration, 1);
+              const angle = p * Math.PI * 2.5;
+              const cx = 50 + Math.cos(angle) * 28;
+              const cy = 48 + Math.sin(angle) * 32;
+              heroAvatar.style.setProperty('--reveal-x', `${cx}%`);
+              heroAvatar.style.setProperty('--reveal-y', `${cy}%`);
+              if (p < 1) {
+                requestAnimationFrame(sweep);
+              } else {
+                heroAvatar.classList.remove('is-hovered');
+              }
+            }
+            requestAnimationFrame(sweep);
           }
-          requestAnimationFrame(driftPhoto);
-        }
-        requestAnimationFrame(driftPhoto);
+        }, 1800);
 
-        // Statement fill: 1.3 - 4.2 s (duration 2.9s)
-        const stmtStart = 1300;
-        const stmtDuration = 2900;
+        // Statement fill: 1.3 - 4.2s
         setTimeout(() => {
           let tStart = null;
           function animateFill(timestamp) {
             if (!tStart) tStart = timestamp;
             const elapsed = timestamp - tStart;
-            const p = Math.min(elapsed / stmtDuration, 1);
+            const p = Math.min(elapsed / 2900, 1);
             updateStatementFill(p);
-            if (p < 1) {
-              requestAnimationFrame(animateFill);
-            } else {
-              updateStatementFill(1);
-            }
+            if (p < 1) requestAnimationFrame(animateFill);
+            else updateStatementFill(1);
           }
           requestAnimationFrame(animateFill);
-        }, stmtStart);
+        }, 1300);
 
-        // Trust counters and avatars: 3.5 - 5.2 s
+        // Trust counters: 3.5s
         setTimeout(() => {
           triggerTrustEntrance();
         }, 3500);
 
-        // Awards card lift: 5.3 s
+        // Awards lift: 5.3s
         setTimeout(() => {
           const awardsCard = document.getElementById('card-awards-stat');
           if (awardsCard) {
