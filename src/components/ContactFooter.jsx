@@ -151,10 +151,17 @@ export function ContactFooter({ onOpenHireMe }) {
           </div>
         </div>
 
-        {/* Bottom Bar: Copyright & Socials */}
+        {/* Bottom Bar: Copyright & Anka Labs Studio Attribution */}
         <div className="contact-footer-bottom">
-          <div className="footer-copyright">
-            © ZAHAZ 2026. ALL RIGHTS RESERVED. · VIRTUAL DESIGNER
+          <div className="footer-copyright-group">
+            <span className="footer-copyright">
+              © ZAHAZ 2026. ALL RIGHTS RESERVED.
+            </span>
+            <span className="footer-dot-divider" aria-hidden="true">·</span>
+            <span className="footer-credit">
+              Designed &amp; Developed by{' '}
+              <span className="anka-labs-badge">Anka Labs</span>
+            </span>
           </div>
 
           <div className="footer-social-links" aria-label="Social media profiles">
