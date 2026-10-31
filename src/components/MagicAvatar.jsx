@@ -83,7 +83,7 @@ export function MagicAvatar({
   return (
     <div
       ref={containerRef}
-      className={`magic-avatar-container noir-avatar ${className} ${isHovered ? 'is-hovered' : ''}`}
+      className={`magic-avatar-container ${className} ${isHovered ? 'is-hovered' : ''}`}
       style={{
         ...style,
         ...tiltStyle,
@@ -95,21 +95,15 @@ export function MagicAvatar({
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
-      {/* Layer 1: High-Contrast Film Noir Base Portrait */}
+      {/* Layer 1: Clean Natural Base Portrait */}
       <img
-        className="magic-avatar-img magic-avatar-base noir-base-portrait"
+        className="magic-avatar-img magic-avatar-base"
         src={MEDIA.heroPhoto}
-        alt="Sahas - Film Noir Portrait"
+        alt="Sahas - Creative Director & Founder"
         loading="eager"
       />
 
-      {/* Layer 2: Cinematic Chiaroscuro Vignette */}
-      <div className="noir-vignette-overlay" aria-hidden="true" />
-
-      {/* Layer 3: Authentic 35mm Film Grain Texture */}
-      <div className="noir-grain-overlay" aria-hidden="true" />
-
-      {/* Layer 4: Electric Red Magic Reveal Portrait */}
+      {/* Layer 2: Red Magic Reveal Portrait */}
       <img
         className="magic-avatar-img magic-avatar-red"
         src={MEDIA.heroPhotoRed}
@@ -118,13 +112,13 @@ export function MagicAvatar({
         aria-hidden="true"
       />
 
-      {/* Layer 5: Luminous Crimson Cursor Aura */}
+      {/* Layer 3: Luminous Crimson Cursor Flare */}
       <div className="magic-reveal-flare" aria-hidden="true" />
 
       {/* Interactive Badge */}
       <div className="magic-reveal-badge" aria-hidden="true">
         <span className="badge-pulse-dot" />
-        <span className="badge-text">NOIR · MAGIC REVEAL</span>
+        <span className="badge-text">MAGIC REVEAL</span>
       </div>
     </div>
   );
