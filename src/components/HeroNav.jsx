@@ -52,6 +52,10 @@ export function HeroNav() {
             onClick={(e) => {
               e.preventDefault();
               setActiveTab(item.id);
+              const target = document.querySelector(item.href) || document.getElementById(item.id);
+              if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+              }
             }}
             onMouseEnter={() => updateSlider(item.id)}
           >

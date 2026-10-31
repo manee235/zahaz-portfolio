@@ -79,7 +79,7 @@ export function ManifestoSection({ isRecorder, isReducedMotion }) {
   };
 
   return (
-    <section className="section-manifesto" id="section-manifesto" ref={sectionRef}>
+    <section className="section-manifesto" id="studio" ref={sectionRef}>
       <div className="manifesto-container">
         <p className="manifesto-text" aria-label="Agency manifesto">
           {MANIFESTO_LINES.map((line, lIdx) => (

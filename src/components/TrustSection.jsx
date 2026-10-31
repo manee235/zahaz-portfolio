@@ -79,7 +79,7 @@ export function TrustSection({ scrollY = 0, isRecorder, isReducedMotion }) {
       };
 
   return (
-    <section className="section-trust" id="section-trust">
+    <section className="section-trust" id="contact">
       <div className="trust-panel" id="trust-panel" ref={panelRef}>
         {/* Left Column: Heading, Paragraph & Overlapping Glass Tiles */}
         <div className="trust-left-col">

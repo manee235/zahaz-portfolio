@@ -42,7 +42,7 @@ export function App() {
   }, []);
 
   const handleScrollDown = () => {
-    const el = document.getElementById('section-manifesto');
+    const el = document.getElementById('studio') || document.getElementById('section-manifesto');
     if (el) {
       el.scrollIntoView({ behavior: 'smooth' });
     }

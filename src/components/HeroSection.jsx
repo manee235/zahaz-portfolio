@@ -29,7 +29,7 @@ export function HeroSection({ scrollY, isRecorder, isReducedMotion }) {
       };
 
   return (
-    <header className="hero-wrapper">
+    <header className="hero-wrapper" id="home">
       <div className="hero-stage" id="hero-stage">
         <HeroNav />
         <div className="hero-title-wrapper" style={titleParallax}>
