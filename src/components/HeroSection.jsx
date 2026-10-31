@@ -1,4 +1,5 @@
 import React from 'react';
+import GradientASCII from './GradientASCII';
 import { HeroNav } from './HeroNav';
 import { HeroTitle } from './HeroTitle';
 import { HeroFigure } from './HeroFigure';
@@ -30,6 +31,17 @@ export function HeroSection({ scrollY, isRecorder, isReducedMotion }) {
 
   return (
     <header className="hero-wrapper" id="home">
+      {/* Dynamic ASCII Gradient Horizon Background */}
+      <div className="hero-ascii-bg" aria-hidden="true">
+        <GradientASCII
+          colors={['#1e3fd8', '#f6f8ff', '#a5d8ff', '#38bdf8']}
+          shape="horizon"
+          characters=" =+xX0S8#@"
+          cellSize={18}
+          density={0.8}
+        />
+      </div>
+
       <div className="hero-stage" id="hero-stage">
         <HeroNav />
         <div className="hero-title-wrapper" style={titleParallax}>
