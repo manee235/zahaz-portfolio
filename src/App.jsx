@@ -88,11 +88,11 @@ export function App() {
       {/* 3. About Section (Sahasra Deshan · Virtual & Product Designer) */}
       <AboutSection onOpenHireMe={() => setIsHireMeOpen(true)} />
 
-      {/* 4. Manifesto Section (grey to white fill) */}
-      <ManifestoSection isRecorder={isRecorder} isReducedMotion={isReducedMotion} />
-
-      {/* 5. Projects Section (3D Curved Cylindrical Carousel Hero) */}
+      {/* 4. Projects Section (3D Curved Cylindrical Carousel Hero) */}
       <ProjectsSection isReducedMotion={isReducedMotion} />
+
+      {/* 5. Manifesto Section (grey to white fill) */}
+      <ManifestoSection isRecorder={isRecorder} isReducedMotion={isReducedMotion} />
 
       {/* 6. Contact Us & Footer Section */}
       <ContactFooter onOpenHireMe={() => setIsHireMeOpen(true)} />

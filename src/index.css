@@ -793,7 +793,7 @@ img {
 .hero-stats-cluster {
   position: absolute;
   right: calc(57 * var(--u));
-  top: calc(275 * var(--u));
+  top: calc(420 * var(--u));
   width: calc(450 * var(--u));
   display: grid;
   grid-template-columns: 1.15fr 1fr 1fr;
@@ -1826,53 +1826,10 @@ img {
     transform: translateX(-50%) !important;
   }
 
-  /* Hero Right Wrapper & Frosted Glassblur Stat Cluster (Mobile) */
-  .hero-right-wrapper {
-    position: static;
-    width: 100%;
-    order: 6;
-    margin-top: calc(28 * var(--u));
-    padding: 0 calc(18 * var(--u));
-  }
-
+  /* Hero Right Wrapper & Frosted Glassblur Stat Cluster (Hidden in Mobile View) */
+  .hero-right-wrapper,
   .hero-stats-cluster {
-    position: static;
-    width: 100%;
-    max-width: 100%;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto auto auto;
-    gap: calc(12 * var(--u));
-    opacity: 0;
-    transform: translateY(25px);
-    filter: blur(10px);
-  }
-
-  .hero-wrapper.is-loaded .hero-stats-cluster {
-    animation: pushUpBlurFadeMobile 0.9s cubic-bezier(0.16, 1, 0.3, 1) 0.55s forwards;
-  }
-
-  .hero-card-satisfaction {
-    grid-column: 1 / span 2;
-    grid-row: 1;
-    padding: calc(20 * var(--u)) calc(16 * var(--u));
-  }
-
-  .hero-card-projects {
-    grid-column: 1 / span 2;
-    grid-row: 2;
-    padding: calc(16 * var(--u)) calc(18 * var(--u));
-  }
-
-  .hero-card-experience {
-    grid-column: 1;
-    grid-row: 3;
-    padding: calc(16 * var(--u)) calc(14 * var(--u));
-  }
-
-  .hero-card-reviews {
-    grid-column: 2;
-    grid-row: 3;
-    padding: calc(16 * var(--u)) calc(14 * var(--u));
+    display: none !important;
   }
 
 
@@ -3244,6 +3201,103 @@ img {
   transform: translateX(4px);
 }
 
+.contact-connect-group {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.contact-connect-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.contact-icons-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  max-width: 520px;
+}
+
+.contact-icon-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 18px;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.88);
+  font-family: var(--font-ui);
+  font-size: 13.5px;
+  font-weight: 550;
+  text-decoration: none;
+  cursor: pointer;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  user-select: none;
+}
+
+.contact-icon-pill:hover {
+  background: rgba(255, 255, 255, 0.09);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.contact-icon-symbol {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.contact-icon-pill:hover .contact-icon-symbol {
+  transform: scale(1.1);
+}
+
+/* Individual Channel Hover Accents */
+.contact-pill-email:hover {
+  border-color: rgba(56, 189, 248, 0.45);
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.2);
+  color: #38bdf8;
+}
+
+.contact-pill-phone:hover {
+  border-color: rgba(129, 140, 248, 0.45);
+  box-shadow: 0 6px 20px rgba(129, 140, 248, 0.2);
+  color: #818cf8;
+}
+
+.contact-pill-whatsapp:hover {
+  border-color: rgba(37, 211, 102, 0.45);
+  box-shadow: 0 6px 20px rgba(37, 211, 102, 0.2);
+  color: #25d366;
+}
+
+.contact-pill-instagram:hover {
+  border-color: rgba(244, 63, 94, 0.45);
+  box-shadow: 0 6px 20px rgba(244, 63, 94, 0.2);
+  color: #f43f5e;
+}
+
+.contact-pill-facebook:hover {
+  border-color: rgba(24, 119, 242, 0.45);
+  box-shadow: 0 6px 20px rgba(24, 119, 242, 0.2);
+  color: #1877f2;
+}
+
+.contact-pill-behance:hover {
+  border-color: rgba(0, 87, 255, 0.45);
+  box-shadow: 0 6px 20px rgba(0, 87, 255, 0.25);
+  color: #3b82f6;
+}
+
 .contact-direct-links {
   display: flex;
   flex-direction: column;
@@ -3470,6 +3524,16 @@ img {
     flex-direction: column;
     align-items: flex-start;
     gap: 24px;
+  }
+
+  .contact-icons-grid {
+    gap: 10px;
+  }
+
+  .contact-icon-pill {
+    padding: 0 15px;
+    height: 42px;
+    font-size: 13px;
   }
 }
 
@@ -4205,13 +4269,13 @@ body,
   margin: 0 auto;
 }
 
-/* Big Centered Headline: HELLO I'M DESHAN GANEGODA in Bebas Neue */
+/* Big Centered Headline: HELLO I'M DESHAN GANEGODA in Inter Tight (same as Manifesto "We believe") */
 .about-centered-name {
-  font-family: 'Bebas Neue', var(--font-display), sans-serif;
-  font-size: clamp(48px, 6vw, 84px);
+  font-family: var(--font-ui);
+  font-size: clamp(32px, 4.2vw, 56px);
   font-weight: 700;
-  letter-spacing: 0.02em;
-  line-height: 1;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
   text-transform: uppercase;
   color: #ffffff;
   margin: 0 0 24px;
@@ -4223,23 +4287,23 @@ body,
   margin: 0 10px;
 }
 
-/* Big Centered Bio Narrative in Bebas Neue */
+/* Big Centered Bio Narrative in Inter Tight (same as Manifesto "We believe") */
 .about-centered-bio {
-  font-family: 'Bebas Neue', var(--font-display), sans-serif;
-  font-size: clamp(24px, 3.2vw, 42px);
-  line-height: 1.25;
-  letter-spacing: 0.035em;
+  font-family: var(--font-ui);
+  font-size: clamp(18px, 2.1vw, 26px);
+  line-height: 1.5;
+  letter-spacing: -0.015em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.86);
-  max-width: 960px;
+  color: rgba(255, 255, 255, 0.82);
+  max-width: 980px;
   margin: 0 0 44px;
   text-align: center;
-  font-weight: 400;
+  font-weight: 450;
 }
 
 .about-centered-bio strong {
   color: #ffffff;
-  font-weight: 700;
+  font-weight: 650;
 }
 
 /* Centered Actions Row */
@@ -4311,15 +4375,15 @@ body,
   }
 
   .about-centered-name {
-    font-size: clamp(34px, 8.8vw, 50px);
-    line-height: 1.05;
-    margin-bottom: 20px;
+    font-size: clamp(24px, 6.5vw, 36px);
+    line-height: 1.2;
+    margin-bottom: 18px;
   }
 
   .about-centered-bio {
-    font-size: clamp(20px, 5.2vw, 28px);
-    line-height: 1.25;
-    margin-bottom: 32px;
+    font-size: clamp(15px, 4vw, 19px);
+    line-height: 1.45;
+    margin-bottom: 28px;
   }
 
   .btn-behance-pill,
