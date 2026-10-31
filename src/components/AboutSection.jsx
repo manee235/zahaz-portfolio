@@ -11,21 +11,15 @@ export function AboutSection({ onOpenHireMe }) {
         {/* Centered Editorial Wrapper */}
         <div className="about-centered-content">
           
-          {/* Top Meta Tag Capsule */}
-          <div className="about-meta-tag">
-            <span className="about-pulse-dot" />
-            <span className="about-meta-text">(ABOUT THE DESIGNER)</span>
-          </div>
-
-          {/* Big Centered Headline: Name & Location */}
+          {/* Big Centered Headline: HELLO I'M DESHAN GANEGODA */}
           <h2 className="about-centered-name">
-            Sahasra Deshan <span className="about-role-dot">·</span> <span className="text-[#38bdf8]">Kurunegala, Sri Lanka</span>
+            HELLO I'M DESHAN GANEGODA <span className="about-role-dot">·</span> <span className="text-[#38bdf8]">KURUNEGALA, SRI LANKA</span>
           </h2>
 
-          {/* Big Centered Bio Narrative */}
+          {/* Big Centered Bio Narrative in Bebas Neue font */}
           <p className="about-centered-bio">
-            Specialized in 3D spatial environments, high-performance product modeling, and luxury brand engineering 
-            with over <strong className="text-white font-semibold">4+ years of dedicated craft</strong> for international clients worldwide.
+            SPECIALIZED IN 3D SPATIAL ENVIRONMENTS, HIGH-PERFORMANCE PRODUCT MODELING, AND LUXURY BRAND ENGINEERING 
+            WITH OVER <strong className="text-white font-semibold">4+ YEARS OF DEDICATED CRAFT</strong> FOR INTERNATIONAL CLIENTS WORLDWIDE.
           </p>
 
           {/* Centered Actions: Behance Profile & Hire Me */}
@@ -35,7 +29,7 @@ export function AboutSection({ onOpenHireMe }) {
               target="_blank"
               rel="noopener noreferrer"
               className="btn-behance-pill"
-              title="View Sahasra Deshan on Behance"
+              title="View Deshan Ganegoda on Behance"
             >
               {/* Official Behance Bē Icon */}
               <span className="behance-icon-wrap" aria-hidden="true">

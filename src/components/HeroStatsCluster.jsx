@@ -22,11 +22,11 @@ export function HeroStatsCluster() {
         </p>
       </div>
 
-      {/* Card 2: Projects 25+ (Wide Card with Rising Bars) */}
+      {/* Card 2: Projects 99+ (Wide Card with Rising Bars) */}
       <div className="hero-stat-card hero-card-projects">
         <div className="hero-card-projects-meta">
           <span className="hero-tag-plain">PROJECTS</span>
-          <span className="hero-stat-mid">25+</span>
+          <span className="hero-stat-mid">99+</span>
         </div>
 
         {/* 9 Rising Bars Graphic */}
